@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hubungi Kami - Duta GeoSpasi SHP Builder</title>
+  <meta name="description" content="Saluran kontak resmi bantuan teknis, aktivasi lisensi member PRO, dan informasi kantor pengembang Duta GeoSpasi SHP Builder oleh Duta Digital Agensi di Sukoharjo, Jawa Tengah.">
+  <meta name="author" content="Duta Digital Agensi">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="shortcut icon" href="assets/img/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      background-color: #f8fafc;
+      color-scheme: light;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 68rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      width: 100%;
+    }
+    .header-bar {
+      background-color: #0a2e5c;
+      color: #ffffff;
+      border-bottom: 1px solid #082449;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.875rem;
+      gap: 1rem;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-logo {
+      width: 2.25rem;
+      height: 2.25rem;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .brand-tag {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .brand-sub {
+      font-size: 0.7rem;
+      color: #bfdbfe;
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-home:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .nav-tabs {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 3.875rem;
+      z-index: 40;
+    }
+    .tabs-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .tab-link {
+      padding: 0.45rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+    .tab-link:hover {
+      color: #0a2e5c;
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .tab-link.active {
+      color: #0a2e5c;
+      background: #e2e8f0;
+      border-color: #0a2e5c;
+      font-weight: 700;
+    }
+    .doc-article {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 2.25rem 2.5rem;
+      margin-top: 2rem;
+      margin-bottom: 3.5rem;
+    }
+    @media (max-width: 640px) {
+      .doc-article {
+        padding: 1.5rem 1.25rem;
+      }
+    }
+    .doc-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 1.75rem;
+    }
+    .doc-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #0a2e5c;
+      background: transparent;
+      border: none;
+    }
+    .doc-title h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0a2e5c;
+      letter-spacing: -0.01em;
+    }
+    .doc-title p {
+      font-size: 0.775rem;
+      color: #64748b;
+      margin-top: 0.2rem;
+    }
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 768px) {
+      .grid-2col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    .contact-box {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .contact-box:hover {
+      border-color: #0a2e5c;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(10, 46, 92, 0.08);
+    }
+    .contact-box-header {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+    .contact-badge {
+      width: 2.25rem;
+      height: 2.25rem;
+      background: #eff4fa;
+      color: #0a2e5c;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .contact-box:hover .contact-badge {
+      background: #0a2e5c;
+      color: #ffffff;
+      border-color: #0a2e5c;
+    }
+    .contact-box-title {
+      font-size: 0.925rem;
+      font-weight: 700;
+      color: #0f172a;
+    }
+    .contact-box-desc {
+      font-size: 0.8125rem;
+      color: #475569;
+      line-height: 1.55;
+    }
+    .contact-value {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0a2e5c;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .btn-action-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: #0a2e5c;
+      color: #ffffff;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: background 0.2s ease;
+      margin-top: auto;
+    }
+    .btn-action-primary:hover {
+      background: #174a8b;
+    }
+    .btn-action-outline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      background: #ffffff;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      margin-top: auto;
+    }
+    .btn-action-outline:hover {
+      border-color: #0a2e5c;
+      color: #0a2e5c;
+    }
+    .info-callout {
+      background: #eff4fa;
+      border: 1px solid #cbd5e1;
+      border-radius: 4px;
+      padding: 1rem 1.25rem;
+      font-size: 0.835rem;
+      color: #0a2e5c;
+      line-height: 1.6;
+      margin-top: 1.5rem;
+    }
+    .social-btn {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+    .social-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      color: #0a2e5c;
+      border-color: #0a2e5c;
+    }
+    .footer-bar {
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 1.75rem 0 1.5rem 0;
+      margin-top: auto;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 768px) {
+      .footer-inner {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header-bar">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-wrap">
+        <div class="brand-logo">
+          <img src="assets/img/logo.png" onerror="this.onerror=null; this.src='assets/img/logo.png';" alt="Logo Duta GeoSpasi">
+        </div>
+        <div>
+          <div class="brand-title">
+            <span>Duta GeoSpasi</span>
+            <span class="brand-tag">SHP Builder</span>
+          </div>
+          <div class="brand-sub">Pusat Dokumentasi, Regulasi &amp; Panduan Geospasial</div>
+        </div>
+      </a>
+      <div>
+        <a href="index.html" class="btn-home">
+          <svg style="width: 0.85rem; height: 0.85rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          <span>Kembali ke SHP Builder</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-tabs">
+    <div class="container tabs-inner">
+      <a href="jaminan-privasi.html" class="tab-link">Jaminan Privasi</a>
+      <a href="syarat-ketentuan.html" class="tab-link">Syarat &amp; Ketentuan</a>
+      <a href="penafian-layanan.html" class="tab-link">Penafian ATR/BPN</a>
+      <a href="panduan-fitur.html" class="tab-link">Panduan Fitur</a>
+      <a href="hubungi-kami.html" class="tab-link active">Hubungi Kami</a>
+    </div>
+  </nav>
+
+  <main class="container" style="flex: 1 0 auto;">
+    <article class="doc-article">
+      <div class="doc-header">
+        <div class="doc-icon">
+          <svg style="width: 1.35rem; height: 1.35rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+        </div>
+        <div class="doc-title">
+          <h1>Hubungi Tim Layanan Dukungan Teknis</h1>
+          <p>Bantuan Verifikasi Akses Member PRO, Kendala Operasional Peta, dan Konsultasi Ekspor Berkas Spasial</p>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <div class="contact-box">
+          <div class="contact-box-header">
+            <div class="contact-badge">
+              <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            </div>
+            <div class="contact-box-title">Layanan WhatsApp Dukungan</div>
+          </div>
+          <div class="contact-box-desc">
+            Saluran bantuan respons cepat untuk verifikasi aktivasi Member PRO, konfirmasi transfer pembayaran QRIS kode unik, pertanyaan teknis ekspor Shapefile, atau digitasi bidang tanah.
+          </div>
+          <div class="contact-value">0831-3030-0094</div>
+          <a href="https://wa.me/6283130300094?text=Halo%20Admin%20Duta%20GeoSpasi%2C%20saya%20butuh%20bantuan%20mengenai%20SHP%20Builder" target="_blank" rel="noopener" class="btn-action-primary">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+            <span>Kirim Pesan WhatsApp</span>
+          </a>
+        </div>
+
+        <div class="contact-box">
+          <div class="contact-box-header">
+            <div class="contact-badge">
+              <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            </div>
+            <div class="contact-box-title">Surel Resmi (Email)</div>
+          </div>
+          <div class="contact-box-desc">
+            Saluran korespondensi resmi untuk pertanyaan kerja sama kelembagaan, permintaan penyesuaian format atribut perizinan, atau laporan bug sistem spasial.
+          </div>
+          <div class="contact-value">dutadigitalagensi@gmail.com</div>
+          <a href="mailto:dutadigitalagensi@gmail.com?subject=Pertanyaan%20Duta%20GeoSpasi%20SHP%20Builder" class="btn-action-outline">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+            <span>Kirim Email Resmi</span>
+          </a>
+        </div>
+
+        <div class="contact-box">
+          <div class="contact-box-header">
+            <div class="contact-badge">
+              <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+            </div>
+            <div class="contact-box-title">Kantor Pengembang</div>
+          </div>
+          <div class="contact-box-desc">
+            Dikelola dan dikembangkan secara resmi oleh Duta Digital Agensi (dutamik.id).<br>
+            Slogan: Duta Media Informasi berKarya.<br>
+            Alamat: Bulusan RT 01 RW 08 Mandan, Kec/Kab. Sukoharjo, Jawa Tengah.
+          </div>
+          <div class="contact-value">Sukoharjo, Jawa Tengah</div>
+          <a href="https://dutamik.id" target="_blank" rel="noopener" class="btn-action-outline">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+            <span>Kunjungi dutamik.id</span>
+          </a>
+        </div>
+
+        <div class="contact-box">
+          <div class="contact-box-header">
+            <div class="contact-badge">
+              <svg style="width: 1.1rem; height: 1.1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div class="contact-box-title">Waktu Layanan Verifikasi</div>
+          </div>
+          <div class="contact-box-desc">
+            Layanan teknis dan verifikasi aktivasi akun Member PRO beroperasi pada:<br>
+            Senin sampai Sabtu pukul 08.00 hingga 21.00 WIB.<br>
+            Proses verifikasi setelah kirim bukti pembayaran QRIS rata-rata berlangsung 5 hingga 15 menit pada jam aktif.
+          </div>
+          <div class="contact-value">08.00 - 21.00 WIB</div>
+          <a href="syarat-ketentuan.html" class="btn-action-outline">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Syarat &amp; Ketentuan Member</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="info-callout">
+        <strong>Pemberitahuan Aktivasi Akun PRO:</strong> Setelah melakukan transfer melalui QRIS dengan nominal Rp 75.000 ditambah 3 digit kode unik acak, Anda dapat langsung melakukan konfirmasi ke WhatsApp admin 0831-3030-0094 dengan menyertakan alamat email akun Google Anda agar verifikasi whitelist segera diaktifkan.
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer-bar">
+    <div class="container footer-inner">
+      <div>
+        <div style="font-weight: 700; font-size: 0.875rem; color: #0f172a; margin-bottom: 0.25rem;">Duta Digital Agensi | dutamik.id</div>
+        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem;">Duta Media Informasi berKarya : Bulusan RT 01 RW 08 Mandan, Kec/Kab. Sukoharjo, Jawa Tengah</div>
+        <div style="font-size: 0.75rem; color: #475569; margin-bottom: 0.75rem;">WhatsApp: 0831-3030-0094 : Email: dutadigitalagensi@gmail.com</div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="https://dutamik.id" target="_blank" rel="noopener" class="social-btn" title="Situs Resmi: dutamik.id" aria-label="Website Resmi">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          </a>
+          <a href="https://wa.me/6283130300094" target="_blank" rel="noopener" class="social-btn" title="WhatsApp: 0831-3030-0094" aria-label="WhatsApp">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </a>
+          <a href="mailto:dutadigitalagensi@gmail.com" class="social-btn" title="Email: dutadigitalagensi@gmail.com" aria-label="Email">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </a>
+          <a href="https://instagram.com/dutadigitalagensi" target="_blank" rel="noopener" class="social-btn" title="Instagram: @dutadigitalagensi" aria-label="Instagram">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://tiktok.com/@dutadigitalagensi" target="_blank" rel="noopener" class="social-btn" title="TikTok: @dutadigitalagensi" aria-label="TikTok">
+            <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1.01v8.83c-.02 2.05-.75 4.13-2.14 5.67-1.78 2.02-4.5 3.01-7.17 2.65-2.61-.33-4.99-1.92-6.23-4.23-1.43-2.63-1.06-6.04.94-8.25 1.58-1.77 4-2.62 6.35-2.22v4.18c-1.22-.24-2.54.06-3.41.93-.86.85-1.1 2.19-.6 3.32.48 1.11 1.66 1.83 2.87 1.77 1.34-.03 2.5-1.02 2.66-2.35.04-.33.05-.67.05-1.01V.02z"/></svg>
+          </a>
+          <a href="https://x.com/dutadigitalagensi" target="_blank" rel="noopener" class="social-btn" title="X: @dutadigitalagensi" aria-label="X">
+            <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div style="font-size: 0.75rem; color: #64748b; line-height: 1.5; text-align: left;">
+        <div>&copy; 2026 Duta Digital Agensi (dutamik.id). Hak cipta dilindungi.</div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>

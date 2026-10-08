@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Duta GeoSpasi : Sistem Digitalisasi Geospasial Indonesia</title>
+  <meta name="description" content="Duta GeoSpasi : Sistem digitalisasi geospasial kadaster resmi, visualisasi peta bidang tanah WMS, pin koordinat, digitasi patok batas presisi, dan ekspor Shapefile ESRI SHP ZIP standar OSS RBA AMDALNET.">
+  <meta name="keywords" content="peta bidang tanah, kadaster pertanahan, web gis kadaster, cek batas bidang tanah, shapefile kadaster, ekspor shp oss rba, amdalnet ukl upl, duta geospasi, duta digital agensi, dutamik id">
+  <meta name="author" content="Duta Digital Agensi (dutamik.id)">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://geospasi.dutamik.id/SHP-Builder">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Duta GeoSpasi : Kadaster & Peta Bidang Terpadu">
+  <meta property="og:description" content="Visualisasi peta bidang kadaster terpadu, inspeksi legalitas dan luas bidang tanah, digitasi patok batas CAD, serta ekspor Shapefile ZIP standar OSS RBA dan AMDALNET.">
+  <meta property="og:url" content="https://geospasi.dutamik.id/SHP-Builder">
+  <meta property="og:image" content="https://geospasi.dutamik.id/SHP-Builder/assets/img/logo.png">
+  <meta property="og:site_name" content="Duta GeoSpasi">
+  <meta property="og:locale" content="id_ID">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Duta GeoSpasi : Kadaster Terpadu & Ekspor SHP OSS">
+  <meta name="twitter:description" content="Aplikasi Web GIS kadaster terpadu untuk pemetaan bidang tanah resmi dan unduh paket Shapefile standar OSS RBA.">
+  <meta name="generator" content="Duta Digital Agensi Engine v1.0">
+  <meta name="application-name" content="Duta GeoSpasi">
+  <meta name="googlebot" content="index, follow, noai, noimageai">
+  <meta name="robots" content="index, follow, max-image-preview:large, noai, noimageai">
+  <meta name="software-version" content="1.0">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "@id": "https://geospasi.dutamik.id/SHP-Builder#website",
+        "url": "https://geospasi.dutamik.id/SHP-Builder",
+        "name": "Duta GeoSpasi",
+        "description": "Sistem Digitalisasi Geospasial Indonesia",
+        "publisher": {
+          "@id": "https://dutamik.id/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://geospasi.dutamik.id/SHP-Builder?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "@id": "https://dutamik.id/#organization",
+        "name": "Duta Digital Agensi",
+        "url": "https://dutamik.id",
+        "logo": "https://geospasi.dutamik.id/SHP-Builder/assets/img/logo.png",
+        "slogan": "Duta Media Informasi berKarya",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Sukoharjo",
+          "addressRegion": "Jawa Tengah",
+          "addressCountry": "ID"
+        }
+      },
+      {
+        "@type": "WebPage",
+        "@id": "https://geospasi.dutamik.id/SHP-Builder#webpage",
+        "url": "https://geospasi.dutamik.id/SHP-Builder",
+        "name": "Peta Kadaster & Bidang Terpadu",
+        "isPartOf": {
+          "@id": "https://geospasi.dutamik.id/SHP-Builder#website"
+        },
+        "breadcrumb": {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Beranda",
+              "item": "https://dutamik.id/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Duta GeoSpasi",
+              "item": "https://geospasi.dutamik.id/SHP-Builder"
+            }
+          ]
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://geospasi.dutamik.id/SHP-Builder/#app",
+        "name": "Duta GeoSpasi Engine",
+        "operatingSystem": "All Web Browsers",
+        "applicationCategory": "GeographicInformationSystemApplication",
+        "softwareVersion": "1.0",
+        "aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": "4.9",
+          "reviewCount": "128"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "IDR"
+        }
+      },
+      {
+        "@type": "SiteNavigationElement",
+        "name": ["Detail Bidang", "Lapisan Peta", "Cari Lokasi", "Digitasi CAD", "Info Sistem"],
+        "url": [
+          "https://geospasi.dutamik.id/SHP-Builder/#bidang",
+          "https://geospasi.dutamik.id/SHP-Builder/#layers",
+          "https://geospasi.dutamik.id/SHP-Builder/#search",
+          "https://geospasi.dutamik.id/SHP-Builder/#digitasi",
+          "https://geospasi.dutamik.id/SHP-Builder/#info"
+        ]
+      }
+    ]
+  }
+  </script>
+
+  <script src="assets/js/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="assets/js/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.css"/>
+  <script src="https://unpkg.com/leaflet-draw@1.0.4/dist/leaflet.draw.js"></script>
+  <script src="assets/js/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/app.css">
+  <link rel="stylesheet" href="assets/css/map.css">
+  <link rel="stylesheet" href="assets/css/modals.css">
+  <link rel="stylesheet" href="assets/css/print.css">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="shortcut icon" href="assets/img/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/img/logo.png">
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand-wrap">
+      <img src="assets/img/logo.png" alt="DutaGeoSpasi Logo" class="brand-logo-img" style="width: 34px; height: 34px; object-fit: contain; border-radius: 6px; background-color: #ffffff; padding: 2px; flex-shrink: 0;">
+      <div class="brand-text">
+        <h1>Duta GeoSpasi <span class="brand-tag">SHP Builder</span></h1>
+        <p>Sistem Digitalisasi Geospasial Indonesia</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button id="btnHeaderImportShp" class="header-icon-btn" onclick="document.getElementById('inputShpZipFile').click()" title="Impor Berkas ESRI Shapefile ZIP" aria-label="Impor ESRI Shapefile ZIP">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+      </button>
+      <input type="file" id="inputShpZipFile" accept=".zip" style="display:none;" onclick="this.value=null;" onchange="handleImportZipFile(event)">
+      <button id="btnHeaderPrintMap" class="header-icon-btn" onclick="handlePrintMapTrigger()" title="Cetak Peta Format Resmi Standar (A4 / A3 Landscape)" aria-label="Cetak Peta">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+      </button>
+      <button id="btnHeaderMember" class="header-auth-badge" onclick="openMemberModal()" title="Portal Akun &amp; Lisensi Member Duta GeoSpasi" aria-label="Portal Member">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 11l-3-3m0 0l-3 3m3-3v8"/></svg>
+        <span id="headerMemberText">AKUN</span>
+        <span id="headerMemberBadge" class="tier-tag free">FREE</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="mobileOverlay" class="mobile-overlay" onclick="toggleMobileSidebar(true)"></div>
+
+  <main class="app-body">
+
+    <aside id="sidebar" class="sidebar-panel">
+      <div id="sidebarResizer" class="sidebar-resizer" title="Tarik untuk mengubah lebar panel sidebar"></div>
+      <div id="sidebarLoadingBar" class="sidebar-loading-bar"></div>
+      <nav class="nav-icon-tabs" aria-label="Navigasi Menu Utama">
+        <button id="btnTabBidang" class="tab-btn active" onclick="switchTab('tab-bidang')" title="Detail Bidang Tanah" aria-label="Detail Bidang Tanah">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="4 6 15 3 20 10 17 21 5 18"/><circle cx="4" cy="6" r="1.5" fill="currentColor"/><circle cx="15" cy="3" r="1.5" fill="currentColor"/><circle cx="20" cy="10" r="1.5" fill="currentColor"/><circle cx="17" cy="21" r="1.5" fill="currentColor"/><circle cx="5" cy="18" r="1.5" fill="currentColor"/></svg>
+        </button>
+        <button id="btnTabKoordinat" class="tab-btn" onclick="switchTab('tab-koordinat')" title="Daftar Titik Patok & Koordinat Bidang" aria-label="Koordinat Patok">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="7"/><line x1="12" y1="17" x2="12" y2="21"/><line x1="3" y1="12" x2="7" y2="12"/><line x1="17" y1="12" x2="21" y2="12"/><circle cx="12" cy="12" r="2"/></svg>
+        </button>
+        <button id="btnTabLayers" class="tab-btn" onclick="switchTab('tab-layers')" title="Lapisan Peta & Opasitas" aria-label="Lapisan Peta">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        </button>
+        <button id="btnTabSearch" class="tab-btn" onclick="switchTab('tab-search')" title="Pencarian Wilayah Administrasi & Koordinat" aria-label="Pencarian Wilayah">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        </button>
+        <button id="btnTabDigitasi" class="tab-btn" onclick="switchTab('tab-digitasi')" title="Digitasi Patok & Ukur Bidang" aria-label="Digitasi Patok">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.85 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+        </button>
+        <button id="btnTabInfo" class="tab-btn" onclick="switchTab('tab-info')" title="Informasi Sistem & Legalitas" aria-label="Informasi Sistem">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        </button>
+        <button id="btnSidebarToggle" class="tab-btn sidebar-toggle-btn" onclick="toggleSidebar()" title="Sembunyikan / Buka Panel Samping" aria-label="Sembunyikan / Buka Panel Samping">
+          <svg id="iconSidebarToggle" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><path d="M14 9l-3 3 3 3"/></svg>
+        </button>
+      </nav>
+
+      <div class="sidebar-scroll">
+
+        <section id="tab-bidang" class="tab-view active">
+          <div id="noPinAlert" style="background-color: var(--accent-soft); border: 1px solid #bfdbfe; border-radius: 2px; padding: 0.75rem;">
+            <div class="box-title" style="color: var(--accent);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              Panduan Seleksi Bidang
+            </div>
+            <p style="font-size: 0.74rem; color: var(--text-sub); line-height: 1.45;">
+              Klik pada batas poligon oranye peta bidang tanah untuk melihat identifikasi bidang, luas ukur resmi, hak kepemilikan, dan mengaktifkan digitasi patok CAD.
+            </p>
+          </div>
+
+          <div id="persilFoundBox" style="display: none; flex-direction: column; gap: 0.75rem;">
+            
+            <div class="content-box">
+              <div class="box-header">
+                <div class="box-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  Informasi Bidang Tanah
+                </div>
+                <span class="badge-pill blue" id="badgeTipeHak">HAK MILIK</span>
+              </div>
+
+              <div class="card-equal-grid" style="margin-bottom: 0.65rem;">
+                <div class="stat-card">
+                  <span class="stat-label">Luas Data Terdaftar</span>
+                  <span id="pinLuasBpnText" class="stat-value emerald">-</span>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Luas di Gambar</span>
+                  <span id="canvasLiveAreaM2" class="stat-value highlight">-</span>
+                </div>
+              </div>
+
+              <div class="spec-list" style="margin-bottom: 0.75rem;">
+                <div class="spec-item">
+                  <span class="spec-label">Kabupaten / Kota</span>
+                  <span class="spec-value" id="pinKabkotText">-</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Provinsi</span>
+                  <span class="spec-value" id="pinProvinsiText">-</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Koordinat Titik</span>
+                  <span class="spec-value font-mono" id="pinCoordsText" style="font-size: 0.71rem;">-</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Status Validasi</span>
+                  <span class="spec-value emerald" id="pinStatusValidasiText">Terdaftar di Basis Data</span>
+                </div>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.4rem;">
+                  <button type="button" class="btn btn-primary" onclick="autoScaleToBpnArea()" style="font-weight: 700; justify-content: center; height: 36px;" title="Menyesuaikan luas bidang di gambar ke luas resmi secara presisi">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+                    <span>Sesuaikan Bidang</span>
+                  </button>
+                  <button type="button" id="btnToggleMerge" class="btn btn-outline" onclick="toggleMergeMode()" style="font-weight: 700; color: var(--accent); border-color: var(--accent); justify-content: center; height: 36px;" title="Tambah dan Gabungkan Bidang Tanah Bersebelahan">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+                    <span id="txtToggleMerge">Gabung Bidang</span>
+                  </button>
+                </div>
+                <div class="geo-patok-toolbar" style="display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; background: var(--bg-alt); padding: 3px; border: 1px solid var(--border-light); border-radius: var(--radius-sm);">
+                  <button type="button" class="btn-tool-icon" onclick="addVertexToActivePolygon()" title="Tambah Patok Baru di Gambar" aria-label="Tambah Patok">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <button type="button" class="btn-tool-icon" onclick="removeLastVertexFromActive()" title="Hapus Patok Terakhir" aria-label="Hapus Patok Terakhir">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <button type="button" id="btnToggleFreeDelete" class="btn-tool-icon" onclick="toggleFreeDeleteVertexMode()" title="Mode Hapus Patok Bebas (Klik patok di peta untuk menghapus)" aria-label="Hapus Bebas">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+                  </button>
+                  <button type="button" class="btn-tool-icon" onclick="cleanInternalDanglingVertices()" title="Bersihkan Patok Sisa dan Garis Dalam" aria-label="Bersihkan Patok">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+                  </button>
+                  <button type="button" class="btn-tool-icon danger" onclick="removeActivePin()" title="Batalkan Pilihan Bidang (Bersihkan Peta)" aria-label="Batal Pilihan">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div class="content-box" id="boxEkspor">
+              <div class="box-header" style="margin-bottom: 0.4rem;">
+                <div class="box-title">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  Ekspor &amp; Cetak Peta Bidang
+                </div>
+                <span class="badge-pill blue" id="attrModeBadge">OSS &amp; AMDALNET</span>
+              </div>
+
+              <div style="display: flex; border-bottom: 1px solid var(--border-light); margin-bottom: 0.65rem;">
+                <button type="button" id="tabBtnOss" class="btn-attr-tab active" onclick="switchAttrTab('oss')">Standar OSS &amp; Amdalnet</button>
+                <button type="button" id="tabBtnCustom" class="btn-attr-tab" onclick="switchAttrTab('custom')">Atribut Kustom GIS</button>
+              </div>
+
+              <div id="tabContentOss" style="display: flex; flex-direction: column; gap: 0.65rem;">
+                <div class="form-group">
+                  <label class="form-label">PEMRAKARSA</label>
+                  <input type="text" id="shpPemrakarsa" class="form-input" value="" placeholder="NAMA PEMRAKARSA / PEMOHON" maxlength="255" style="text-transform: uppercase;">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">KEGIATAN</label>
+                  <input type="text" id="shpKegiatan" class="form-input" value="" placeholder="NAMA KEGIATAN USAHA / PROYEK" maxlength="255" style="text-transform: uppercase;">
+                </div>
+
+                <div class="card-equal-grid">
+                  <div class="form-group">
+                    <label class="form-label">TAHUN</label>
+                    <input type="text" id="shpTahun" class="form-input" value="2026" placeholder="2026" maxlength="255">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">PROVINSI</label>
+                    <input type="text" id="shpProvinsi" class="form-input" value="" placeholder="PROVINSI" maxlength="255" style="text-transform: uppercase;">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label">KETERANGAN</label>
+                  <input type="text" id="shpKeterangan" class="form-input" value="" placeholder="KETERANGAN / STATUS LAHAN" maxlength="255" style="text-transform: uppercase;">
+                </div>
+
+                <div class="card-equal-grid">
+                  <div class="form-group">
+                    <label class="form-label">LAYER</label>
+                    <input type="text" id="shpLayer" class="form-input" value="TAPAK PROYEK" placeholder="TAPAK PROYEK" maxlength="255" style="text-transform: uppercase;">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">LUAS (HA)</label>
+                    <input type="text" id="shpLuasHa" class="form-input" value="0.0000 Ha" placeholder="0.0000 Ha" readonly style="background-color: var(--bg-subtle); font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--accent);">
+                  </div>
+                </div>
+              </div>
+
+              <div id="tabContentCustom" style="display: none; flex-direction: column; gap: 0.55rem; margin-bottom: 0.65rem;">
+                <div style="font-size: 0.7rem; color: var(--text-sub); line-height: 1.35; background-color: var(--bg-subtle); padding: 0.45rem 0.6rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+                  Definisikan nama kolom tabel atribut Shapefile (.DBF dBase III). Nama kolom maksimal 10 karakter standar ESRI.
+                </div>
+                <div style="overflow-x: auto; max-height: 220px; border: 1px solid var(--border-light); border-radius: 2px;">
+                  <table class="table-custom-attr" style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                      <tr style="background-color: var(--bg-subtle); border-bottom: 1px solid var(--border-light); font-size: 0.67rem; color: var(--text-muted); text-align: left;">
+                        <th style="padding: 4px 6px;">KOLOM (MAKS 10)</th>
+                        <th style="padding: 4px 6px; width: 70px;">TIPE</th>
+                        <th style="padding: 4px 6px;">NILAI ATRIBUT</th>
+                        <th style="padding: 4px 6px; width: 28px; text-align: center;"></th>
+                      </tr>
+                    </thead>
+                    <tbody id="customAttrTbody">
+                    </tbody>
+                  </table>
+                </div>
+                <button type="button" class="btn btn-outline btn-block" onclick="addCustomAttrRow('', 'C', '')" style="font-size: 0.71rem; padding: 0.35rem; justify-content: center; gap: 0.3rem;">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <span>Tambah Kolom Atribut</span>
+                </button>
+              </div>
+
+              <div style="display: flex; flex-direction: column; gap: 0.65rem;">
+                <button class="btn btn-primary btn-block" onclick="triggerShpDownloadFromActive()" style="background-color: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.45rem;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                  <span>Unduh Shapefile (.zip)</span>
+                </button>
+
+                <button class="btn btn-outline btn-block" onclick="handlePrintMapTrigger()" style="font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 0.45rem;">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+                  <span>Cetak Peta Standar (PDF)</span>
+                </button>
+
+                <div class="export-grid-2x2">
+                  <button type="button" class="btn btn-outline export-sub-btn" onclick="exportCoordinatesXls()" title="Unduh Tabel Koordinat Excel (.xlsx)">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+                    <span>Excel (.xlsx)</span>
+                  </button>
+                  <button type="button" class="btn btn-outline export-sub-btn" onclick="openExportCoordsModal()" title="Konversi Format CAD / DXF / CSV">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                    <span>Format CAD</span>
+                  </button>
+                  <button type="button" class="btn btn-outline export-sub-btn" onclick="exportGeoJSON()" title="Unduh Format Vektor GeoJSON">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    <span>GeoJSON</span>
+                  </button>
+                  <button type="button" class="btn btn-outline export-sub-btn" onclick="exportKML()" title="Unduh Format Google Earth KML">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+                    <span>KML Earth</span>
+                  </button>
+                </div>
+
+                <div class="export-grid-2x2">
+                  <a id="btnLinkBhumi" href="#" target="_blank" class="btn btn-outline export-sub-btn" onclick="if(this.getAttribute('href')==='#' || !activeVertices || activeVertices.length < 3){ event.preventDefault(); showToast('Pilih atau buat bidang tanah pada peta terlebih dahulu.', 'warn'); }">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                    <span>Bhumi ATR/BPN</span>
+                  </a>
+                  <a id="btnLinkGoogleMaps" href="#" target="_blank" class="btn btn-outline export-sub-btn" onclick="if(this.getAttribute('href')==='#' || !activeVertices || activeVertices.length < 3){ event.preventDefault(); showToast('Pilih atau buat bidang tanah pada peta terlebih dahulu.', 'warn'); }">
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span>Google Maps</span>
+                  </a>
+                </div>
+
+                <div id="testParcelBox" style="display: flex; flex-direction: column; gap: 0.35rem; background-color: var(--bg-subtle); padding: 0.5rem; border-radius: var(--radius-sm); border: 1px dashed var(--border-strong); margin-top: 0.3rem;">
+                  <div style="font-size: 0.68rem; font-weight: 700; color: var(--text-sub); display: flex; justify-content: space-between; align-items: center;">
+                    <span>PENGUJIAN FITUR EKSPOR</span>
+                    <span style="font-size: 0.62rem; color: var(--text-muted);">Uji Cepat Luas</span>
+                  </div>
+                  <div style="display: flex; gap: 0.35rem;">
+                    <button type="button" class="btn btn-outline" onclick="loadTestParcel('small')" style="flex: 1; font-size: 0.68rem; padding: 4px;">Uji 100 m² (Gratis)</button>
+                    <button type="button" class="btn btn-outline" onclick="loadTestParcel('large')" style="flex: 1; font-size: 0.68rem; padding: 4px;">Uji 300 m² (&gt;150 m²)</button>
+                    <button type="button" class="btn btn-outline" onclick="clearTestParcel()" style="font-size: 0.68rem; padding: 4px 8px; color: var(--crimson);">Bersihkan</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="persilNotFoundBox" class="notice-clean-box" style="display: none; flex-direction: column; gap: 0.5rem;">
+            <div class="notice-clean-title">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>Di Luar Batas Bidang Terdaftar</span>
+            </div>
+            <p class="notice-clean-desc">
+              Titik koordinat berada di luar poligon bidang tanah terdaftar ATR/BPN. Klik tepat di dalam area batas persil atau gunakan tombol di bawah untuk membuat delineasi mandiri.
+            </p>
+            <button type="button" class="btn-action primary" style="width: 100%; font-size: 0.74rem; padding: 6px 10px;" onclick="startDelineasiMandiriAtClick()">
+              Delineasi Mandiri di Titik Ini
+            </button>
+          </div>
+
+        </section>
+
+        <section id="tab-koordinat" class="tab-view">
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h18v18H3z"/><path d="M3 9h18"/><path d="M3 15h18"/><path d="M9 3v18"/><path d="M15 3v18"/></svg>
+                <span>Titik Batas &amp; Koordinat</span>
+              </div>
+            </div>
+
+            <div id="coordsEmptyAlert" style="background-color: var(--accent-soft); border: 1px solid #bfdbfe; border-radius: 2px; padding: 0.75rem; font-size: 0.74rem; color: var(--text-sub); line-height: 1.45;">
+              Belum ada bidang tanah poligon yang aktif. Klik pada peta untuk memilih bidang terdaftar atau gunakan menu digitasi gambar patok.
+            </div>
+
+            <div id="coordsTableContent" style="display: none;">
+              <div class="card-equal-grid tri-grid" style="margin-bottom: 0.45rem;">
+                <div class="stat-card">
+                  <span class="stat-label">Titik Batas</span>
+                  <span id="coordStatCount" class="stat-value highlight" style="font-size: 0.95rem;">0</span>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Keliling</span>
+                  <span id="coordStatKeliling" class="stat-value" style="font-size: 0.95rem;">0 m</span>
+                </div>
+                <div class="stat-card">
+                  <span class="stat-label">Luas Bidang</span>
+                  <span id="coordStatLuas" class="stat-value emerald" style="font-size: 0.95rem;">0 m²</span>
+                </div>
+              </div>
+
+              <div class="coord-action-grid" style="margin-bottom: 0.45rem;">
+                <button type="button" class="btn btn-outline coord-act-btn" onclick="exportCoordinatesXls()" title="Unduh Tabel Koordinat Lengkap Excel (.xlsx)">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+                  <span>Excel</span>
+                </button>
+                <button type="button" class="btn btn-outline coord-act-btn" onclick="openExportCoordsModal()" title="Konversi Format CAD / DXF / CSV">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                  <span>CAD</span>
+                </button>
+                <button type="button" class="btn btn-outline coord-act-btn" onclick="copyAllCoordinatesCsv()" title="Salin seluruh titik koordinat format CSV">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
+                  <span>Salin CSV</span>
+                </button>
+                <button type="button" class="btn btn-outline coord-act-btn" onclick="copyAllCoordinatesText()" title="Salin format teks ringkas">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                  <span>Salin Teks</span>
+                </button>
+              </div>
+
+              <div class="coords-table-wrap" style="max-height: 320px;">
+                <table class="coords-table">
+                  <thead>
+                    <tr>
+                      <th>Patok</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
+                      <th>UTM (X, Y)</th>
+                      <th>Jarak</th>
+                      <th>Aksi</th>
+                    </tr>
+                  </thead>
+                  <tbody id="coordsTableBody"></tbody>
+                </table>
+              </div>
+
+              <div style="font-size: 0.66rem; color: var(--text-muted); margin-top: 0.45rem; line-height: 1.4;">
+                * Klik baris patok untuk mengarahkan kamera peta ke titik tersebut. Jarak adalah panjang batas ke patok berikutnya.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="tab-layers" class="tab-view">
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+                Peta Dasar (Basemap)
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0;">
+              <select id="selectBasemapDropdown" class="form-control" onchange="switchBasemap(this.value)" style="font-weight: 600;">
+                <option value="esri_sat">Citra Satelit (Esri)</option>
+                <option value="esri_hybrid">Satelit Hybrid</option>
+                <option value="osm" selected>Peta Garis (OpenStreetMap)</option>
+                <option value="esri_topo">Topografi &amp; Kontur</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">Bidang Kadastral</div>
+              <span id="badgeStatusBidang" class="badge-pill green">Aktif</span>
+            </div>
+            <label style="display: flex; align-items: center; gap: 0.5rem; font-size: 0.78rem; cursor: pointer;">
+              <input type="checkbox" id="chkPersil" checked onchange="togglePersilLayer(this.checked)" style="accent-color: var(--accent);">
+              Tampilkan Garis Batas Persil Kadastral
+            </label>
+            <div class="form-group" style="margin-top: 0.4rem;">
+              <div style="display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--text-muted);">
+                <span>Transparansi Layer</span>
+                <span id="opacityLabel" class="range-val">90%</span>
+              </div>
+              <div class="range-wrap">
+                <input type="range" id="persilOpacity" min="10" max="100" value="90" oninput="changePersilOpacity(this.value)" class="range-input">
+              </div>
+            </div>
+            <button class="btn btn-outline" onclick="syncLiveBpnMap()" style="width: 100%; margin-top: 0.6rem; display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.74rem;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+              <span>Perbarui Peta</span>
+            </button>
+            <div style="font-size: 0.68rem; color: var(--text-muted); margin-top: 0.35rem; line-height: 1.35;">
+              Sumber: Basis Data Kadastral Geospasial Nasional (memuat mutasi, pemecahan, dan pendaftaran bidang terbaru).
+            </div>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                Peta Tematik &amp; Batas Kawasan
+              </div>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-sub); line-height: 1.4; margin-bottom: 0.5rem;">
+              Lapisan tematik resmi nasional untuk ceking batas bidang tanah terhadap tata ruang, kawasan lindung, perizinan, dan batas administrasi:
+            </div>
+            <div class="ceking-flat-list">
+
+              <div class="ceking-row">
+                <div class="ceking-header">
+                  <label class="ceking-label-group" for="chkCekingHutan" style="cursor: pointer;">
+                    <input type="checkbox" id="chkCekingHutan" onchange="toggleCekingLayer('hutan', this.checked)" class="flat-checkbox">
+                    <span class="ceking-flat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L7 10h3v4H7l-4 7h18l-4-7h-3v-4h3z"/><line x1="12" y1="18" x2="12" y2="22"/></svg></span>
+                    <div class="ceking-text-col">
+                      <span class="ceking-title">Kawasan Hutan Lindung (KLHK 2026)</span>
+                      <span class="ceking-source">Geoportal Planologi Kehutanan KLHK</span>
+                    </div>
+                  </label>
+                  <span id="badgeCekingHutan" class="badge-pill" style="font-size: 0.64rem;">Off</span>
+                </div>
+                <div class="range-wrap" style="margin-top: 0.25rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Transparansi</span>
+                    <span id="opacityLabelHutan">75%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value="75" oninput="changeCekingOpacity('hutan', this.value)" class="range-input">
+                </div>
+              </div>
+
+              <div class="ceking-row">
+                <div class="ceking-header">
+                  <label class="ceking-label-group" for="chkCekingLsd" style="cursor: pointer;">
+                    <input type="checkbox" id="chkCekingLsd" onchange="toggleCekingLayer('lsd', this.checked)" class="flat-checkbox">
+                    <span class="ceking-flat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M3 15h18M9 3v18M15 3v18"/></svg></span>
+                    <div class="ceking-text-col">
+                      <span class="ceking-title">Lahan Sawah Dilindungi (LSD Terkini)</span>
+                      <span class="ceking-source">Basis Data Peta Tematik LSD Nasional</span>
+                    </div>
+                  </label>
+                  <span id="badgeCekingLsd" class="badge-pill" style="font-size: 0.64rem;">Off</span>
+                </div>
+                <div class="range-wrap" style="margin-top: 0.25rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Transparansi</span>
+                    <span id="opacityLabelLsd">75%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value="75" oninput="changeCekingOpacity('lsd', this.value)" class="range-input">
+                </div>
+              </div>
+
+              <div class="ceking-row">
+                <div class="ceking-header">
+                  <label class="ceking-label-group" for="chkCekingLbs" style="cursor: pointer;">
+                    <input type="checkbox" id="chkCekingLbs" onchange="toggleCekingLayer('lbs', this.checked)" class="flat-checkbox">
+                    <span class="ceking-flat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg></span>
+                    <div class="ceking-text-col">
+                      <span class="ceking-title">Lahan Baku Sawah (LBS Nasional)</span>
+                      <span class="ceking-source">Basis Data Pertanian &amp; Pangan Nasional</span>
+                    </div>
+                  </label>
+                  <span id="badgeCekingLbs" class="badge-pill" style="font-size: 0.64rem;">Off</span>
+                </div>
+                <div class="range-wrap" style="margin-top: 0.25rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Transparansi</span>
+                    <span id="opacityLabelLbs">75%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value="75" oninput="changeCekingOpacity('lbs', this.value)" class="range-input">
+                </div>
+              </div>
+
+              <div class="ceking-row">
+                <div class="ceking-header">
+                  <label class="ceking-label-group" for="chkCekingPeruntukan" style="cursor: pointer;">
+                    <input type="checkbox" id="chkCekingPeruntukan" onchange="toggleCekingLayer('peruntukan', this.checked)" class="flat-checkbox">
+                    <span class="ceking-flat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg></span>
+                    <div class="ceking-text-col">
+                      <span class="ceking-title">Peta Peruntukan Ruang (RTRWN)</span>
+                      <span class="ceking-source">Rencana Tata Ruang Wilayah Nasional</span>
+                    </div>
+                  </label>
+                  <span id="badgeCekingPeruntukan" class="badge-pill" style="font-size: 0.64rem;">Off</span>
+                </div>
+                <div class="range-wrap" style="margin-top: 0.25rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Transparansi</span>
+                    <span id="opacityLabelPeruntukan">75%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value="75" oninput="changeCekingOpacity('peruntukan', this.value)" class="range-input">
+                </div>
+              </div>
+
+              <div class="ceking-row">
+                <div class="ceking-header">
+                  <label class="ceking-label-group" for="chkCekingRtrw" style="cursor: pointer;">
+                    <input type="checkbox" id="chkCekingRtrw" onchange="toggleCekingLayer('rtrw', this.checked)" class="flat-checkbox">
+                    <span class="ceking-flat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg></span>
+                    <div class="ceking-text-col">
+                      <span class="ceking-title">Rencana Pola Ruang (RTRW Kab/Kot)</span>
+                      <span class="ceking-source">Sistem Rencana Tata Ruang Daerah</span>
+                    </div>
+                  </label>
+                  <span id="badgeCekingRtrw" class="badge-pill" style="font-size: 0.64rem;">Off</span>
+                </div>
+                <div class="range-wrap" style="margin-top: 0.25rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Transparansi</span>
+                    <span id="opacityLabelRtrw">75%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value="75" oninput="changeCekingOpacity('rtrw', this.value)" class="range-input">
+                </div>
+              </div>
+
+              <div class="ceking-row">
+                <div class="ceking-header">
+                  <label class="ceking-label-group" for="chkCekingJalan" style="cursor: pointer;">
+                    <input type="checkbox" id="chkCekingJalan" onchange="toggleCekingLayer('jalan', this.checked)" class="flat-checkbox">
+                    <span class="ceking-flat-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12h8"/><path d="M4 12h8"/></svg></span>
+                    <div class="ceking-text-col">
+                      <span class="ceking-title">Jaringan Ruas Jalan &amp; Akses</span>
+                      <span class="ceking-source">Sistem Transportasi Geospasial</span>
+                    </div>
+                  </label>
+                  <span id="badgeCekingJalan" class="badge-pill" style="font-size: 0.64rem;">Off</span>
+                </div>
+                <div class="range-wrap" style="margin-top: 0.25rem;">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.68rem; color: var(--text-muted); margin-bottom: 2px;">
+                    <span>Transparansi</span>
+                    <span id="opacityLabelJalan">85%</span>
+                  </div>
+                  <input type="range" min="10" max="100" value="85" oninput="changeCekingOpacity('jalan', this.value)" class="range-input">
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          </section>
+
+        <section id="tab-search" class="tab-view">
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                Dropdown Wilayah & Kode Pos Indonesia
+              </div>
+              
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-sub); margin-bottom: 0.6rem; line-height: 1.4;">
+              Pilih wilayah bertingkat (Provinsi, Kabupaten, Kecamatan, Desa). Peta otomatis terbang dan menyorot titik lokasi kadaster.
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">1. Provinsi</label>
+              <select id="ddProvinsi" class="form-input" onchange="onProvinsiChange()">
+                <option value="">- Pilih Provinsi -</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">2. Kabupaten / Kota</label>
+              <select id="ddKabupaten" class="form-input" onchange="onKabupatenChange()" disabled>
+                <option value="">- Pilih Provinsi Dahulu -</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">3. Kecamatan</label>
+              <select id="ddKecamatan" class="form-input" onchange="onKecamatanChange()" disabled>
+                <option value="">- Pilih Kabupaten Dahulu -</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">4. Desa / Kelurahan & Kode Pos</label>
+              <select id="ddDesa" class="form-input" onchange="onDesaChange()" disabled>
+                <option value="">- Pilih Kecamatan Dahulu -</option>
+              </select>
+            </div>
+
+            <div id="wilayahSelectedCard" class="content-box" style="display: none; background-color: var(--bg-subtle); margin-top: 0.6rem; border-color: var(--border-light);">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+                <span style="font-size: 0.76rem; font-weight: 700; color: var(--text-main);" id="selectedWilayahTitle">Wilayah Terpilih</span>
+                <span class="badge-pill green" id="selectedKodePosBadge">Kode Pos: -</span>
+              </div>
+              <div style="font-size: 0.71rem; color: var(--text-sub); line-height: 1.45;" id="selectedWilayahDesc">-</div>
+              <button class="btn btn-primary btn-block" onclick="sorotWilayahTerpilih()" style="margin-top: 0.5rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/><circle cx="12" cy="12" r="2"/></svg>
+                Sorot dan Arahkan Peta
+              </button>
+            </div>
+
+            <div style="margin-top: 0.75rem; padding-top: 0.75rem; border-top: 1px solid var(--border-light);">
+              <label class="form-label">Pencarian Cepat Wilayah & Kode Pos (83.202 Desa)</label>
+              <div style="display: flex; gap: 0.4rem;">
+                <input type="text" id="quickWilayahInput" class="form-input" placeholder="Ketik nama desa atau kode pos (misal: 57552 / Madegondo)..." oninput="onQuickWilayahInput(this.value)">
+                <button class="btn btn-outline" onclick="onQuickWilayahInput(document.getElementById('quickWilayahInput').value)">Cari</button>
+              </div>
+            </div>
+            <div id="quickWilayahResults" class="search-res-list" style="display: none; margin-top: 0.5rem; max-height: 220px; overflow-y: auto;"></div>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                Navigasi Koordinat Presisi
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Latitude (Garis Lintang)</label>
+              <input type="text" id="inputLat" class="form-input" placeholder="-6.188400">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Longitude (Garis Bujur)</label>
+              <input type="text" id="inputLon" class="form-input" placeholder="106.832000">
+            </div>
+            <button class="btn btn-outline btn-block" onclick="goToCoords()">
+              Buka Titik Koordinat
+            </button>
+          </div>
+        </section>
+
+        <section id="tab-digitasi" class="tab-view">
+          <div class="card-equal-grid">
+            <div class="stat-card">
+              <span class="stat-label">Luas Ukur</span>
+              <span id="valLuasM2" class="stat-value highlight">0 m²</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Konversi Hektar</span>
+              <span id="valLuasHa" class="stat-value emerald">0 Ha</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Keliling Bidang</span>
+              <span id="valKeliling" class="stat-value">0 m</span>
+            </div>
+            <div class="stat-card">
+              <span class="stat-label">Jumlah Patok Batas</span>
+              <span id="valTitik" class="stat-value">0</span>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">Alat Digitasi Gambar</div>
+            </div>
+            <button class="btn btn-primary btn-block" onclick="startDrawPolygon()">
+              Mulai Gambar Poligon Baru
+            </button>
+            <button class="btn btn-outline btn-block" onclick="clearDrawnLayers()">
+              Bersihkan Hasil Gambar
+            </button>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+                Titik Data &amp; POI Khusus
+              </div>
+              <span id="badgePoiCount" class="badge-pill blue" style="font-size: 0.64rem;">0 Titik</span>
+            </div>
+            <div style="font-size: 0.72rem; color: var(--text-sub); margin-bottom: 0.45rem; line-height: 1.4;">
+              Tambahkan titik spasial mandiri dengan simbol presisi (terintegrasi ke legenda dan peta cetak):
+            </div>
+            <div class="form-group" style="margin-bottom: 0.35rem;">
+              <label class="form-label" style="font-size: 0.7rem;">Jenis Simbol Titik</label>
+              <select id="selCustomPoiType" class="form-control" style="font-size: 0.74rem;" onchange="handlePoiTypeChange(this.value)">
+                <option value="sumur_bor" selected>Sumur Bor (Air Tanah)</option>
+                <option value="bm">Titik Kontrol Geodesi / BM</option>
+                <option value="fasilitas">Fasilitas / Bangunan Penunjang</option>
+                <option value="kustom">Titik Khusus Lainnya (Custom Icon)</option>
+              </select>
+            </div>
+            <div id="customIconUploadBox" style="display: none; margin-bottom: 0.45rem; padding: 6px 8px; background: var(--bg-subtle); border: 1px dashed var(--border-light); border-radius: var(--radius-sm);">
+              <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px;">
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <img id="customIconPreviewImg" src="" style="width: 22px; height: 22px; display: none; object-fit: contain; border-radius: 3px; background: #ffffff; border: 1px solid var(--border-light);" alt="Preview Ikon">
+                  <span id="customIconStatusText" style="font-size: 0.68rem; color: var(--text-muted);">Ikon standar bintang</span>
+                </div>
+                <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('inputCustomPoiIconFile').click()" style="padding: 2px 7px; font-size: 0.68rem;">
+                  Unggah Ikon
+                </button>
+                <input type="file" id="inputCustomPoiIconFile" accept="image/png,image/jpeg,image/svg+xml" style="display:none;" onclick="this.value=null;" onchange="handleCustomPoiIconUpload(event)">
+              </div>
+            </div>
+            <div class="form-group" style="margin-bottom: 0.4rem;">
+              <label class="form-label" style="font-size: 0.7rem;">Nama / Kode Titik (Editable)</label>
+              <input type="text" id="inputCustomPoiName" class="form-input" placeholder="Contoh: SB-01 atau BM-01" style="font-size: 0.74rem; padding: 5px 8px;">
+            </div>
+            <div style="display: flex; gap: 0.4rem; margin-bottom: 0.4rem;">
+              <button type="button" id="btnStartAddPoi" class="btn btn-primary" onclick="toggleAddPoiMode()" style="flex: 2; font-size: 0.74rem; font-weight: 700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+                <span id="textBtnAddPoi">Tambah Titik di Peta</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="clearAllCustomPois()" style="flex: 1; font-size: 0.74rem;">
+                Hapus Semua
+              </button>
+            </div>
+            <div id="customPoiList" style="max-height: 120px; overflow-y: auto; font-size: 0.72rem; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 4px; display: none;"></div>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Input Daftar Koordinat (Batch)
+              </div>
+              <span class="badge-pill blue">WGS 84</span>
+            </div>
+            <p style="font-size: 0.72rem; color: var(--text-sub); margin-bottom: 0.5rem; line-height: 1.4;">
+              Tempel daftar koordinat patok batas (satu titik per baris). Sistem otomatis membaca format Latitude, Longitude atau Longitude, Latitude:
+            </p>
+            <div class="form-group" style="margin-bottom: 0.5rem;">
+              <textarea id="batchCoordsInput" class="form-control" rows="5" placeholder="-7.575210, 110.825120&#10;-7.575300, 110.825500&#10;-7.575800, 110.825400&#10;-7.575700, 110.825000" style="font-family: 'JetBrains Mono', monospace; font-size: 0.74rem; line-height: 1.4; resize: vertical;"></textarea>
+            </div>
+            <div style="display: flex; gap: 0.4rem;">
+              <button type="button" class="btn btn-primary" onclick="createPolygonFromBatchCoords()" style="flex: 2; font-weight: 700;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span>Plot &amp; Buat Bidang</span>
+              </button>
+              <button type="button" class="btn btn-outline" onclick="document.getElementById('batchCoordsInput').value=''" style="flex: 1;">
+                Bersihkan
+              </button>
+            </div>
+          </div>
+
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">Impor dan Ekspor Berkas</div>
+            </div>
+            <div class="btn-group">
+              <button class="btn btn-outline" onclick="exportGeoJSON()" style="flex:1;">Ekspor GeoJSON</button>
+              <button class="btn btn-outline" onclick="exportKML()" style="flex:1;">Ekspor KML</button>
+            </div>
+            <button class="btn btn-outline btn-block" onclick="document.getElementById('fileImport').click()">
+              Impor GeoJSON / KML
+            </button>
+            <input type="file" id="fileImport" accept=".geojson,.json,.kml" style="display:none;" onclick="this.value=null;" onchange="importSpatialFile(event)">
+          </div>
+        </section>
+
+        <section id="tab-info" class="tab-view">
+          <div class="content-box">
+            <div class="box-header">
+              <div class="box-title">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Arsitektur &amp; Integritas Data
+              </div>
+            </div>
+            <p style="font-size: 0.75rem; color: var(--text-sub); line-height: 1.5; margin-bottom: 0.65rem;">
+              Duta GeoSpasi menghubungkan visualisasi web secara langsung dengan layanan peta persil kadaster nasional dan basis data geospasial terpadu.
+            </p>
+            <div class="spec-list">
+              <div class="spec-item">
+                <span class="spec-label">Standar Ekspor</span>
+                <span class="spec-value">OSS RBA, AMDALNET, UKL UPL</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Sistem Proyeksi</span>
+                <span class="spec-value">EPSG 4326 (WGS 84) &amp; UTM</span>
+              </div>
+              <div class="spec-item">
+                <span class="spec-label">Format Ekspor</span>
+                <span class="spec-value">ESRI SHP, SHX, DBF, PRJ, CPG</span>
+              </div>
+            </div>
+
+            <div style="border-top: 1px solid var(--border-light); margin: 0.85rem 0 0.6rem 0; padding-top: 0.75rem;">
+              <div style="font-weight: 700; font-size: 0.78rem; color: var(--text-main); margin-bottom: 0.4rem; display: flex; align-items: center; gap: 0.4rem;">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                Identitas Pengembang Resmi
+              </div>
+              <div class="spec-list">
+                <div class="spec-item">
+                  <span class="spec-label">Pengembang</span>
+                  <span class="spec-value">Duta Digital Agensi</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Situs Resmi</span>
+                  <span class="spec-value"><a href="https://dutamik.id" target="_blank" rel="noopener" style="color: var(--accent); font-weight: 700; text-decoration: none;">dutamik.id</a></span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Tagline</span>
+                  <span class="spec-value">Duta Media Informasi berKarya</span>
+                </div>
+                <div class="spec-item">
+                  <span class="spec-label">Alamat Kantor</span>
+                  <span class="spec-value">Bulusan RT 01 RW 08 Mandan, Sukoharjo, Jawa Tengah</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <footer class="sidebar-footer">
+        <div style="font-weight: 700; font-size: 0.82rem; color: #ffffff; letter-spacing: 0.01em;">
+          Duta Digital Agensi
+        </div>
+        <div style="font-size: 0.72rem; color: #cbd5e1; line-height: 1.4;">
+          Duta Media Informasi berKarya
+        </div>
+        <div style="font-size: 0.7rem; color: #94a3b8; line-height: 1.35;">
+          Bulusan RT 01 RW 08 Mandan, Sukoharjo, Jawa Tengah
+        </div>
+        <div style="display: flex; gap: 0.45rem; flex-wrap: wrap; margin: 0.35rem 0 0.2rem; font-size: 0.67rem;">
+          <a href="jaminan-privasi.html" target="_blank" style="color: #93c5fd; text-decoration: none;">Privasi</a>
+          <span style="color: rgba(255, 255, 255, 0.25);">|</span>
+          <a href="syarat-ketentuan.html" target="_blank" style="color: #93c5fd; text-decoration: none;">Syarat Ketentuan</a>
+          <span style="color: rgba(255, 255, 255, 0.25);">|</span>
+          <a href="penafian-layanan.html" target="_blank" style="color: #93c5fd; text-decoration: none;">Penafian Layanan</a>
+          <span style="color: rgba(255, 255, 255, 0.25);">|</span>
+          <a href="panduan-fitur.html" target="_blank" style="color: #93c5fd; text-decoration: none;">Panduan</a>
+          <span style="color: rgba(255, 255, 255, 0.25);">|</span>
+          <a href="hubungi-kami.html" target="_blank" style="color: #93c5fd; text-decoration: none;">Kontak</a>
+        </div>
+        <div style="border-top: 1px solid rgba(255, 255, 255, 0.12); padding-top: 0.4rem; font-size: 0.67rem; color: #94a3b8;">
+          &copy; 2026 Duta Digital Agensi. Hak Cipta Dilindungi.
+        </div>
+      </footer>
+    </aside>
+
+    <div class="map-container">
+      <button id="mapSidebarFab" class="sidebar-toggle-fab" onclick="toggleSidebar()" title="Buka Panel Samping" aria-label="Buka Panel Samping" style="display: none;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="9" y1="3" x2="9" y2="21"/><path d="M12 9l3 3-3 3"/></svg>
+      </button>
+
+
+      <div id="mergeModeBanner" class="merge-notification-banner">
+        <div id="mergeBannerText" style="display: flex; align-items: center; gap: 0.5rem; line-height: 1.35; flex: 1 1 auto; min-width: 0;">
+          <span class="dot-indicator" style="background-color: var(--amber);"></span>
+          <span><strong>Mode Tambah Bidang (Gabung) Aktif</strong>: Klik bidang tanah tetangga di peta.</span>
+        </div>
+        <div class="merge-actions-wrap" style="display: inline-flex; gap: 0.4rem; align-items: center; flex-shrink: 0; white-space: nowrap;">
+          <button class="btn btn-outline" id="btnMergePrecisionBpn" onclick="autoScaleToBpnArea()" style="padding: 4px 10px; font-size: 0.72rem; border-color: var(--emerald); color: var(--emerald); font-weight: 700; white-space: nowrap; flex-shrink: 0;" title="Sesuaikan ukuran seluruh bidang terpilih dengan batas antar bidang tetap 1 garis">Presisi Batas</button>
+          <button class="btn btn-primary" onclick="finishMergeParcels()" style="padding: 4px 12px; font-size: 0.75rem; background-color: var(--accent); color: #ffffff; border: 1px solid var(--accent); font-weight: 700; white-space: nowrap; flex-shrink: 0;">Selesai (<span id="mergeCountBadge">1</span>)</button>
+          <button class="btn btn-outline" onclick="cancelMergeMode()" style="padding: 3px 9px; font-size: 0.72rem; white-space: nowrap; flex-shrink: 0;">Batal</button>
+        </div>
+      </div>
+
+      <div id="zoomAlert" class="zoom-warning">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span id="zoomAlertText">Perbesar peta (Zoom <span id="currentZoomText">13</span>/14) untuk melihat batas bidang kadastral.</span>
+        <button class="btn btn-outline" onclick="map.setZoom(16)" style="padding: 2px 8px; font-size: 0.7rem; border-color: var(--amber);">Perbesar</button>
+      </div>
+
+      <div id="mapCompassControl" class="map-compass" onclick="resetMapOrientation()" title="Arah Mata Angin (Utara) : Klik untuk Orientasi Utara" aria-label="Arah Mata Angin">
+        <svg width="38" height="38" viewBox="0 0 44 44" fill="none">
+          <circle cx="22" cy="22" r="20" fill="#ffffff" stroke="#cbd5e1" stroke-width="1.5"/>
+          <circle cx="22" cy="22" r="17" fill="#f8fafc" stroke="#e2e8f0" stroke-width="1"/>
+          <text x="22" y="11" text-anchor="middle" font-size="8" font-weight="800" fill="#dc2626" font-family="'Plus Jakarta Sans', sans-serif">U</text>
+          <text x="22" y="37" text-anchor="middle" font-size="7" font-weight="700" fill="#64748b" font-family="'Plus Jakarta Sans', sans-serif">S</text>
+          <text x="35" y="24" text-anchor="middle" font-size="7" font-weight="700" fill="#64748b" font-family="'Plus Jakarta Sans', sans-serif">T</text>
+          <text x="9" y="24" text-anchor="middle" font-size="7" font-weight="700" fill="#64748b" font-family="'Plus Jakarta Sans', sans-serif">B</text>
+          <polygon points="22,12 25,22 22,20" fill="#dc2626"/>
+          <polygon points="22,12 19,22 22,20" fill="#b91c1c"/>
+          <polygon points="22,32 25,22 22,24" fill="#0a2e5c"/>
+          <polygon points="22,32 19,22 22,24" fill="#1e293b"/>
+          <circle cx="22" cy="22" r="2.5" fill="#ffffff" stroke="#0a2e5c" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <div id="smartDrawToolbar" class="smart-draw-toolbar">
+        <button id="btnSnapToggle" class="smart-draw-btn active" onclick="toggleSnapMode()" title="Toggle Auto-Snap ke Patok Terdekat">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 3v7a6 6 0 0 0 12 0V3"/><line x1="4" y1="3" x2="8" y2="3"/><line x1="16" y1="3" x2="20" y2="3"/></svg>
+          <span id="snapText">Snap: Aktif</span>
+        </button>
+        <button class="smart-draw-btn" onclick="undoDrawPoint()" title="Batalkan Titik Patok Terakhir">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+          Undo
+        </button>
+        <button class="smart-draw-btn" onclick="redoDrawPoint()" title="Ulangi Titik Patok">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
+          Redo
+        </button>
+        <button class="smart-draw-btn" onclick="zoomToDrawBounds()" title="Centering Objek (Pusatkan Pandangan ke Objek Poligon)">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/><circle cx="12" cy="12" r="3"/></svg>
+          Centering Objek
+        </button>
+        <button class="smart-draw-btn primary" onclick="finishCustomPolygonDraw()" title="Selesai & Tutup Poligon">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+          Selesai (<span id="drawPointsCount">0</span>)
+        </button>
+        <button class="smart-draw-btn danger" onclick="cancelCustomPolygonDraw()" title="Batalkan Gambar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          Batal
+        </button>
+      </div>
+
+      <div id="map"></div>
+
+      <div id="mapFloatingQuickControls" class="map-floating-quick-controls">
+        <button id="btnSyncBpn" class="map-quick-btn" onclick="syncLiveBpnMap()" title="Perbarui Peta (Sinkronisasi Kadaster &amp; Basemap)" aria-label="Perbarui Peta">
+          <svg id="syncIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="transition: transform 0.6s ease;"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+        </button>
+        <button id="btnShareMap" class="map-quick-btn" onclick="shareCurrentMapLocation()" title="Bagikan / Salin Tautan Posisi Peta" aria-label="Bagikan Tautan Peta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+        </button>
+        <div class="map-quick-divider"></div>
+        <button id="btnMapZoomIn" class="map-quick-btn" onclick="mapZoomIn()" title="Perbesar Peta (Zoom In)" aria-label="Perbesar Peta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+        <button id="btnMapZoomOut" class="map-quick-btn" onclick="mapZoomOut()" title="Perkecil Peta (Zoom Out)" aria-label="Perkecil Peta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </button>
+      </div>
+
+      <div id="mapLegendWidget" class="floating-map-legend">
+        <div class="legend-header" onclick="toggleMapLegend()">
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 3v18h18"/><path d="M18 9l-5 5-4-4-3 3"/></svg>
+            <span>Legenda Peta</span>
+          </div>
+          <button type="button" class="legend-toggle-btn" onclick="event.stopPropagation(); toggleMapLegend();" aria-label="Toggle Legenda">
+            <svg id="legendChevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="transform: rotate(180deg); transition: transform 0.2s ease;"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+        <div id="legendBody" class="legend-body collapsed">
+          <div class="legend-category-title">Batas &amp; Patok Kadastral</div>
+          <div class="legend-item"><span class="legend-swatch polygon-active"></span><span>Bidang Terpilih (Aktif Diedit)</span></div>
+          <div class="legend-item"><span class="legend-swatch polygon-bpn"></span><span>Batas Bidang Kadastral Resmi (Garis Oranye)</span></div>
+          <div class="legend-item"><span class="legend-swatch node-patok"></span><span>Titik Patok Batas (Sudut Koordinat)</span></div>
+          <div class="legend-item"><span class="legend-swatch dist-label">12m</span><span>Dimensi Jarak Batas (Meter)</span></div>
+
+          <div class="legend-category-title">Lahan Sawah Dilindungi (LSD Nasional)</div>
+          <div class="legend-item"><span class="legend-swatch lsd-pertahankan"></span><span>LSD Dipertahankan (Ketahanan Pangan)</span></div>
+          <div class="legend-item"><span class="legend-swatch lsd-penyesuaian"></span><span>LSD Usulan Penyesuaian RTRW</span></div>
+
+          <div class="legend-category-title">Lahan Baku Sawah (LBS Nasional)</div>
+          <div class="legend-item"><span class="legend-swatch lbs-aktif"></span><span>Sawah Baku Aktif Irigasi &amp; Tadah Hujan</span></div>
+
+          <div class="legend-category-title">Kawasan Hutan Lindung (KLHK 2026)</div>
+          <div class="legend-item"><span class="legend-swatch hl-lindung"></span><span>Hutan Lindung (HL)</span></div>
+          <div class="legend-item"><span class="legend-swatch hl-konservasi"></span><span>Hutan Konservasi &amp; Suaka Alam (HK/KSA)</span></div>
+          <div class="legend-item"><span class="legend-swatch hl-produksi-terbatas"></span><span>Hutan Produksi Terbatas (HPT)</span></div>
+          <div class="legend-item"><span class="legend-swatch hl-produksi-tetap"></span><span>Hutan Produksi Tetap (HP)</span></div>
+          <div class="legend-item"><span class="legend-swatch hl-produksi-konversi"></span><span>Hutan Produksi Konversi (HPK)</span></div>
+          <div class="legend-item"><span class="legend-swatch hl-apl"></span><span>Areal Penggunaan Lain (APL Legal)</span></div>
+
+          <div class="legend-category-title">Pola Ruang Peruntukan &amp; RTRW</div>
+          <div class="legend-item"><span class="legend-swatch rtrw-permukiman"></span><span>Zona Permukiman &amp; Perumahan</span></div>
+          <div class="legend-item"><span class="legend-swatch rtrw-komersial"></span><span>Zona Perdagangan &amp; Jasa</span></div>
+          <div class="legend-item"><span class="legend-swatch rtrw-industri"></span><span>Zona Industri &amp; Pergudangan</span></div>
+          <div class="legend-item"><span class="legend-swatch rtrw-pertanian"></span><span>Zona Pertanian Tanaman Pangan</span></div>
+          <div class="legend-item"><span class="legend-swatch rtrw-perkebunan"></span><span>Zona Perkebunan Rakyat / Tahunan</span></div>
+          <div class="legend-item"><span class="legend-swatch rtrw-perikanan"></span><span>Zona Perikanan &amp; Tubuh Air</span></div>
+
+          <div class="legend-category-title">Jaringan Ruas Jalan</div>
+          <div class="legend-item"><span class="legend-swatch jalan-arteri"></span><span>Arteri Primer / Tol / Jalan Nasional</span></div>
+          <div class="legend-item"><span class="legend-swatch jalan-kolektor"></span><span>Kolektor / Jalan Provinsi &amp; Kabupaten</span></div>
+          <div class="legend-item"><span class="legend-swatch jalan-lokal"></span><span>Jalan Lokal Lingkungan &amp; Desa</span></div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <div id="memberModal" class="modal-backdrop" onclick="if(event.target===this) closeMemberModal()">
+    <div class="modal-card" style="max-width: 460px; width: min(460px, calc(100vw - 2rem)); max-height: min(650px, calc(100dvh - 2.5rem));">
+      <div class="modal-head" style="padding: 0.85rem 1.15rem;">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <h3 style="font-size: 0.88rem; font-weight: 700; color: var(--text-main);">Portal Member Duta GeoSpasi</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeMemberModal()" aria-label="Tutup Modal Member">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body" id="memberModalBodyGuest" style="padding: 1rem 1.15rem; gap: 0.85rem;">
+        <div style="background-color: var(--bg-subtle); border: 1px solid var(--border-light); padding: 0.85rem 1rem; border-radius: var(--radius-sm);">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 0.35rem;">
+            <div>
+              <span style="font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; font-weight: 800; letter-spacing: 0.05em;">Promo Akses Seumur Hidup</span>
+              <div style="display: flex; align-items: baseline; gap: 0.45rem; margin-top: 3px; flex-wrap: nowrap;">
+                <span style="font-size: clamp(1.1rem, 3.5vw, 1.35rem); font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; white-space: nowrap;">Rp 75.000</span>
+                <del style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; white-space: nowrap;">Rp 375.000</del>
+                <span style="font-size: 0.62rem; background-color: #dcfce7; color: #15803d; font-weight: 800; border: 1px solid #86efac; padding: 1px 5px; border-radius: 3px; white-space: nowrap;">HEMAT 80%</span>
+              </div>
+            </div>
+            <span style="font-size: 0.7rem; color: var(--text-sub); font-weight: 700; white-space: nowrap;">Lifetime</span>
+          </div>
+          <div style="font-size: 0.74rem; color: var(--text-sub); margin-top: 0.45rem; line-height: 1.45;">
+            Akses penuh tool Ekspor Shapefile ESRI (.SHP .SHX .DBF .PRJ), CAD Script (.SCR), GeoJSON, Excel, dan Cetak Peta.
+          </div>
+        </div>
+
+        <div id="googleSignInContainer" style="width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 44px; margin: 0.25rem 0;">
+          <div id="gisButtonSlot" style="display: flex; justify-content: center; width: 100%;"></div>
+          <button type="button" class="btn-google" onclick="loginWithGoogle()" id="btnGoogleAuth" style="width: 100%; max-width: 320px; height: 42px; display: inline-flex; align-items: center; justify-content: center; gap: 0.65rem; font-size: 0.8rem; font-weight: 600;">
+            <svg width="18" height="18" viewBox="0 0 24 24">
+              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+            </svg>
+            <span>Masuk Menggunakan Akun Google</span>
+          </button>
+        </div>
+
+        <div style="font-size: 0.72rem; color: var(--text-muted); text-align: center; line-height: 1.4; padding: 0 0.25rem;">
+          Wajib login dengan Akun Google untuk otentikasi data resmi dan verifikasi aktivasi status PRO.
+        </div>
+
+        <div style="border-top: 1px solid var(--border-light); padding-top: 0.65rem;">
+          <div style="font-weight: 700; font-size: 0.75rem; color: var(--text-main); margin-bottom: 0.45rem;">Perbandingan Hak Akses Fitur:</div>
+          <table class="member-features-table" style="width: 100%; border-collapse: collapse; font-size: 0.72rem;">
+            <thead>
+              <tr>
+                <th style="padding: 7px 10px; background-color: var(--bg-subtle); color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border-light); text-align: left; width: 52%;">Fitur Geospasial</th>
+                <th style="padding: 7px 10px; background-color: var(--bg-subtle); color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border-light); text-align: center; width: 24%;">Tamu / Free</th>
+                <th style="padding: 7px 10px; background-color: var(--bg-subtle); color: var(--text-sub); font-weight: 700; border-bottom: 1px solid var(--border-light); text-align: center; width: 24%;">Member PRO</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 7px 10px; border-bottom: 1px solid var(--border-light); line-height: 1.35;">Inspeksi Bidang Kadastral &amp; Ukur Luas</td>
+                <td style="color: var(--emerald); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Aktif</td>
+                <td style="color: var(--emerald); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Aktif</td>
+              </tr>
+              <tr>
+                <td style="padding: 7px 10px; border-bottom: 1px solid var(--border-light); line-height: 1.35;">Digitasi Patok Batas CAD</td>
+                <td style="color: var(--emerald); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Aktif</td>
+                <td style="color: var(--emerald); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Aktif</td>
+              </tr>
+              <tr>
+                <td style="padding: 7px 10px; border-bottom: 1px solid var(--border-light); line-height: 1.35;">Ekspor ESRI Shapefile (.ZIP)</td>
+                <td style="color: var(--crimson); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Terkunci</td>
+                <td style="color: var(--emerald); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Unlimited</td>
+              </tr>
+              <tr>
+                <td style="padding: 7px 10px; border-bottom: 1px solid var(--border-light); line-height: 1.35;">Ekspor CAD (.SCR), GeoJSON, Excel</td>
+                <td style="color: var(--crimson); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Terkunci</td>
+                <td style="color: var(--emerald); font-weight: 700; padding: 7px 10px; border-bottom: 1px solid var(--border-light); text-align: center;">Unlimited</td>
+              </tr>
+            </tbody>
+          </table>
+          <div style="margin-top: 0.65rem; background-color: var(--bg-subtle); border: 1px solid var(--border-light); padding: 0.6rem 0.85rem; border-radius: var(--radius-sm); font-size: 0.71rem; color: var(--text-sub); line-height: 1.45;">
+            <strong>Dukungan &amp; Saran Fitur:</strong> Jika ada fitur yang memerlukan penyesuaian khusus atau saran fitur baru, pengguna dapat menghubungi Admin Duta Digital Agensi (dutamik.id) untuk penambahan update pada versi berikutnya.
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-body" id="memberModalBodyUser" style="display: none; padding: 1rem 1.15rem; gap: 0.85rem;">
+        <div class="member-profile-card" style="background-color: var(--bg-subtle); border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 0.85rem 1rem; display: flex; align-items: center; gap: 0.85rem;">
+          <div class="member-avatar" id="memberAvatarInitials">U</div>
+          <div class="member-info" style="flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 0.2rem;">
+            <div class="member-name" id="memberProfileName" style="font-weight: 700; font-size: 0.85rem; color: var(--text-main);">Nama Pengguna</div>
+            <div class="member-email" id="memberProfileEmail" style="font-size: 0.74rem; color: var(--text-sub);">user@gmail.com</div>
+            <div style="margin-top: 3px;">
+              <span id="memberProfileBadge" class="member-plan-badge free">FREE MEMBER</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="memberStatusAlert" style="background-color: var(--bg-subtle); padding: 0.75rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 0.74rem; line-height: 1.45;">
+          Akun Anda saat ini berstatus <strong>FREE TIER</strong>. Hak akses ekspor Shapefile dan CAD dikunci. Lakukan pembayaran via QRIS untuk aktivasi status PRO Lifetime.
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-top: 0.25rem;">
+          <div id="proMemberThankYouCard" style="display: none; background-color: var(--accent); color: #ffffff; padding: 0.85rem 1rem; border-radius: var(--radius-sm); border: 1px solid var(--accent); font-size: 0.78rem; line-height: 1.5; text-align: center;">
+            <div style="font-weight: 700; font-size: 0.84rem; margin-bottom: 4px; display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Terima Kasih atas Kepercayaan Anda</span>
+            </div>
+            <div style="font-size: 0.73rem; opacity: 0.95;">
+              Akun Anda telah berstatus PRO Lifetime. Seluruh hak akses fitur ekspor SHP, CAD, GeoJSON, dan analisis spasial aktif sepenuhnya.
+            </div>
+            <div style="margin-top: 0.6rem; padding-top: 0.6rem; border-top: 1px solid rgba(255,255,255,0.25); font-size: 0.71rem; text-align: left; opacity: 0.95; line-height: 1.45;">
+              <strong>Catatan Dukungan Member PRO:</strong> Jika terdapat fitur yang error, membutuhkan penyesuaian khusus, atau ingin menyampaikan saran fitur baru, silakan hubungi Admin Duta Digital Agensi (dutamik.id) untuk menambahkan update ke versi berikutnya.
+            </div>
+          </div>
+
+          <button id="btnUpgradeQris" type="button" class="btn btn-primary btn-block" onclick="openQrisPaymentModal()" style="justify-content: center; gap: 0.45rem; font-weight: 700; background-color: #16a34a; border-color: #16a34a; color: #ffffff; font-size: 0.78rem; padding: 0.55rem 0.85rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
+            <span>Bayar QRIS &amp; Upgrade ke PRO (Kode Unik 3 Digit)</span>
+          </button>
+          <button type="button" class="btn btn-outline btn-block" onclick="logoutMember()" style="justify-content: center; gap: 0.45rem; font-size: 0.76rem; padding: 0.5rem 0.85rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            <span>Keluar Akun (Logout)</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-foot" style="justify-content: center; align-items: center; text-align: center; flex-wrap: wrap; gap: 0.85rem; padding: 0.75rem 1.15rem;">
+        <div style="display: flex; gap: 0.85rem; font-size: 0.7rem; flex-wrap: wrap; justify-content: center; text-align: center;">
+          <a href="jaminan-privasi.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Kebijakan Privasi</a>
+          <a href="syarat-ketentuan.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Syarat &amp; Ketentuan</a>
+          <a href="penafian-layanan.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Penafian Layanan</a>
+          <a href="hubungi-kami.html" target="_blank" style="color: var(--accent); text-decoration: underline;">Bantuan</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="qrisPaymentModal" class="modal-backdrop" onclick="if(event.target===this) closeQrisPaymentModal()">
+    <div class="modal-card" style="max-width: 440px; max-height: calc(100dvh - 2rem); margin: auto;">
+      <div class="modal-head">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
+          <h3>Pembayaran QRIS Duta GeoSpasi PRO</h3>
+        </div>
+        <button class="modal-close-btn" onclick="closeQrisPaymentModal()" aria-label="Tutup Modal Pembayaran">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-body" style="gap: 0.55rem; padding: 0.65rem 0.85rem;">
+        <div style="background-color: var(--bg-subtle); padding: 0.65rem 0.85rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); text-align: center;">
+          <div style="font-size: 0.68rem; color: var(--text-sub); margin-bottom: 2px; font-weight: 700;">
+            TOTAL TRANSFER AKTIVASI PRO (LIFETIME)
+          </div>
+          <div style="display: flex; align-items: baseline; justify-content: center; gap: 0.5rem; margin: 4px 0; flex-wrap: nowrap;">
+            <del style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600; white-space: nowrap;">Rp 375.000</del>
+            <div id="qrisTotalDisplay" style="font-size: clamp(1.15rem, 4vw, 1.4rem); font-weight: 800; color: var(--accent); font-family: 'JetBrains Mono', monospace; letter-spacing: -0.02em; white-space: nowrap;">
+              Rp 75.000
+            </div>
+          </div>
+          <div style="font-size: 0.69rem; color: #b91c1c; font-weight: 700; margin-top: 3px; background-color: #fef2f2; padding: 4px 8px; border-radius: 4px; border: 1px solid #fecaca; display: inline-block;">
+            Wajib transfer tepat 3 digit unik: <span id="qrisUniqueCodeDisplay" style="font-weight: 800; text-decoration: underline;">000</span>
+          </div>
+          <div style="margin-top: 0.45rem;">
+            <button type="button" class="btn btn-outline" onclick="copyQrisAmount()" style="font-size: 0.7rem; padding: 3px 10px; margin: 0 auto; display: inline-flex; align-items: center; gap: 0.35rem;">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+              <span>Salin Nominal Transfer</span>
+            </button>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #ffffff; border: 1px solid var(--border-light); border-radius: var(--radius-sm); padding: 0.6rem;">
+          <img src="assets/img/qris-duta.jpg" alt="QRIS Duta Digital Agensi" style="width: 180px; height: auto; object-fit: contain; border-radius: 4px; border: 1px solid #e2e8f0; display: block;">
+          <div style="font-size: 0.7rem; font-weight: 700; color: #1e293b; margin-top: 0.35rem;">Duta Digital Agensi</div>
+          <div style="font-size: 0.62rem; color: var(--text-muted); font-family: 'JetBrains Mono', monospace;">NMID: ID1025430780847</div>
+          <a href="assets/img/qris-duta.jpg" download="QRIS_Duta_Digital_Agensi.jpg" class="btn btn-outline" style="margin-top: 0.35rem; font-size: 0.65rem; padding: 2px 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 0.3rem;">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Unduh Gambar QRIS</span>
+          </a>
+        </div>
+
+        <div style="background-color: var(--bg-subtle); padding: 0.55rem 0.75rem; border-radius: 2px; font-size: 0.68rem; color: var(--text-muted); line-height: 1.4; border: 1px solid var(--border-light);">
+          Keterangan: Biaya lisensi member adalah untuk membuka hak ekspor file Shapefile ESRI resmi dan tool digitasi spasial. Lapisan peta persil kadastral merupakan integrasi basis data geospasial publik pihak ketiga di luar kendali langsung aplikasi dan dapat diperbarui sewaktu-waktu oleh pengelola data terkait.
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.45rem;">
+          <div class="form-group" style="margin-bottom: 0;">
+            <label class="form-label" style="font-size: 0.7rem;">EMAIL AKUN GOOGLE TERDAFTAR (OTENTIK)</label>
+            <input type="email" id="qrisBuyerEmail" class="form-input" placeholder="emailanda@gmail.com" style="font-size: 0.74rem; background-color: var(--bg-subtle);" readonly>
+          </div>
+          <button type="button" class="btn btn-primary btn-block" onclick="confirmPaymentWhatsApp()" style="background-color: #16a34a; border-color: #16a34a; color: #ffffff; font-weight: 700; font-size: 0.76rem; justify-content: center; gap: 0.4rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+            <span>Konfirmasi Sudah Bayar (WhatsApp Admin)</span>
+          </button>
+          <button type="button" class="btn btn-outline btn-block" onclick="checkPaymentStatusLive()" style="font-size: 0.74rem; justify-content: center; gap: 0.4rem;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+            <span>Cek Status Verifikasi Otomatis</span>
+          </button>
+          <button type="button" class="btn btn-outline btn-block" onclick="cancelAndClearCurrentPendingPayment()" style="font-size: 0.72rem; justify-content: center; gap: 0.4rem; color: #dc2626; border-color: #fca5a5; margin-top: 0.15rem;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            <span>Batalkan &amp; Hapus Data Pembayaran Ini</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="modal-foot" style="justify-content: center; align-items: center; text-align: center; padding: 0.75rem 1.15rem;">
+        <span style="font-size: 0.68rem; color: var(--text-muted); text-align: center;">Duta Digital Agensi (dutamik.id) : Duta Media Informasi berKarya : Sukoharjo, Jawa Tengah</span>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="serverModal" class="modal-backdrop" onclick="if(event.target===this) closeServerModal()">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h3>Konfigurasi Gateway &amp; Proxy Geospasial</h3>
+        <button class="modal-close-btn" onclick="closeServerModal()">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Duta GeoSpasi beroperasi secara online dengan integrasi aman Supabase Edge Gateway dan basis data geospasial resmi.
+        </p>
+        <div style="background-color: var(--bg-subtle); padding: 0.6rem 0.8rem; border-radius: var(--radius-sm); border: 1px solid var(--border-light); font-size: 0.73rem; color: var(--text-sub); line-height: 1.45;">
+          Data bidang tanah kadaster diproses melalui koneksi HTTPS berkecepatan tinggi dengan validasi resmi ATR/BPN Republik Indonesia.
+        </div>
+        <div style="margin-top: 0.85rem; border-top: 1px solid var(--border-light); padding-top: 0.75rem;">
+          <span style="font-weight: 600; font-size: 0.76rem; color: var(--text-main);">Keamanan Otentikasi Google:</span>
+          <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px;">
+            Sistem otentikasi Google OAuth dikunci secara ketat untuk domain resmi <code>https://geospasi.dutamik.id</code>.
+          </div>
+        </div>
+        <div style="margin-top: 0.85rem; border-top: 1px solid var(--border-light); padding-top: 0.75rem;">
+          <span style="font-weight: 600; font-size: 0.76rem; color: var(--text-main);">Gateway Proxy Geospasial Kustom (Opsional):</span>
+          <div style="font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; margin-bottom: 6px;">
+            Bila ingin menghubungkan server proxy mandiri berkecepatan tinggi, masukkan URL proxy HTTPS resmi (contoh: https://proxy.domainanda.com). Tanpa gateway, sistem otomatis menggunakan gateway default resmi.
+          </div>
+          <div style="display: flex; gap: 0.4rem;">
+            <input type="text" id="inputBpnGatewayUrl" class="form-input" placeholder="https://proxy.domainanda.com" style="flex: 1; font-size: 0.72rem; font-family: monospace;">
+            <button class="btn btn-primary btn-sm" onclick="saveBpnGatewayUrlFromInput()">Simpan</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-foot" style="justify-content: center; align-items: center; text-align: center;">
+        <button class="btn btn-primary" onclick="closeServerModal()" style="min-width: 140px;">Mengerti</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalPrintMap" class="modal-print-overlay" style="display: none;">
+    <div class="modal-print-dialog">
+      <div class="print-toolbar">
+        <div class="print-toolbar-group">
+          <span style="font-weight: 700; font-size: 0.78rem; color: #0a2e5c; display: flex; align-items: center; gap: 0.4rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+            Cetak Format Peta Standar
+          </span>
+          <select id="printPaperFormat" class="form-control" style="padding: 4px 28px 4px 8px; font-size: 0.72rem; width: auto;" onchange="changePrintPaperSize(this.value)">
+            <option value="a4" selected>A4 Landscape (297 x 210 mm)</option>
+            <option value="a3">A3 Landscape (420 x 297 mm)</option>
+          </select>
+        </div>
+        <div class="print-toolbar-group">
+          <label style="display: flex; align-items: center; gap: 0.35rem; font-size: 0.72rem; font-weight: 700; color: #0a2e5c; cursor: pointer; user-select: none;">
+            <input type="checkbox" id="chkPrintToggleDimensi" checked onchange="togglePrintDimensions(this.checked)" style="accent-color: var(--accent); width: 14px; height: 14px; cursor: pointer;">
+            <span>Dimensi Batas</span>
+          </label>
+          <button class="btn btn-primary" onclick="executeMapPrint()" style="padding: 5px 14px; font-size: 0.74rem; font-weight: 700; display: inline-flex; align-items: center; gap: 0.35rem;">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            <span>Cetak &amp; Simpan PDF</span>
+          </button>
+          <button class="modal-close-btn" onclick="closeMapPrintModal()" aria-label="Tutup Cetak Peta">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </div>
+      <div class="print-preview-scroll" id="printPreviewScroll">
+        <div id="printSheetScaleWrapper" class="print-sheet-scale-wrapper">
+          <div id="printMapSheet" class="print-sheet-paper">
+          <div class="print-sheet-frame">
+            <div class="print-graticule-bar" id="printGraticuleTop">
+              <span id="gratNw">106°49'48"E, 6°11'18"S</span>
+              <span id="gratNorth">GRID KOORDINAT GEOGRAFI & UTM WGS 84</span>
+              <span id="gratNe">106°50'12"E, 6°11'18"S</span>
+            </div>
+            <div class="print-sheet-content">
+              <div class="print-map-area">
+                <div id="printMapContainer"></div>
+                <svg id="printGraticuleSvg" class="print-graticule-svg"></svg>
+                <div class="print-map-tools">
+                  <button type="button" class="btn-print-tool" onclick="zoomPrintMap(1)" title="Perbesar Peta Cetak" aria-label="Zoom In">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <button type="button" class="btn-print-tool" onclick="zoomPrintMap(-1)" title="Perkecil Peta Cetak" aria-label="Zoom Out">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  </button>
+                  <button type="button" class="btn-print-tool" onclick="fitPrintMapBounds()" title="Pusatkan Bidang Cetak" aria-label="Fit Bounds">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M3 12h3m12 0h3M12 3v3m0 12v3"/></svg>
+                  </button>
+                  <div class="print-map-pan-pad">
+                    <button type="button" class="btn-pan-mini pan-up" onclick="panPrintMap(0, -60)" aria-label="Geser Atas">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="18 15 12 9 6 15"/></svg>
+                    </button>
+                    <div style="display: flex; gap: 2px;">
+                      <button type="button" class="btn-pan-mini pan-left" onclick="panPrintMap(-60, 0)" aria-label="Geser Kiri">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="15 18 9 12 15 6"/></svg>
+                      </button>
+                      <button type="button" class="btn-pan-mini pan-right" onclick="panPrintMap(60, 0)" aria-label="Geser Kanan">
+                        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="9 18 15 12 9 6"/></svg>
+                      </button>
+                    </div>
+                    <button type="button" class="btn-pan-mini pan-down" onclick="panPrintMap(0, 60)" aria-label="Geser Bawah">
+                      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <div class="print-kop-column">
+                <div class="print-kop-box" style="text-align: center; padding: 4px 6px;">
+                  <input type="text" id="kopMapTitleInput" class="print-kop-input" value="PETA TAPAK PROYEK & KAWASAN" placeholder="JUDUL DOKUMEN PETA" style="font-weight: 900; font-size: 11px; letter-spacing: 0.5px; color: #0a2e5c; text-transform: uppercase; text-align: center; width: 100%;" oninput="syncPrintTitleFromKop(this.value)">
+                  <input type="text" id="kopMapSubtitleInput" class="print-kop-input" value="LAMPIRAN DOKUMEN PERIZINAN BERUSAHA & AMDALNET" placeholder="SUBJUDUL / KETERANGAN" style="font-size: 7.5px; color: #475569; margin-top: 2px; font-weight: 600; text-align: center; width: 100%;">
+                </div>
+                <div class="print-kop-box">
+                  <div class="print-kop-box-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <span>Wilayah Administrasi</span>
+                    <button type="button" class="btn-kop-helper" onclick="copyActiveWilayahToKop()" title="Bantu isi dari dropdown wilayah" style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 3px; font-size: 8px; font-weight: 700; color: #0a2e5c; padding: 1px 6px; cursor: pointer;">Bantu Isi</button>
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Desa / Kel:</span>
+                    <input type="text" id="kopDesaInput" class="print-kop-input" value="-" placeholder="Desa / Kelurahan">
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Kecamatan:</span>
+                    <input type="text" id="kopKecamatanInput" class="print-kop-input" value="-" placeholder="Kecamatan">
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Kabupaten:</span>
+                    <input type="text" id="kopKabkotInput" class="print-kop-input" value="-" placeholder="Kabupaten / Kota">
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Provinsi:</span>
+                    <input type="text" id="kopProvinsiInput" class="print-kop-input" value="-" placeholder="Provinsi">
+                  </div>
+                </div>
+                <div class="print-kop-box">
+                  <div class="print-kop-box-title">Orientasi & Skala</div>
+                  <div style="display: flex; align-items: center; justify-content: space-around; margin: 4px 0;">
+                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-width: 48px;">
+                      <svg width="44" height="44" viewBox="0 0 60 60" fill="none">
+                        <circle cx="30" cy="30" r="27" stroke="#0f172a" stroke-width="1.2" fill="#ffffff"/>
+                        <circle cx="30" cy="30" r="24.5" stroke="#cbd5e1" stroke-width="0.8" fill="none"/>
+                        <text x="30" y="13.5" font-size="9" font-family="'Plus Jakarta Sans', sans-serif" font-weight="900" fill="#0f172a" text-anchor="middle">U</text>
+                        <polygon points="30,16 26.5,30 30,30" fill="#0f172a"/>
+                        <polygon points="30,16 33.5,30 30,30" fill="#ffffff" stroke="#0f172a" stroke-width="0.8"/>
+                        <polygon points="30,44 26.5,30 30,30" fill="#ffffff" stroke="#0f172a" stroke-width="0.8"/>
+                        <polygon points="30,44 33.5,30 30,30" fill="#cbd5e1"/>
+                        <polygon points="16,30 30,26.5 30,30" fill="#ffffff" stroke="#0f172a" stroke-width="0.8"/>
+                        <polygon points="16,30 30,33.5 30,30" fill="#cbd5e1"/>
+                        <polygon points="44,30 30,26.5 30,30" fill="#0f172a"/>
+                        <polygon points="44,30 30,33.5 30,30" fill="#ffffff" stroke="#0f172a" stroke-width="0.8"/>
+                        <circle cx="30" cy="30" r="2.5" fill="#0f172a"/>
+                      </svg>
+                    </div>
+                    <div style="display: flex; flex-direction: column; align-items: center; gap: 3px;">
+                      <div id="kopScaleNumber" style="font-weight: 800; font-size: 9px; font-family: 'JetBrains Mono', monospace; color: #0f172a;">SKALA 1 : 2.500</div>
+                      <div id="kopScaleBar" class="print-scale-bar-container">
+                        <div style="display: flex; width: 100px; height: 5px; border: 1px solid #000000; box-sizing: border-box;">
+                          <div style="flex:1; background-color:#000000;"></div>
+                          <div style="flex:1; background-color:#ffffff;"></div>
+                          <div style="flex:1; background-color:#000000;"></div>
+                          <div style="flex:1; background-color:#ffffff;"></div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; width: 100px; font-size: 6.5px; font-family:'JetBrains Mono', monospace; margin-top: 1px;">
+                          <span>0</span>
+                          <span>25m</span>
+                          <span>50m</span>
+                          <span>100m</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="print-kop-field" style="margin-top: 4px;">
+                    <span class="print-kop-label">Sistem Grid:</span>
+                    <span class="print-kop-val">Geografi & UTM WGS 84</span>
+                  </div>
+                </div>
+                <div class="print-kop-box" style="flex: 1 1 0; min-height: 140px; display: flex; flex-direction: column;">
+                  <div class="print-kop-box-title">Legenda Peta</div>
+                  <div id="printLegendContainer" class="print-legend-list" style="flex: 1 1 0; overflow-y: auto; max-height: 240px;"></div>
+                </div>
+                <div class="print-kop-box">
+                  <div class="print-kop-box-title">Identitas Kegiatan</div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Pemrakarsa:</span>
+                    <span id="kopPemrakarsa" class="print-kop-val">PEMOHON OSS RBA</span>
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Kegiatan:</span>
+                    <span id="kopKegiatan" class="print-kop-val">KKPR / PERIZINAN BERUSAHA</span>
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Luas Tapak:</span>
+                    <span id="kopLuas" class="print-kop-val">-</span>
+                  </div>
+                  <div class="print-kop-field">
+                    <span class="print-kop-label">Tahun:</span>
+                    <span id="kopTahun" class="print-kop-val">2026</span>
+                  </div>
+                </div>
+                <div class="print-kop-box" id="kopInsetBox" style="flex: none; display: flex; flex-direction: column;">
+                  <div class="print-kop-box-title">Petunjuk Letak</div>
+                  <div id="printInsetContainer" style="width: 100%; border: 1px solid #cbd5e1; background-color: #e2e8f0; position: relative;"></div>
+                </div>
+                <div class="print-kop-box" id="kopPublisherBox" style="background-color: #f8fafc; font-size: 7.5px; line-height: 1.35;">
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+                    <div style="font-weight: 700; color: #0a2e5c; text-transform: uppercase; font-size: 7.5px;">Sumber Data &amp; Penerbit</div>
+                    <span id="kopProBadgePublisher" style="font-size: 6.5px; font-weight: 800; background: #e0f2fe; color: #0369a1; padding: 1px 4px; border-radius: 2px;">PRO CUSTOM</span>
+                  </div>
+                  <div style="color: #475569; margin-bottom: 4px; font-size: 7px;">Peta Kadaster Pertanahan, Geoportal Lingkungan Hidup, Badan Informasi Geospasial</div>
+                  <div style="display: flex; align-items: center; gap: 8px; border-top: 1px dashed #cbd5e1; padding-top: 4px;">
+                    <div style="position: relative; flex-shrink: 0; width: 38px; height: 38px; background: transparent; display: flex; align-items: center; justify-content: center; overflow: hidden; cursor: pointer;" onclick="triggerPublisherLogoUpload()" title="Klik untuk ganti logo (Khusus Member PRO)">
+                      <img id="kopPublisherLogoImg" src="assets/img/logo.png" alt="Logo Penerbit" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+                      <input type="file" id="kopPublisherLogoFile" accept="image/png,image/jpeg,image/svg+xml,image/webp" style="display: none;" onchange="handlePublisherLogoSelected(event)">
+                    </div>
+                    <div style="flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 1px;">
+                      <input type="text" id="kopPublisherNameInput" class="print-kop-input" value="Duta Digital Agensi (dutamik.id)" placeholder="Nama Penerbit / Instansi" style="font-weight: 800; font-size: 8.5px; color: #0f172a;" oninput="handlePublisherChange()">
+                      <input type="text" id="kopPublisherInfoInput" class="print-kop-input" value="Duta Media Informasi berKarya : Sukoharjo, Jawa Tengah" placeholder="Info Alamat / Slogan" style="font-size: 7px; color: #64748b; font-weight: 500;" oninput="handlePublisherChange()">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="print-graticule-bottom" id="printGraticuleBottom">
+              <span id="gratSw">106°49'48"E, 6°11'32"S</span>
+              <span id="gratScaleText">DUTA GEOSPASI : SISTEM DIGITALISASI GEOSPASIAL INDONESIA</span>
+              <span id="gratSe">106°50'12"E, 6°11'32"S</span>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div id="printMobileMagnifier" class="print-mobile-magnifier">
+          <div class="magnifier-header">
+            <div>
+              <div style="font-weight: 800; font-size: 0.82rem; color: #0a2e5c; text-transform: uppercase; letter-spacing: 0.3px;">Penyesuaian Data Kop &amp; Bidang Cetak</div>
+              <div style="font-size: 0.68rem; color: #64748b;">Sesuaikan atribut wilayah administrasi, judul dokumen, dan penerbit resmi kop peta</div>
+            </div>
+          </div>
+
+          <div class="magnifier-nav-tabs">
+            <button type="button" class="mag-tab-btn active" onclick="switchMagnifierTab('wilayah', this)">Wilayah</button>
+            <button type="button" class="mag-tab-btn" onclick="switchMagnifierTab('judul', this)">Judul Peta</button>
+            <button type="button" class="mag-tab-btn" onclick="switchMagnifierTab('kegiatan', this)">Kegiatan</button>
+            <button type="button" class="mag-tab-btn" onclick="switchMagnifierTab('skala', this)">Skala &amp; Grid</button>
+            <button type="button" class="mag-tab-btn" onclick="switchMagnifierTab('penerbit', this)">Penerbit</button>
+          </div>
+
+          <div id="magSectionWilayah" class="mag-section-pane active">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.35rem;">
+              <span style="font-size: 0.72rem; font-weight: 700; color: #0a2e5c;">Data Wilayah Administrasi</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="copyActiveWilayahToKop(); syncMagnifierFromKop();" style="font-size: 0.68rem; padding: 2px 8px;">
+                Bantu Isi dari Peta
+              </button>
+            </div>
+            <div class="mag-form-grid">
+              <div class="mag-form-group">
+                <label class="mag-label">Desa / Kelurahan</label>
+                <input type="text" id="magDesaInput" class="mag-input" placeholder="Nama Desa" oninput="syncFromMagnifier('desa', this.value)">
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Kecamatan</label>
+                <input type="text" id="magKecamatanInput" class="mag-input" placeholder="Nama Kecamatan" oninput="syncFromMagnifier('kecamatan', this.value)">
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Kabupaten / Kota</label>
+                <input type="text" id="magKabkotInput" class="mag-input" placeholder="Nama Kab/Kota" oninput="syncFromMagnifier('kabkot', this.value)">
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Provinsi</label>
+                <input type="text" id="magProvinsiInput" class="mag-input" placeholder="Nama Provinsi" oninput="syncFromMagnifier('provinsi', this.value)">
+              </div>
+            </div>
+          </div>
+
+          <div id="magSectionJudul" class="mag-section-pane">
+            <div class="mag-form-group" style="margin-bottom: 0.4rem;">
+              <label class="mag-label">Judul Utama Dokumen Peta</label>
+              <input type="text" id="magTitleInput" class="mag-input font-bold" placeholder="JUDUL DOKUMEN PETA" style="font-size: 0.85rem; text-transform: uppercase;" oninput="syncFromMagnifier('title', this.value)">
+            </div>
+            <div class="mag-form-group" style="margin-bottom: 0.4rem;">
+              <label class="mag-label">Subjudul / Keterangan Dokumen</label>
+              <input type="text" id="magSubtitleInput" class="mag-input" placeholder="SUBJUDUL / KETERANGAN" oninput="syncFromMagnifier('subtitle', this.value)">
+            </div>
+            <div class="mag-form-group">
+              <label class="mag-label">Ukuran Font Judul di Kop</label>
+              <select id="magTitleSizeSelect" class="mag-input" onchange="changePrintTitleFontSize(this.value)">
+                <option value="9px">9 px (Kecil)</option>
+                <option value="10px">10 px</option>
+                <option value="11px" selected>11 px (Standar Resmi)</option>
+                <option value="12px">12 px</option>
+                <option value="13px">13 px</option>
+                <option value="14px">14 px (Besar)</option>
+                <option value="16px">16 px</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="magSectionKegiatan" class="mag-section-pane">
+            <div class="mag-form-grid">
+              <div class="mag-form-group">
+                <label class="mag-label">Pemrakarsa / Pemohon</label>
+                <input type="text" id="magPemrakarsaInput" class="mag-input" placeholder="Nama Pemrakarsa" oninput="syncFromMagnifier('pemrakarsa', this.value)">
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Nama Kegiatan</label>
+                <input type="text" id="magKegiatanInput" class="mag-input" placeholder="Nama Kegiatan" oninput="syncFromMagnifier('kegiatan', this.value)">
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Tahun Pelaksanaan</label>
+                <input type="text" id="magTahunInput" class="mag-input" placeholder="2026" oninput="syncFromMagnifier('tahun', this.value)">
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Luas Terhitung</label>
+                <div id="magLuasDisplay" class="mag-val-box font-bold">-</div>
+              </div>
+            </div>
+          </div>
+
+          <div id="magSectionSkala" class="mag-section-pane">
+            <div class="mag-form-grid">
+              <div class="mag-form-group">
+                <label class="mag-label">Skala Peta Terhitung</label>
+                <div id="magSkalaDisplay" class="mag-val-box font-mono" style="font-weight: 800; color: #0a2e5c;">SKALA 1 : 2.500</div>
+              </div>
+              <div class="mag-form-group">
+                <label class="mag-label">Sistem Proyeksi &amp; Datum</label>
+                <div class="mag-val-box">Geografi &amp; UTM WGS 84</div>
+              </div>
+              <div class="mag-form-group" style="grid-column: 1 / -1;">
+                <label class="mag-label">Koordinat Graticule Sudut Peta</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; font-size: 0.68rem; font-family: monospace;">
+                  <div class="mag-val-box" id="magGratNw">NW: -</div>
+                  <div class="mag-val-box" id="magGratNe">NE: -</div>
+                  <div class="mag-val-box" id="magGratSw">SW: -</div>
+                  <div class="mag-val-box" id="magGratSe">SE: -</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="magSectionPenerbit" class="mag-section-pane">
+            <div class="mag-form-group" style="margin-bottom: 0.4rem;">
+              <label class="mag-label">Nama Instansi / Penerbit Kop</label>
+              <input type="text" id="magPublisherNameInput" class="mag-input" placeholder="Nama Penerbit" oninput="syncFromMagnifier('pubName', this.value)">
+            </div>
+            <div class="mag-form-group" style="margin-bottom: 0.4rem;">
+              <label class="mag-label">Slogan / Info Lokasi Penerbit</label>
+              <input type="text" id="magPublisherInfoInput" class="mag-input" placeholder="Slogan / Alamat" oninput="syncFromMagnifier('pubInfo', this.value)">
+            </div>
+            <div style="display: flex; align-items: center; justify-content: space-between; background: var(--bg-subtle); padding: 6px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border-light);">
+              <span style="font-size: 0.7rem; color: var(--text-sub);">Logo Penerbit Resmi Kop</span>
+              <button type="button" class="btn btn-outline btn-sm" onclick="triggerPublisherLogoUpload()" style="font-size: 0.68rem; padding: 3px 8px;">Ganti Logo</button>
+            </div>
+          </div>
+
+          <div class="mag-footer-actions">
+            <div style="font-size: 0.7rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem;">
+              <span style="width: 7px; height: 7px; border-radius: 50%; background: #16a34a; display: inline-block;"></span>
+              <span>Data tersinkron otomatis ke kop cetak</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="modalExportCoords" class="modal-print-overlay" style="display: none;" onclick="if(event.target===this) closeExportCoordsModal()">
+    <div class="modal-coords-dialog" role="dialog" aria-labelledby="exportCoordsTitle">
+      <div class="modal-coords-header">
+        <div style="display: flex; align-items: center; gap: 0.6rem;">
+          <div class="modal-coords-badge-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <div>
+            <div id="exportCoordsTitle" class="modal-coords-title">PILIH FORMAT EKSPOR KOORDINAT</div>
+            <div class="modal-coords-sub">Pilih sistem proyeksi koordinat sesuai kebutuhan peta atau CAD</div>
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="closeExportCoordsModal()" aria-label="Tutup" style="padding: 4px 8px; border-color: var(--border-light);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <div class="modal-coords-body">
+        <div class="modal-coords-grid">
+          <div class="export-type-card">
+            <div class="export-type-header">
+              <span class="export-type-badge map-badge">WGS84 &amp; UTM</span>
+              <div class="export-type-name">Koordinat Peta</div>
+              <div class="export-type-desc">
+                Format geodetik geografis standar kadastral nasional berupa Latitude &amp; Longitude (Desimal Derajat) serta Proyeksi UTM Nasional. Cocok untuk GPS Geodetik, Handheld GPS, GIS, dan laporan ukur resmi.
+              </div>
+            </div>
+            <div class="export-type-meta">
+              <div class="meta-row"><span>Format Data:</span><span class="font-mono">Lat, Long, UTM X, UTM Y, Jarak</span></div>
+              <div class="meta-row"><span>Sistem Datum:</span><span>WGS 84 / Zona UTM</span></div>
+            </div>
+            <div class="export-type-actions">
+              <button class="btn btn-primary" onclick="downloadCoordsMap('txt')" style="background-color: var(--accent); color: #ffffff; border-color: var(--accent);">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                <span>Unduh TXT Peta</span>
+              </button>
+              <button class="btn btn-outline" onclick="downloadCoordsMap('csv')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/></svg>
+                <span>Unduh CSV Peta</span>
+              </button>
+              <button class="btn btn-outline" onclick="copyCoordsMapClipboard()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                <span>Salin Teks</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="export-type-card">
+            <div class="export-type-header">
+              <span class="export-type-badge cad-badge">SISTEM CAD</span>
+              <div class="export-type-name">Koordinat Sistem CAD</div>
+              <div class="export-type-desc">
+                Format Cartesian X (Easting), Y (Northing), Z (0.000) siap impor langsung ke AutoCAD, Civil 3D, Land Desktop, atau Total Station. Tersedia script .SCR otomatis gambar garis poligon.
+              </div>
+            </div>
+            <div class="export-type-meta">
+              <div class="meta-row"><span>Format Data:</span><span class="font-mono">X (Easting), Y (Northing), Z (0.000)</span></div>
+              <div class="meta-row"><span>Kompatibilitas:</span><span>AutoCAD, Civil 3D, Total Station</span></div>
+            </div>
+            <div class="export-type-actions">
+              <button class="btn btn-primary" onclick="downloadCoordsCad('scr')" style="background-color: #0369a1; color: #ffffff; border-color: #0369a1;" title="Drag file .SCR ini ke dalam AutoCAD, poligon batas tanah langsung tergambar otomatis!">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                <span>Unduh Script CAD (.SCR)</span>
+              </button>
+              <button class="btn btn-outline" onclick="downloadCoordsCad('penz')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/></svg>
+                <span>Format P,E,N,Z (.TXT)</span>
+              </button>
+              <button class="btn btn-outline" onclick="downloadCoordsCad('xy')">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                <span>Format X,Y Murni</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-coords-footer" style="justify-content: center; align-items: center; text-align: center;">
+        <div style="font-size: 0.69rem; color: var(--text-muted); text-align: center;">
+          Duta Digital Agensi (dutamik.id) : Duta Media Informasi berKarya : Sukoharjo, Jawa Tengah
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="assets/js/config.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script src="assets/js/map.js"></script>
+  <script src="assets/js/cadastre.js"></script>
+  <script src="assets/js/drawing.js"></script>
+  <script src="assets/js/poi.js"></script>
+  <script src="assets/js/canvas.js"></script>
+  <script src="assets/js/wilayah.js"></script>
+  <script src="assets/js/export.js"></script>
+  <script src="assets/js/print.js"></script>
+  <script src="assets/js/app.js"></script>
+  <div id="toastContainer" class="toast-container"></div>
+</body>
+</html>

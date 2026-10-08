@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Portal Manajemen Konsumen &amp; Member - Duta GeoSpasi</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root {
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --border-light: #e2e8f0;
+      --border-strong: #cbd5e1;
+      --text-main: #0f172a;
+      --text-sub: #334155;
+      --text-muted: #64748b;
+      --accent: #0284c7;
+      --accent-dark: #0369a1;
+      --accent-soft: #e0f2fe;
+      --emerald: #059669;
+      --emerald-soft: #d1fae5;
+      --amber: #d97706;
+      --amber-soft: #fef3c7;
+      --crimson: #dc2626;
+      --crimson-soft: #fee2e2;
+      --radius-sm: 4px;
+      --radius-md: 6px;
+      --font-main: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: var(--font-main);
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .header-bar {
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-light);
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+    .brand-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .brand-title svg {
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+    .brand-sub {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-weight: 500;
+      margin-left: 2rem;
+    }
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .connection-badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      background-color: var(--emerald-soft);
+      color: var(--emerald);
+      border: 1px solid #a7f3d0;
+    }
+    .connection-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: var(--emerald);
+    }
+    .container {
+      max-width: 1200px;
+      width: 100%;
+      margin: 1.25rem auto;
+      padding: 0 1.25rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+    }
+    .metric-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 100px;
+      transition: border-color 0.15s ease;
+    }
+    .metric-card:hover {
+      border-color: var(--accent);
+    }
+    .metric-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .metric-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+    }
+    .metric-icon {
+      color: var(--text-muted);
+    }
+    .metric-value {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      margin-top: 0.35rem;
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 0.25rem;
+      border-bottom: 1px solid var(--border-light);
+      background-color: var(--bg-surface);
+      border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+      padding: 0.35rem 0.65rem 0;
+    }
+    .nav-tab-btn {
+      padding: 0.65rem 1rem;
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.15s ease;
+    }
+    .nav-tab-btn:hover {
+      color: var(--text-main);
+    }
+    .nav-tab-btn.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+      background-color: var(--bg-base);
+    }
+    .panel-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-top: none;
+      border-radius: 0 0 var(--radius-sm) var(--radius-sm);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .panel-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+    }
+    .toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .form-input {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.76rem;
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-surface);
+      color: var(--text-main);
+      outline: none;
+      font-family: inherit;
+    }
+    .form-input:focus {
+      border-color: var(--accent);
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      padding: 0.5rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 700;
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-decoration: none;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background-color: var(--accent);
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background-color: var(--accent-dark);
+    }
+    .btn-emerald {
+      background-color: var(--emerald);
+      color: #ffffff;
+    }
+    .btn-emerald:hover {
+      background-color: #047857;
+    }
+    .btn-outline {
+      background-color: var(--bg-surface);
+      border-color: var(--border-strong);
+      color: var(--text-main);
+    }
+    .btn-outline:hover {
+      background-color: var(--bg-subtle);
+      border-color: var(--text-sub);
+    }
+    .btn-danger {
+      background-color: var(--crimson-soft);
+      border-color: #fca5a5;
+      color: var(--crimson);
+    }
+    .btn-danger:hover {
+      background-color: var(--crimson);
+      color: #ffffff;
+    }
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.75rem;
+    }
+    thead th {
+      background-color: var(--bg-subtle);
+      padding: 0.65rem 0.85rem;
+      font-weight: 700;
+      color: var(--text-sub);
+      border-bottom: 1px solid var(--border-light);
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      letter-spacing: 0.03em;
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border-light);
+      transition: background-color 0.15s ease;
+    }
+    tbody tr:hover {
+      background-color: var(--bg-subtle);
+    }
+    tbody td {
+      padding: 0.65rem 0.85rem;
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+    .tag-role {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: var(--radius-sm);
+      font-size: 0.67rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .tag-role.pro {
+      background-color: var(--emerald-soft);
+      color: var(--emerald);
+      border: 1px solid #a7f3d0;
+    }
+    .tag-role.free {
+      background-color: var(--bg-subtle);
+      color: var(--text-muted);
+      border: 1px solid var(--border-strong);
+    }
+    .tag-role.pending {
+      background-color: var(--amber-soft);
+      color: var(--amber);
+      border: 1px solid #fde68a;
+    }
+    .tag-role.approved {
+      background-color: var(--emerald-soft);
+      color: var(--emerald);
+      border: 1px solid #a7f3d0;
+    }
+    .code-box {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      background-color: var(--bg-subtle);
+      padding: 2px 6px;
+      border-radius: 2px;
+      border: 1px solid var(--border-light);
+      color: var(--accent);
+    }
+    .guide-step {
+      display: flex;
+      gap: 0.85rem;
+      padding: 0.9rem;
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--accent);
+    }
+    .step-number {
+      width: 26px;
+      height: 26px;
+      background-color: var(--accent);
+      color: #ffffff;
+      font-weight: 800;
+      font-size: 0.76rem;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-content {
+      font-size: 0.76rem;
+      line-height: 1.55;
+      color: var(--text-sub);
+    }
+    .step-content strong {
+      color: var(--text-main);
+    }
+    .footer-bar {
+      margin-top: auto;
+      background-color: var(--bg-surface);
+      border-top: 1px solid var(--border-light);
+      padding: 0.85rem 1.5rem;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .toast-box {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 0.7rem 1.1rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.74rem;
+      font-weight: 600;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header-bar">
+    <div>
+      <div class="brand-title">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        <span>Duta GeoSpasi : Konsol Manajemen Konsumen</span>
+      </div>
+      <div class="brand-sub">Duta Digital Agensi (dutamik.id) : Sukoharjo, Jawa Tengah</div>
+    </div>
+    <div class="header-controls">
+      <div class="connection-badge">
+        <div class="connection-dot"></div>
+        <span id="connStatusText">Database Cloud Terhubung</span>
+      </div>
+      <button type="button" class="btn btn-outline" onclick="copyDisableRlsSql()" title="Salin skrip SQL untuk membuka batasan RLS di Supabase">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        <span>Salin SQL RLS</span>
+      </button>
+      <button type="button" class="btn btn-outline" onclick="openKeyConfigModal()" title="Ubah Kunci API Database Cloud">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span>Konfigurasi API</span>
+      </button>
+      <a href="SHP-Builder.html" class="btn btn-primary" target="_blank">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        <span>Buka Web Aplikasi</span>
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <div class="metric-head">
+          <span class="metric-label">Total Konsumen</span>
+          <svg class="metric-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <div class="metric-value" id="metricTotalMembers">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-head">
+          <span class="metric-label">Member PRO Aktif</span>
+          <svg class="metric-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--emerald);"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <div class="metric-value" id="metricProMembers" style="color: var(--emerald);">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-head">
+          <span class="metric-label">Konsumen Free Tier</span>
+          <svg class="metric-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--text-muted);"><circle cx="12" cy="12" r="10"/></svg>
+        </div>
+        <div class="metric-value" id="metricFreeMembers" style="color: var(--text-muted);">0</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-head">
+          <span class="metric-label">QRIS Pending (Perlu Cek)</span>
+          <svg class="metric-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--amber);"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div class="metric-value" id="metricPendingPayments" style="color: var(--amber);">0</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="nav-tabs">
+        <button type="button" class="nav-tab-btn active" id="tabBtnMembers" onclick="switchDashboardTab('members')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          <span>Daftar Konsumen &amp; Member</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="tabBtnPayments" onclick="switchDashboardTab('payments')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><rect x="7" y="7" width="3" height="3"/><rect x="14" y="7" width="3" height="3"/><rect x="7" y="14" width="3" height="3"/><rect x="14" y="14" width="3" height="3"/></svg>
+          <span>Verifikasi QRIS 3 Digit</span>
+        </button>
+        <button type="button" class="nav-tab-btn" id="tabBtnGuide" onclick="switchDashboardTab('guide')">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span>Panduan Cek Cloud Database Langsung</span>
+        </button>
+      </div>
+
+      <div class="panel-card" id="panelMembers">
+        <div class="panel-toolbar">
+          <div class="toolbar-actions">
+            <input type="text" id="searchMemberInput" class="form-input" placeholder="Cari email konsumen..." style="width: 250px;" oninput="renderMembersTable()">
+            <select id="filterMemberRole" class="form-input" onchange="renderMembersTable()">
+              <option value="all">Semua Status</option>
+              <option value="pro">Khusus PRO</option>
+              <option value="free">Khusus FREE</option>
+            </select>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn btn-outline" onclick="loadAllDataLive()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+              <span>Refresh Data</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="exportMembersCsv()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Ekspor CSV</span>
+            </button>
+            <button type="button" class="btn btn-primary" onclick="openAddMemberModal()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              <span>Tambah Konsumen</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 40px;">No</th>
+                <th>Alamat Email</th>
+                <th>Nama Akun</th>
+                <th>Role Akses</th>
+                <th>Status Akun</th>
+                <th>Tanggal Terdaftar</th>
+                <th style="text-align: right;">Aksi Kontrol</th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Memuat data dari database cloud...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-card" id="panelPayments" style="display: none;">
+        <div class="panel-toolbar">
+          <div class="toolbar-actions">
+            <input type="text" id="searchPaymentInput" class="form-input" placeholder="Cari kode unik (misal: 1428) atau email..." style="width: 300px;" oninput="renderPaymentsTable()">
+            <select id="filterPaymentStatus" class="form-input" onchange="renderPaymentsTable()">
+              <option value="all">Semua Status Transaksi</option>
+              <option value="pending">Menunggu Verifikasi (Pending)</option>
+              <option value="approved">Sudah Disetujui (Approved)</option>
+            </select>
+          </div>
+          <div class="toolbar-actions">
+            <button type="button" class="btn btn-outline" onclick="loadAllDataLive()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.2"/></svg>
+              <span>Refresh Transaksi</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="deleteUnpaidPendingPayments()" style="color: #dc2626; border-color: #fca5a5;">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+              <span>Hapus Transaksi Pending (Sampah)</span>
+            </button>
+            <button type="button" class="btn btn-outline" onclick="exportPaymentsCsv()">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              <span>Ekspor Transaksi</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 40px;">No</th>
+                <th>Email Pembayar</th>
+                <th>Kode Unik (3 Digit)</th>
+                <th>Total Transfer (Rp)</th>
+                <th>Status Pembayaran</th>
+                <th>Waktu Transaksi</th>
+                <th style="text-align: right;">Aksi Verifikasi</th>
+              </tr>
+            </thead>
+            <tbody id="paymentsTableBody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Memuat antrean verifikasi pembayaran...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="panel-card" id="panelGuide" style="display: none;">
+        <div style="font-weight: 800; font-size: 0.95rem; color: var(--text-main);">
+          Panduan Langkah Demi Langkah: Cara Memeriksa Langsung Database di Konsol Cloud
+        </div>
+        <p style="font-size: 0.76rem; color: var(--text-sub); line-height: 1.5;">
+          Selain menggunakan dashboard lokal ini, Anda dapat memeriksa, memantau, dan mengedit data konsumen secara langsung di portal resmi Cloud Database kapan saja dengan langkah berikut:
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 0.85rem; margin-top: 0.25rem;">
+          <div class="guide-step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+              <strong>Buka Dashboard Cloud Database</strong><br>
+              Akses peramban web dan kunjungi alamat dashboard database cloud Anda. Masuk dengan akun yang Anda gunakan saat membuat proyek.
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+              <strong>Pilih Proyek Duta GeoSpasi</strong><br>
+              Di daftar project, klik nama proyek Anda: <strong>vezruyffzmabhtylxigc</strong> (atau nama proyek geospasial Anda).
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+              <strong>Buka Menu "Table Editor"</strong><br>
+              Di bilah menu sebelah kiri (sidebar vertikal), cari icon berupa kotak tabel bernama <strong>Table Editor</strong>. Klik menu tersebut untuk membuka daftar tabel basis data Anda.
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-number">4</div>
+            <div class="step-content">
+              <strong>Melihat Daftar Member Konsumen pada Tabel "members"</strong><br>
+              Klik tabel bernama <strong>members</strong> di bawah skema <strong>public</strong>. Di sini Anda akan melihat:<br>
+              • <strong>email</strong>: Alamat email konsumen yang pernah mendaftar.<br>
+              • <strong>role</strong>: Hak akses akun (isi nilainya: <strong>pro</strong> atau <strong>free</strong>).<br>
+              • <strong>status</strong>: Status akun (biasanya <strong>active</strong>).<br>
+              <em>Tips Pro:</em> Anda bisa mengklik ganda (double-click) sel kolom <strong>role</strong> langsung di tabel untuk mengubahnya dari "free" menjadi "pro", lalu tekan tombol Save.
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-number">5</div>
+            <div class="step-content">
+              <strong>Melihat Mutasi Kode Unik QRIS pada Tabel "payments"</strong><br>
+              Klik tabel <strong>payments</strong>. Setiap kali konsumen membuka pop-up QRIS, sistem otomatis mencatat:<br>
+              • <strong>unique_code</strong>: 3 digit kode unik acak (misal 428).<br>
+              • <strong>total_amount</strong>: Total nominal yang ditransfer (misal Rp 75.428).<br>
+              • <strong>status</strong>: Berstatus "pending" sampai Anda atau sistem menyetujuinya menjadi "approved".
+            </div>
+          </div>
+
+          <div class="guide-step">
+            <div class="step-number">6</div>
+            <div class="step-content">
+              <strong>Memeriksa Akun Terdaftar di Menu "Authentication"</strong><br>
+              Jika Anda ingin melihat akun yang login menggunakan Google OAuth atau Email OTP, klik icon gembok di menu kiri bernama <strong>Authentication</strong> &gt; <strong>Users</strong>. Anda dapat melihat daftar User UID dan status verifikasi email mereka.
+            </div>
+          </div>
+          <div class="guide-step" style="border-left: 3px solid var(--accent); background: #f0fdf4;">
+            <div class="step-number" style="background: var(--accent); color: #ffffff;">7</div>
+            <div class="step-content">
+              <strong>Kunci Keamanan RLS &amp; Hak Akses Penuh Kontrol Admin</strong><br>
+              Untuk mengamankan database dari manipulasi publik, Row Level Security (RLS) pada tabel <strong>members</strong> dan <strong>payments</strong> wajib aktif.<br>
+              Agar Dashboard Admin ini memiliki hak akses penuh (bisa edit status PRO, blokir akun, atau hapus sampah transaksi):<br>
+              1. Buka <strong>Project Settings &gt; API</strong> di Supabase.<br>
+              2. Salin <strong>service_role (secret) key</strong>.<br>
+              3. Klik tombol <strong>Konfigurasi API</strong> di kanan atas dashboard ini, tempelkan Service Role Key lalu simpan.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer-bar">
+    <div>
+      <strong>Duta Digital Agensi</strong> : Duta Media Informasi berKarya : Bulusan RT 01 RW 08 Mandan, Kec/Kab. Sukoharjo, Jawa Tengah
+    </div>
+    <div style="display: flex; gap: 1rem; align-items: center;">
+      <span>WhatsApp: <a href="https://wa.me/6283130300094" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">0831-3030-0094</a></span>
+      <span>Website: <a href="https://dutamik.id" target="_blank" style="color: var(--accent); text-decoration: none; font-weight: 600;">dutamik.id</a></span>
+    </div>
+  </footer>
+
+  <div id="addMemberModal" style="display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); align-items: center; justify-content: center; z-index: 999;">
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-sm); max-width: 420px; width: 90%; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;">
+      <div style="font-weight: 800; font-size: 0.9rem; color: var(--text-main);">Tambah / Daftarkan Konsumen Manual</div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-sub);">ALAMAT EMAIL KONSUMEN</label>
+        <input type="email" id="modalInputEmail" class="form-input" placeholder="contoh@gmail.com">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-sub);">NAMA LENGKAP / INSTANSI</label>
+        <input type="text" id="modalInputName" class="form-input" placeholder="Nama Konsumen">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-sub);">STATUS HAK AKSES</label>
+        <select id="modalInputRole" class="form-input">
+          <option value="pro">PRO MEMBER (Akses Penuh Ekspor SHP &amp; CAD)</option>
+          <option value="free">FREE TIER (Terbatas)</option>
+        </select>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+        <button type="button" class="btn btn-outline" onclick="closeAddMemberModal()">Batal</button>
+        <button type="button" class="btn btn-primary" onclick="submitNewMember()">Simpan Konsumen</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="keyConfigModal" style="display: none; position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.6); align-items: center; justify-content: center; z-index: 999;">
+    <div style="background-color: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-sm); max-width: 480px; width: 90%; padding: 1.25rem; display: flex; flex-direction: column; gap: 0.85rem;">
+      <div style="font-weight: 800; font-size: 0.9rem; color: var(--text-main);">Konfigurasi Kunci API Database Cloud</div>
+      <div style="font-size: 0.74rem; color: var(--text-sub); line-height: 1.45;">
+        Kunci API default menggunakan Publishable Key. Bila Anda ingin mengedit atau menghapus langsung tanpa batasan RLS di lokal PC, Anda juga dapat menempelkan Service Role Key Anda di sini secara aman (hanya disimpan di peramban lokal).
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-sub);">DATABASE CLOUD PROJECT URL</label>
+        <input type="text" id="cfgInputUrl" class="form-input" style="font-family: var(--font-mono); font-size: 0.72rem;">
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <label style="font-size: 0.7rem; font-weight: 700; color: var(--text-sub);">DATABASE API KEY (PUBLISHABLE / SERVICE ROLE)</label>
+        <input type="password" id="cfgInputKey" class="form-input" style="font-family: var(--font-mono); font-size: 0.72rem;">
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 0.5rem;">
+        <button type="button" class="btn btn-outline" onclick="closeKeyConfigModal()">Tutup</button>
+        <button type="button" class="btn btn-primary" onclick="saveKeyConfig()">Simpan &amp; Hubungkan Ulang</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toastBox" class="toast-box"></div>
+
+  <script>
+    const DEFAULT_SUPABASE_URL = 'https://vezruyffzmabhtylxigc.supabase.co';
+    const DEFAULT_SUPABASE_KEY = 'sb_publishable_NBReVvac6_FUBe969fLbOw_ZGZjcwKM';
+
+    let currentUrl = localStorage.getItem('duta_admin_sb_url') || DEFAULT_SUPABASE_URL;
+    let currentKey = localStorage.getItem('duta_admin_sb_key') || DEFAULT_SUPABASE_KEY;
+    let supabaseClient = null;
+    let isLocalServerActive = false;
+
+    let cachedMembers = JSON.parse(localStorage.getItem('duta_admin_members') || '[]');
+    let cachedPayments = JSON.parse(localStorage.getItem('duta_admin_payments') || '[]');
+
+    function persistLocalData() {
+      try {
+        localStorage.setItem('duta_admin_members', JSON.stringify(cachedMembers));
+        localStorage.setItem('duta_admin_payments', JSON.stringify(cachedPayments));
+      } catch (e) {}
+    }
+
+    function copyDisableRlsSql() {
+      const sql = 'ALTER TABLE members DISABLE ROW LEVEL SECURITY;\nALTER TABLE payments DISABLE ROW LEVEL SECURITY;';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(sql).then(() => {
+          showToast('Skrip SQL penonaktifan RLS disalin ke clipboard! Tempelkan di SQL Editor Supabase.');
+        }).catch(() => {
+          prompt('Salin skrip SQL ini lalu jalankan di SQL Editor Supabase:', sql);
+        });
+      } else {
+        prompt('Salin skrip SQL ini lalu jalankan di SQL Editor Supabase:', sql);
+      }
+    }
+
+    async function checkLocalServer() {
+      try {
+        const res = await fetch('/api/admin/members', { method: 'GET' });
+        if (res.ok) {
+          const json = await res.json();
+          if (json && json.success) {
+            isLocalServerActive = true;
+            const badge = document.getElementById('connStatusText');
+            if (badge) badge.textContent = 'Server & Database Lokal Aktif (Akses Penuh)';
+            return true;
+          }
+        }
+      } catch (e) {}
+      return false;
+    }
+
+    async function initSupabase() {
+      const isLocal = await checkLocalServer();
+      try {
+        if (window.supabase) {
+          supabaseClient = window.supabase.createClient(currentUrl, currentKey);
+          if (!isLocal) {
+            const badge = document.getElementById('connStatusText');
+            if (badge) badge.textContent = 'Database Cloud Terhubung: vezruyffzmabhtylxigc';
+          }
+        }
+      } catch (err) {
+        if (!isLocal) {
+          const badge = document.getElementById('connStatusText');
+          if (badge) badge.textContent = 'Koneksi Cloud Gagal: ' + err.message;
+        }
+      }
+      loadAllDataLive();
+    }
+
+    async function loadAllDataLive() {
+      showToast('Memuat data terbaru...');
+      let loadedFromLocal = false;
+
+      if (isLocalServerActive) {
+        try {
+          const resM = await fetch('/api/admin/members');
+          const dataM = await resM.json();
+          if (dataM.success && Array.isArray(dataM.members) && dataM.members.length > 0) {
+            cachedMembers = dataM.members;
+            loadedFromLocal = true;
+          }
+          const resP = await fetch('/api/admin/payments');
+          const dataP = await resP.json();
+          if (dataP.success && Array.isArray(dataP.payments)) {
+            cachedPayments = dataP.payments;
+          }
+        } catch (e) {}
+      }
+
+      if (supabaseClient) {
+        try {
+          const { data: membersData, error: memErr } = await supabaseClient
+            .from('members')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (!memErr && membersData && membersData.length > 0) {
+            if (!loadedFromLocal) {
+              cachedMembers = membersData;
+            } else {
+              const emailMap = new Set(cachedMembers.map(m => (m.email || '').toLowerCase()));
+              membersData.forEach(sm => {
+                if (!emailMap.has((sm.email || '').toLowerCase())) {
+                  cachedMembers.push(sm);
+                }
+              });
+            }
+          }
+        } catch (e) {}
+
+        try {
+          const { data: paymentsData, error: payErr } = await supabaseClient
+            .from('payments')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (!payErr && paymentsData && paymentsData.length > 0) {
+            if (cachedPayments.length === 0) {
+              cachedPayments = paymentsData;
+            }
+          }
+        } catch (e) {}
+      }
+
+      persistLocalData();
+      renderMembersTable();
+      renderPaymentsTable();
+      updateMetrics();
+    }
+
+    function updateMetrics() {
+      const total = cachedMembers.length;
+      const pro = cachedMembers.filter(m => m.role === 'pro' && m.status === 'active').length;
+      const free = total - pro;
+      const pendingPay = cachedPayments.filter(p => p.status === 'pending').length;
+
+      const elTotal = document.getElementById('metricTotalMembers'); if (elTotal) elTotal.textContent = total;
+      const elPro = document.getElementById('metricProMembers'); if (elPro) elPro.textContent = pro;
+      const elFree = document.getElementById('metricFreeMembers'); if (elFree) elFree.textContent = free;
+      const elPending = document.getElementById('metricPendingPayments'); if (elPending) elPending.textContent = pendingPay;
+    }
+
+    function renderMembersTable() {
+      const tbody = document.getElementById('membersTableBody');
+      if (!tbody) return;
+      const search = (document.getElementById('searchMemberInput')?.value.trim() || '').toLowerCase();
+      const roleFilter = document.getElementById('filterMemberRole')?.value || 'all';
+
+      let filtered = cachedMembers.filter(m => {
+        const memName = (m.full_name || m.name || '').toLowerCase();
+        const matchSearch = (m.email || '').toLowerCase().includes(search) || memName.includes(search);
+        let matchRole = true;
+        if (roleFilter === 'pro') matchRole = (m.role === 'pro');
+        if (roleFilter === 'free') matchRole = (m.role !== 'pro');
+        return matchSearch && matchRole;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Tidak ada data konsumen yang sesuai filter.</td></tr>';
+        return;
+      }
+
+      let html = '';
+      filtered.forEach((m, idx) => {
+        const isPro = m.role === 'pro';
+        const isBlocked = (m.status === 'blocked' || m.status === 'suspended');
+        const statusBadge = isBlocked
+          ? '<span class="tag-role pending" style="background:#fee2e2; color:#991b1b; border-color:#fca5a5;">TERBLOKIR</span>'
+          : '<span class="tag-role approved" style="background:#dcfce7; color:#166534; border-color:#86efac;">AKTIF</span>';
+        const createdDate = m.created_at ? new Date(m.created_at).toLocaleString('id-ID') : '-';
+        const displayName = escapeHtml(m.full_name || m.name || '');
+
+        html += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td style="font-weight: 600; font-family: var(--font-mono);">${escapeHtml(m.email || '-')}</td>
+            <td>
+              <input type="text" class="form-input" style="padding: 2px 6px; font-size: 0.72rem; width: 140px;" value="${displayName}" onchange="saveMemberName('${m.email}', this.value)" placeholder="Nama Konsumen">
+            </td>
+            <td>
+              <select class="form-input" style="padding: 2px 6px; font-size: 0.72rem; font-weight: 700; width: auto; display: inline-block;" onchange="setMemberRole('${m.email}', this.value)">
+                <option value="free" ${!isPro ? 'selected' : ''}>FREE</option>
+                <option value="pro" ${isPro ? 'selected' : ''}>PRO MEMBER</option>
+              </select>
+            </td>
+            <td>${statusBadge}</td>
+            <td style="color: var(--text-muted); font-size: 0.7rem;">${createdDate}</td>
+            <td style="text-align: right; white-space: nowrap;">
+              ${isBlocked
+                ? `<button type="button" class="btn btn-emerald" style="padding: 3px 8px; font-size: 0.69rem;" onclick="toggleMemberBlock('${m.email}', 'active')">Buka Blokir</button>`
+                : `<button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.69rem; color: #dc2626; border-color: #fca5a5;" onclick="toggleMemberBlock('${m.email}', 'blocked')">Blokir Akun</button>`
+              }
+              <button type="button" class="btn btn-danger" style="padding: 3px 8px; font-size: 0.69rem; margin-left: 4px;" onclick="deleteMember('${m.email}')">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    async function saveMemberName(email, newName) {
+      const idx = cachedMembers.findIndex(m => (m.email || '').toLowerCase() === email.toLowerCase());
+      if (idx !== -1) {
+        cachedMembers[idx].full_name = newName;
+        persistLocalData();
+      }
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/members', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'save', email: email, full_name: newName, role: cachedMembers[idx]?.role || 'free', status: cachedMembers[idx]?.status || 'active' })
+          });
+        } catch (e) {}
+      }
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('members').update({ full_name: newName }).eq('email', email);
+        } catch (e) {}
+      }
+      showToast('Nama konsumen berhasil disimpan.');
+    }
+
+    function renderPaymentsTable() {
+      const tbody = document.getElementById('paymentsTableBody');
+      if (!tbody) return;
+      const search = (document.getElementById('searchPaymentInput')?.value.trim() || '').toLowerCase();
+      const statusFilter = document.getElementById('filterPaymentStatus')?.value || 'all';
+
+      let filtered = cachedPayments.filter(p => {
+        const matchSearch = (p.email || '').toLowerCase().includes(search) || String(p.unique_code || '').includes(search);
+        let matchStatus = true;
+        if (statusFilter === 'pending') matchStatus = (p.status === 'pending');
+        if (statusFilter === 'approved') matchStatus = (p.status === 'approved');
+        return matchSearch && matchStatus;
+      });
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: var(--text-muted); padding: 1.5rem;">Tidak ada transaksi pembayaran yang sesuai.</td></tr>';
+        return;
+      }
+
+      let html = '';
+      filtered.forEach((p, idx) => {
+        const isApproved = p.status === 'approved';
+        const statusBadge = isApproved
+          ? '<span class="tag-role approved">APPROVED</span>'
+          : '<span class="tag-role pending">MENUNGGU VERIFIKASI</span>';
+        const dateStr = p.created_at ? new Date(p.created_at).toLocaleString('id-ID') : '-';
+        const totalRp = Number(p.total_amount || 0).toLocaleString('id-ID');
+
+        html += `
+          <tr>
+            <td>${idx + 1}</td>
+            <td style="font-weight: 600; font-family: var(--font-mono);">${escapeHtml(p.email || '-')}</td>
+            <td><span class="code-box">${escapeHtml(String(p.unique_code || '000'))}</span></td>
+            <td style="font-weight: 700; color: var(--accent); font-family: var(--font-mono);">Rp ${totalRp}</td>
+            <td>${statusBadge}</td>
+            <td style="color: var(--text-muted); font-size: 0.7rem;">${dateStr}</td>
+            <td style="text-align: right; white-space: nowrap;">
+              ${!isApproved
+                ? `<button type="button" class="btn btn-emerald" style="padding: 3px 8px; font-size: 0.69rem;" onclick="approvePaymentAndActivateMember('${p.id}', '${p.email}')">Verifikasi &amp; Aktifkan PRO</button>`
+                : `<span style="font-size: 0.7rem; color: var(--emerald); font-weight: 700; margin-right: 6px;">PRO Aktif</span>`
+              }
+              <button type="button" class="btn btn-outline" style="padding: 3px 8px; font-size: 0.69rem; color: #dc2626; border-color: #fca5a5; margin-left: 4px;" onclick="deletePaymentRecord('${p.id}', '${p.email}')" title="Hapus Data Transaksi Pembayaran">Hapus</button>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    async function deletePaymentRecord(paymentId, email) {
+      if (!confirm(`Konfirmasi: Hapus data transaksi pembayaran untuk ${email || 'konsumen'} dari database?`)) return;
+      cachedPayments = cachedPayments.filter(p => String(p.id) !== String(paymentId));
+      persistLocalData();
+      renderPaymentsTable();
+      updateMetrics();
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/payments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', id: paymentId })
+          });
+        } catch (e) {}
+      }
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('payments').delete().eq('id', paymentId);
+        } catch (e) {}
+      }
+      showToast(`Data transaksi pembayaran ${email} berhasil dihapus.`);
+    }
+
+    async function deleteUnpaidPendingPayments() {
+      const pendingList = cachedPayments.filter(p => p.status === 'pending');
+      if (pendingList.length === 0) {
+        showToast('Tidak ada transaksi pembayaran berstatus pending.');
+        return;
+      }
+      if (!confirm(`Peringatan: Hapus ${pendingList.length} transaksi pembayaran berstatus pending (belum lunas/sampah) sekaligus?`)) return;
+      cachedPayments = cachedPayments.filter(p => p.status !== 'pending');
+      persistLocalData();
+      renderPaymentsTable();
+      updateMetrics();
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/payments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'clear_pending' })
+          });
+        } catch (e) {}
+      }
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('payments').delete().eq('status', 'pending');
+        } catch (e) {}
+      }
+      showToast(`Berhasil membersihkan ${pendingList.length} transaksi pending.`);
+    }
+
+    async function setMemberRole(email, newRole) {
+      const idx = cachedMembers.findIndex(m => (m.email || '').toLowerCase() === email.toLowerCase());
+      if (idx !== -1) {
+        cachedMembers[idx].role = newRole;
+        persistLocalData();
+        renderMembersTable();
+        updateMetrics();
+      }
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/members', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'role', email: email, role: newRole })
+          });
+        } catch (e) {}
+      }
+
+      if (supabaseClient) {
+        try {
+          const { error } = await supabaseClient.from('members').update({ role: newRole }).eq('email', email);
+          if (error && error.code === '42501') {
+            showToast(`Role ${email} diubah ke ${newRole.toUpperCase()} (Tersimpan Lokal/Server).`);
+            return;
+          }
+        } catch (e) {}
+      }
+      showToast(`Role konsumen ${email} berhasil diubah ke ${newRole.toUpperCase()}!`);
+    }
+
+    async function toggleMemberBlock(email, newStatus) {
+      const actName = (newStatus === 'blocked') ? 'memblokir' : 'membuka blokir';
+      if (!confirm(`Konfirmasi: Apakah Anda yakin ingin ${actName} akun ${email}?`)) return;
+
+      const idx = cachedMembers.findIndex(m => (m.email || '').toLowerCase() === email.toLowerCase());
+      if (idx !== -1) {
+        cachedMembers[idx].status = newStatus;
+        persistLocalData();
+        renderMembersTable();
+        updateMetrics();
+      }
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/members', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'block', email: email, status: newStatus })
+          });
+        } catch (e) {}
+      }
+
+      if (supabaseClient) {
+        try {
+          const { error } = await supabaseClient.from('members').update({ status: newStatus }).eq('email', email);
+          if (error && error.code === '42501') {
+            showToast(`Status akun ${email} berhasil diubah ke ${newStatus.toUpperCase()} (Tersimpan Lokal/Server).`);
+            return;
+          }
+        } catch (e) {}
+      }
+      showToast(`Status akun ${email} berhasil diubah ke ${newStatus.toUpperCase()}.`);
+    }
+
+    async function approvePaymentAndActivateMember(paymentId, email) {
+      if (!confirm(`Konfirmasi: Verifikasi mutasi QRIS untuk ${email} dan aktifkan Member PRO seumur hidup?`)) return;
+
+      const pIdx = cachedPayments.findIndex(p => String(p.id) === String(paymentId) || (p.email && p.email.toLowerCase() === email.toLowerCase()));
+      if (pIdx !== -1) {
+        cachedPayments[pIdx].status = 'approved';
+      }
+      const mIdx = cachedMembers.findIndex(m => (m.email || '').toLowerCase() === email.toLowerCase());
+      if (mIdx !== -1) {
+        cachedMembers[mIdx].role = 'pro';
+        cachedMembers[mIdx].status = 'active';
+      } else {
+        cachedMembers.unshift({ email: email, full_name: 'Member PRO', role: 'pro', status: 'active', created_at: new Date().toISOString() });
+      }
+      persistLocalData();
+      renderPaymentsTable();
+      renderMembersTable();
+      updateMetrics();
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/payments', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'approve', id: paymentId, email: email })
+          });
+        } catch (e) {}
+      }
+
+      if (supabaseClient) {
+        try {
+          if (paymentId) await supabaseClient.from('payments').update({ status: 'approved' }).eq('id', paymentId);
+          await supabaseClient.from('members').upsert({ email: email, role: 'pro', status: 'active' }, { onConflict: 'email' });
+        } catch (e) {}
+      }
+      showToast(`Pembayaran disetujui! Status PRO untuk ${email} telah aktif.`);
+    }
+
+    async function deleteMember(email) {
+      if (!confirm(`Peringatan: Hapus data konsumen ${email} dari database?`)) return;
+
+      cachedMembers = cachedMembers.filter(m => (m.email || '').toLowerCase() !== email.toLowerCase());
+      persistLocalData();
+      renderMembersTable();
+      updateMetrics();
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/members', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'delete', email: email })
+          });
+        } catch (e) {}
+      }
+
+      if (supabaseClient) {
+        try {
+          await supabaseClient.from('members').delete().eq('email', email);
+        } catch (e) {}
+      }
+      showToast(`Data konsumen ${email} telah dihapus.`);
+    }
+
+    async function submitNewMember() {
+      const email = document.getElementById('modalInputEmail')?.value.trim();
+      const name = document.getElementById('modalInputName')?.value.trim();
+      const role = document.getElementById('modalInputRole')?.value || 'pro';
+
+      if (!email || !email.includes('@')) {
+        alert('Masukkan alamat email yang valid.');
+        return;
+      }
+
+      const newMemberObj = {
+        email: email,
+        full_name: name || 'Konsumen Baru',
+        role: role,
+        status: 'active',
+        created_at: new Date().toISOString()
+      };
+
+      const existingIdx = cachedMembers.findIndex(m => (m.email || '').toLowerCase() === email.toLowerCase());
+      if (existingIdx !== -1) {
+        cachedMembers[existingIdx] = { ...cachedMembers[existingIdx], ...newMemberObj };
+      } else {
+        cachedMembers.unshift(newMemberObj);
+      }
+      persistLocalData();
+      closeAddMemberModal();
+      renderMembersTable();
+      updateMetrics();
+
+      if (isLocalServerActive) {
+        try {
+          await fetch('/api/admin/members', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ action: 'save', email: email, full_name: name || 'Konsumen Baru', role: role, status: 'active' })
+          });
+        } catch (e) {}
+      }
+
+      if (supabaseClient) {
+        try {
+          const payload = { email: email, full_name: name || 'Konsumen Baru', role: role, status: 'active' };
+          let { error } = await supabaseClient.from('members').upsert(payload, { onConflict: 'email' });
+          if (error && error.message && error.message.includes('full_name')) {
+            delete payload.full_name;
+            await supabaseClient.from('members').upsert(payload, { onConflict: 'email' });
+          }
+        } catch (e) {}
+      }
+      showToast(`Konsumen ${email} berhasil didaftarkan sebagai ${role.toUpperCase()}!`);
+    }
+
+    function switchDashboardTab(tab) {
+      const btnMem = document.getElementById('tabBtnMembers');
+      const btnPay = document.getElementById('tabBtnPayments');
+      const btnGui = document.getElementById('tabBtnGuide');
+      const pMem = document.getElementById('panelMembers');
+      const pPay = document.getElementById('panelPayments');
+      const pGui = document.getElementById('panelGuide');
+
+      if (btnMem) btnMem.classList.remove('active');
+      if (btnPay) btnPay.classList.remove('active');
+      if (btnGui) btnGui.classList.remove('active');
+      if (pMem) pMem.style.display = 'none';
+      if (pPay) pPay.style.display = 'none';
+      if (pGui) pGui.style.display = 'none';
+
+      if (tab === 'payments') {
+        if (btnPay) btnPay.classList.add('active');
+        if (pPay) pPay.style.display = 'flex';
+      } else if (tab === 'guide') {
+        if (btnGui) btnGui.classList.add('active');
+        if (pGui) pGui.style.display = 'flex';
+      } else {
+        if (btnMem) btnMem.classList.add('active');
+        if (pMem) pMem.style.display = 'flex';
+      }
+    }
+
+    function exportMembersCsv() {
+      if (cachedMembers.length === 0) {
+        showToast('Tidak ada data member untuk diekspor.');
+        return;
+      }
+      let csv = 'No,Email,Nama,Role,Status,Tanggal_Daftar,Terakhir_Diperbarui\n';
+      cachedMembers.forEach((m, idx) => {
+        csv += `${idx + 1},"${m.email || ''}","${m.full_name || m.name || ''}","${m.role || ''}","${m.status || ''}","${m.created_at || ''}","${m.updated_at || ''}"\n`;
+      });
+      downloadCsvBlob(csv, 'Data_Member_DutaGeoSpasi.csv');
+    }
+
+    function exportPaymentsCsv() {
+      if (cachedPayments.length === 0) {
+        showToast('Tidak ada data transaksi pembayaran untuk diekspor.');
+        return;
+      }
+      let csv = 'No,Email,Kode_Unik,Total_Amount,Status,Tanggal_Transaksi\n';
+      cachedPayments.forEach((p, idx) => {
+        csv += `${idx + 1},"${p.email || ''}","${p.unique_code || ''}",${p.total_amount || 0},"${p.status || ''}","${p.created_at || ''}"\n`;
+      });
+      downloadCsvBlob(csv, 'Data_Transaksi_QRIS_DutaGeoSpasi.csv');
+    }
+
+    function downloadCsvBlob(content, filename) {
+      const blob = new Blob([content], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast(`Berkas ${filename} berhasil diunduh!`);
+    }
+
+    function openAddMemberModal() {
+      const inEmail = document.getElementById('modalInputEmail'); if (inEmail) inEmail.value = '';
+      const inName = document.getElementById('modalInputName'); if (inName) inName.value = '';
+      const modal = document.getElementById('addMemberModal'); if (modal) modal.style.display = 'flex';
+    }
+
+    function closeAddMemberModal() {
+      const modal = document.getElementById('addMemberModal'); if (modal) modal.style.display = 'none';
+    }
+
+    function openKeyConfigModal() {
+      const inUrl = document.getElementById('cfgInputUrl'); if (inUrl) inUrl.value = currentUrl;
+      const inKey = document.getElementById('cfgInputKey'); if (inKey) inKey.value = currentKey;
+      const modal = document.getElementById('keyConfigModal'); if (modal) modal.style.display = 'flex';
+    }
+
+    function closeKeyConfigModal() {
+      const modal = document.getElementById('keyConfigModal'); if (modal) modal.style.display = 'none';
+    }
+
+    function saveKeyConfig() {
+      const url = document.getElementById('cfgInputUrl')?.value.trim();
+      const key = document.getElementById('cfgInputKey')?.value.trim();
+      if (!url || !key) {
+        alert('URL dan API Key tidak boleh kosong.');
+        return;
+      }
+      localStorage.setItem('duta_admin_sb_url', url);
+      localStorage.setItem('duta_admin_sb_key', key);
+      currentUrl = url;
+      currentKey = key;
+      closeKeyConfigModal();
+      initSupabase();
+      showToast('Kunci konfigurasi berhasil disimpan dan diperbarui.');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toastBox');
+      if (!toast) return;
+      toast.textContent = msg;
+      toast.style.display = 'block';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' }[m];
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initSupabase();
+    });
+</script>
+</body>
+</html>

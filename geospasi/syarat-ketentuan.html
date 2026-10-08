@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syarat &amp; Ketentuan - Duta GeoSpasi SHP Builder</title>
+  <meta name="description" content="Syarat dan ketentuan layanan resmi, lisensi member PRO seumur hidup Rp 75.000, verifikasi QRIS kode unik, dan batas tanggung jawab penggunaan aplikasi spasial.">
+  <meta name="author" content="Duta Digital Agensi">
+  <meta name="robots" content="index, follow">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="shortcut icon" href="assets/img/favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    html {
+      background-color: #f8fafc;
+      color-scheme: light;
+      scroll-behavior: smooth;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f8fafc;
+      color: #0f172a;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+    .container {
+      max-width: 68rem;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1.25rem;
+      padding-right: 1.25rem;
+      width: 100%;
+    }
+    .header-bar {
+      background-color: #0a2e5c;
+      color: #ffffff;
+      border-bottom: 1px solid #082449;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    }
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 3.875rem;
+      gap: 1rem;
+    }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: inherit;
+    }
+    .brand-logo {
+      width: 2.25rem;
+      height: 2.25rem;
+      background: #ffffff;
+      border-radius: 6px;
+      padding: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .brand-logo img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .brand-title {
+      font-size: 0.95rem;
+      font-weight: 800;
+      line-height: 1.2;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .brand-tag {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 800;
+      padding: 1px 6px;
+      border-radius: 3px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .brand-sub {
+      font-size: 0.7rem;
+      color: #bfdbfe;
+      line-height: 1.2;
+      margin-top: 2px;
+    }
+    .btn-home {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.45rem 0.85rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      text-decoration: none;
+      transition: background-color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-home:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+    .nav-tabs {
+      background: #ffffff;
+      border-bottom: 1px solid #e2e8f0;
+      position: sticky;
+      top: 3.875rem;
+      z-index: 40;
+    }
+    .tabs-inner {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+    .tab-link {
+      padding: 0.45rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #64748b;
+      text-decoration: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      transition: all 0.15s ease;
+    }
+    .tab-link:hover {
+      color: #0a2e5c;
+      background: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+    .tab-link.active {
+      color: #0a2e5c;
+      background: #e2e8f0;
+      border-color: #0a2e5c;
+      font-weight: 700;
+    }
+    .doc-article {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 2.25rem 2.5rem;
+      margin-top: 2rem;
+      margin-bottom: 3.5rem;
+    }
+    @media (max-width: 640px) {
+      .doc-article {
+        padding: 1.5rem 1.25rem;
+      }
+    }
+    .doc-header {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding-bottom: 1.25rem;
+      border-bottom: 1px solid #e2e8f0;
+      margin-bottom: 1.75rem;
+    }
+    .doc-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #0a2e5c;
+      background: transparent;
+      border: none;
+    }
+    .doc-title h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0a2e5c;
+      letter-spacing: -0.01em;
+    }
+    .doc-title p {
+      font-size: 0.775rem;
+      color: #64748b;
+      margin-top: 0.2rem;
+    }
+    .doc-body {
+      font-size: 0.9rem;
+      color: #334155;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      line-height: 1.7;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 0.5rem 0;
+      border: 1px solid #e2e8f0;
+    }
+    .table-spec {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.835rem;
+    }
+    .table-spec th {
+      background-color: #eff4fa;
+      padding: 0.75rem 1rem;
+      text-align: left;
+      font-weight: 700;
+      color: #0a2e5c;
+      border-bottom: 1px solid #cbd5e1;
+      border-right: 1px solid #e2e8f0;
+    }
+    .table-spec th:last-child {
+      border-right: none;
+    }
+    .table-spec td {
+      padding: 0.75rem 1rem;
+      color: #334155;
+      border-bottom: 1px solid #e2e8f0;
+      border-right: 1px solid #f1f5f9;
+    }
+    .table-spec tr:last-child td {
+      border-bottom: none;
+    }
+    .table-spec td:last-child {
+      border-right: none;
+    }
+    .term-section {
+      border: 1px solid #e2e8f0;
+      border-radius: 4px;
+      background: #f8fafc;
+      padding: 1rem 1.25rem;
+      font-size: 0.85rem;
+      color: #334155;
+      line-height: 1.6;
+    }
+    .term-section strong {
+      color: #0a2e5c;
+    }
+    .social-btn {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 6px;
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #475569;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      text-decoration: none;
+    }
+    .social-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+      color: #0a2e5c;
+      border-color: #0a2e5c;
+    }
+    .footer-bar {
+      background: #ffffff;
+      border-top: 1px solid #e2e8f0;
+      padding: 1.75rem 0 1.5rem 0;
+      margin-top: auto;
+    }
+    .footer-inner {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+    @media (min-width: 768px) {
+      .footer-inner {
+        grid-template-columns: 2fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header-bar">
+    <div class="container header-inner">
+      <a href="index.html" class="brand-wrap">
+        <div class="brand-logo">
+          <img src="assets/img/logo.png" onerror="this.onerror=null; this.src='assets/img/logo.png';" alt="Logo Duta GeoSpasi">
+        </div>
+        <div>
+          <div class="brand-title">
+            <span>Duta GeoSpasi</span>
+            <span class="brand-tag">SHP Builder</span>
+          </div>
+          <div class="brand-sub">Pusat Dokumentasi, Regulasi &amp; Panduan Geospasial</div>
+        </div>
+      </a>
+      <div>
+        <a href="index.html" class="btn-home">
+          <svg style="width: 0.85rem; height: 0.85rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18"/></svg>
+          <span>Kembali ke SHP Builder</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="nav-tabs">
+    <div class="container tabs-inner">
+      <a href="jaminan-privasi.html" class="tab-link">Jaminan Privasi</a>
+      <a href="syarat-ketentuan.html" class="tab-link active">Syarat &amp; Ketentuan</a>
+      <a href="penafian-layanan.html" class="tab-link">Penafian ATR/BPN</a>
+      <a href="panduan-fitur.html" class="tab-link">Panduan Fitur</a>
+      <a href="hubungi-kami.html" class="tab-link">Hubungi Kami</a>
+    </div>
+  </nav>
+
+  <main class="container" style="flex: 1 0 auto;">
+    <article class="doc-article">
+      <div class="doc-header">
+        <div class="doc-icon">
+          <svg style="width: 1.35rem; height: 1.35rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+        </div>
+        <div class="doc-title">
+          <h1>Syarat &amp; Ketentuan Layanan (Terms of Service)</h1>
+          <p>Ketentuan Penggunaan Aplikasi, Hak Akses Lisensi Member, dan Batasan Tanggung Jawab</p>
+        </div>
+      </div>
+
+      <div class="doc-body">
+        <p>Dengan mengakses, mendaftar, atau menggunakan aplikasi <strong>Duta GeoSpasi SHP Builder</strong>, Anda menyetujui seluruh ketentuan layanan yang diatur secara sah oleh Duta Digital Agensi di bawah ini:</p>
+
+        <div class="table-wrap">
+          <table class="table-spec">
+            <thead>
+              <tr>
+                <th>Fitur &amp; Kemampuan Geospasial</th>
+                <th>Paket Tamu / Free Tier</th>
+                <th>Paket Member PRO Resmi</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Biaya Aktivasi</strong></td>
+                <td>Rp 0 (Gratis)</td>
+                <td>Promo Rp 75.000 (Hemat 80% dari normal Rp 375.000)</td>
+              </tr>
+              <tr>
+                <td><strong>Masa Berlaku Lisensi</strong></td>
+                <td>Sesi Sementara</td>
+                <td>Lifetime Access (Akses Seumur Hidup S&amp;K)</td>
+              </tr>
+              <tr>
+                <td><strong>Inspeksi Bidang Persil BPN &amp; Ukur Luas</strong></td>
+                <td style="color: #059669; font-weight: 700;">Tersedia</td>
+                <td style="color: #059669; font-weight: 700;">Tersedia</td>
+              </tr>
+              <tr>
+                <td><strong>Digitasi Patok Batas &amp; Garis Dimensi</strong></td>
+                <td style="color: #059669; font-weight: 700;">Tersedia</td>
+                <td style="color: #059669; font-weight: 700;">Tersedia</td>
+              </tr>
+              <tr>
+                <td><strong>Ekspor Paket ESRI Shapefile (.ZIP)</strong></td>
+                <td style="color: #dc2626; font-weight: 700;">Terkunci</td>
+                <td style="color: #059669; font-weight: 700;">Akses Penuh Unlimited (.SHP .SHX .DBF .PRJ)</td>
+              </tr>
+              <tr>
+                <td><strong>Ekspor CAD Script (.SCR), GeoJSON &amp; Excel</strong></td>
+                <td style="color: #dc2626; font-weight: 700;">Terkunci</td>
+                <td style="color: #059669; font-weight: 700;">Akses Penuh Unlimited</td>
+              </tr>
+              <tr>
+                <td><strong>Kustomisasi Logo &amp; Format Cetak (A4 &amp; A3)</strong></td>
+                <td>Standar</td>
+                <td style="color: #059669; font-weight: 700;">Bebas Edit Judul, Font, Penerbit &amp; Logo Mandiri</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="term-section">
+          <strong>1. Mekanisme Otentikasi &amp; Aktivasi Status PRO</strong>: Aktivasi status PRO wajib menggunakan otentikasi login Akun Google resmi. Pembayaran dilakukan via transfer QRIS dengan nominal pokok Rp 75.000 ditambah 3 digit kode unik acak untuk keperluan pencocokan sistem. Status akun PRO terikat secara sah pada alamat email Google yang terverifikasi di basis data resmi.
+        </div>
+
+        <div class="term-section">
+          <strong>2. Tanggung Jawab Isi Data Dokumen</strong>: Pengguna bertanggung jawab penuh terhadap ketepatan input koordinat, penamaan pemohon perizinan, batas kavling tapak proyek, dan seluruh pemanfaatan berkas ekspor untuk keperluan perizinan berusaha OSS RBA, AMDALNET, KKPR, maupun lampiran teknis kementerian terkait.
+        </div>
+
+        <div class="term-section">
+          <strong>3. Batasan Sertifikasi Hak Atas Tanah</strong>: Duta GeoSpasi SHP Builder merupakan instrumen bantu digitalisasi spasial mandiri. Dokumen yang dihasilkan tidak menggantikan fungsi yuridis Surat Ukur resmi yang diterbitkan oleh Kantor Pertanahan ATR/BPN.
+        </div>
+      </div>
+    </article>
+  </main>
+
+  <footer class="footer-bar">
+    <div class="container footer-inner">
+      <div>
+        <div style="font-weight: 700; font-size: 0.875rem; color: #0f172a; margin-bottom: 0.25rem;">Duta Digital Agensi | dutamik.id</div>
+        <div style="font-size: 0.75rem; color: #64748b; margin-bottom: 0.25rem;">Duta Media Informasi berKarya : Bulusan RT 01 RW 08 Mandan, Kec/Kab. Sukoharjo, Jawa Tengah</div>
+        <div style="font-size: 0.75rem; color: #475569; margin-bottom: 0.75rem;">WhatsApp: 0831-3030-0094 : Email: dutadigitalagensi@gmail.com</div>
+        <div style="display: flex; gap: 0.5rem; align-items: center;">
+          <a href="https://dutamik.id" target="_blank" rel="noopener" class="social-btn" title="Situs Resmi: dutamik.id" aria-label="Website Resmi">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/></svg>
+          </a>
+          <a href="https://wa.me/6283130300094" target="_blank" rel="noopener" class="social-btn" title="WhatsApp: 0831-3030-0094" aria-label="WhatsApp">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </a>
+          <a href="mailto:dutadigitalagensi@gmail.com" class="social-btn" title="Email: dutadigitalagensi@gmail.com" aria-label="Email">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </a>
+          <a href="https://instagram.com/dutadigitalagensi" target="_blank" rel="noopener" class="social-btn" title="Instagram: @dutadigitalagensi" aria-label="Instagram">
+            <svg style="width: 1rem; height: 1rem;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://tiktok.com/@dutadigitalagensi" target="_blank" rel="noopener" class="social-btn" title="TikTok: @dutadigitalagensi" aria-label="TikTok">
+            <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-1.01v8.83c-.02 2.05-.75 4.13-2.14 5.67-1.78 2.02-4.5 3.01-7.17 2.65-2.61-.33-4.99-1.92-6.23-4.23-1.43-2.63-1.06-6.04.94-8.25 1.58-1.77 4-2.62 6.35-2.22v4.18c-1.22-.24-2.54.06-3.41.93-.86.85-1.1 2.19-.6 3.32.48 1.11 1.66 1.83 2.87 1.77 1.34-.03 2.5-1.02 2.66-2.35.04-.33.05-.67.05-1.01V.02z"/></svg>
+          </a>
+          <a href="https://x.com/dutadigitalagensi" target="_blank" rel="noopener" class="social-btn" title="X: @dutadigitalagensi" aria-label="X">
+            <svg style="width: 1rem; height: 1rem;" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+          </a>
+        </div>
+      </div>
+      <div style="font-size: 0.75rem; color: #64748b; line-height: 1.5; text-align: left;">
+        <div>&copy; 2026 Duta Digital Agensi (dutamik.id). Hak cipta dilindungi.</div>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
