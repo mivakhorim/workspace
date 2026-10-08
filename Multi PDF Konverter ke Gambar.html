@@ -114,11 +114,11 @@
 
   <script src="assets/js/tailwind.min.js"></script>
   <script>tailwind.config = { darkMode: 'class' }; document.documentElement.classList.remove('dark'); localStorage.removeItem('theme');</script>
-  <script src="assets/js/pdf.min.js"></script>
-  <script src="assets/js/pdf-lib.min.js"></script>
+  <script src="assets/js/pdf.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js';"></script>
+  <script src="assets/js/pdf-lib.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js';"></script>
   <script src="assets/js/jszip.min.js"></script>
-  <script src="assets/js/FileSaver.min.js"></script>
-  <script src="assets/js/tesseract/tesseract.min.js"></script>
+  <script src="assets/js/FileSaver.min.js" onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js';"></script>
+  <script src="assets/js/tesseract/tesseract.min.js" onerror="this.onerror=null;this.src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js';"></script>
 
   <style>
     body {
@@ -276,22 +276,22 @@
 
     <section id="uploadSection" class="transition-all duration-200">
       <div id="dropzone" class="border-2 border-dashed border-slate-300 hover:border-[#0a2e5c] bg-white rounded-2xl p-8 sm:p-12 text-center flex flex-col items-center justify-center cursor-pointer transition shadow-xs group">
-        <input type="file" id="pdfFileInput" accept="application/pdf" class="hidden">
+        <input type="file" id="pdfFileInput" accept="application/pdf,image/png,image/jpeg,image/jpg,image/webp,image/bmp" class="hidden">
 
         <div class="w-16 h-16 bg-slate-50 text-[#0a2e5c] rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-105 border border-slate-200">
           <svg class="w-8 h-8 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/></svg>
         </div>
 
         <h2 class="text-xl font-bold text-slate-900 mb-1.5">
-          Pilih atau Seret Berkas PDF ke Sini
+          Pilih atau Seret Berkas PDF atau Gambar ke Sini
         </h2>
         <p class="text-slate-500 text-xs max-w-md mb-5 leading-relaxed">
-          Semua proses ekstraksi teks, pemecahan berkas bandel PDF, dan konversi halaman gambar berlangsung langsung di browser lokal Anda tanpa koneksi server.
+          Mendukung dokumen PDF (vektor & pemindaian/scan) serta berkas gambar (JPG, PNG, WEBP, BMP). Ekstraksi teks OCR cerdas, pemisahan berkas, dan konversi halaman langsung di peramban Anda.
         </p>
 
         <button type="button" onclick="document.getElementById('pdfFileInput').click()" class="px-5 py-2.5 btn-solid-brand text-xs font-semibold rounded-xl flex items-center gap-2 shadow-xs">
           <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z"/></svg>
-          <span>Pilih Berkas PDF</span>
+          <span>Pilih Berkas PDF / Gambar</span>
         </button>
       </div>
     </section>
@@ -315,13 +315,192 @@
         </button>
       </div>
 
+      <div id="exportPanel" class="card-rest rounded-xl p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
+          <div class="flex items-center gap-2">
+            <svg class="w-4 h-4 text-[#0a2e5c] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
+            <h3 class="font-bold text-sm text-slate-900">Pengaturan Format & Mode Ekspor Dokumen</h3>
+          </div>
+          <span class="text-xs text-slate-500">Pilih format berkas keluaran, resolusi render, orientasi, dan kustomisasi penamaan</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Format Berkas Ekspor</label>
+            <div class="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
+              <button type="button" id="btnFormatPdf" onclick="setFormat('pdf')" class="py-2 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-xs border border-slate-200">PDF</button>
+              <button type="button" id="btnFormatJpg" onclick="setFormat('jpg')" class="py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">JPG</button>
+              <button type="button" id="btnFormatPng" onclick="setFormat('png')" class="py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">PNG</button>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Resolusi Render (DPI)</label>
+            <select id="qualitySelect" onchange="updateQualitySetting()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+              <option value="1">Standar 1x (72 DPI - Ringan)</option>
+              <option value="2" selected>Sedang 2x (150 DPI - Optimal)</option>
+              <option value="3">Tinggi 3x (300 DPI HD - Cetak Tajam)</option>
+            </select>
+          </div>
+
+          <div>
+            <div id="bgColorContainer" class="hidden">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Latar Belakang (JPG)</label>
+              <div class="flex items-center gap-2">
+                <input type="color" id="bgColorInput" value="#ffffff" onchange="updateBgColor()" class="w-9 h-9 p-0.5 rounded-lg border border-slate-300 bg-transparent cursor-pointer">
+                <span id="bgColorHex" class="text-xs font-mono text-slate-600">#FFFFFF</span>
+                <div class="flex items-center gap-1.5 ml-auto">
+                  <button type="button" onclick="setPresetColor('#ffffff')" class="w-5 h-5 rounded-full bg-white border border-slate-300 shadow-xs" title="Putih"></button>
+                  <button type="button" onclick="setPresetColor('#000000')" class="w-5 h-5 rounded-full bg-black border border-slate-700" title="Hitam"></button>
+                </div>
+              </div>
+            </div>
+            <div id="rotationContainer">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Orientasi / Rotasi Halaman</label>
+              <select id="rotationSelect" onchange="updatePageRotation(this.value)" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+                <option value="0" selected>0° Tegak (Standar)</option>
+                <option value="90">90° Searah Jarum Jam (Putar Kanan)</option>
+                <option value="180">180° Terbalik (Putar Balik)</option>
+                <option value="270">270° Berlawanan Jarum Jam (Putar Kiri)</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Filter Rentang Halaman</label>
+            <div class="flex items-center gap-2">
+              <input type="text" id="pageRangeInput" placeholder="Contoh: 1, 3-5" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+              <button type="button" onclick="applyPageRangeFilter()" class="px-3 py-2 btn-solid-light text-xs font-semibold rounded-xl" title="Terapkan Filter">Filter</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="pt-3 border-t border-slate-200 grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Kapitalisasi Teks Nama Berkas</label>
+            <select id="namingCaseSelect" onchange="updateAllPageFilenamePreviews()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+              <option value="uppercase" selected>HURUF BESAR (UPPERCASE)</option>
+              <option value="titlecase">Huruf Kapital Awal (Title Case)</option>
+              <option value="lowercase">huruf kecil (lowercase)</option>
+              <option value="original">Sesuai Teks Asli Dokumen</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Karakter Pemisah Spasi</label>
+            <select id="namingSepSelect" onchange="updateAllPageFilenamePreviews()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+              <option value="_" selected>Garis Bawah ( _ ) - Standar Arsip</option>
+              <option value="-">Tanda Hubung ( - )</option>
+              <option value=" ">Spasi Biasa (   )</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Pola Pintas Pemisahan</label>
+            <div class="grid grid-cols-2 gap-1.5">
+              <button type="button" onclick="applyQuickSplitPreset('single')" class="px-2.5 py-2 btn-solid-light text-xs font-semibold rounded-xl text-center truncate" title="Pecah setiap halaman menjadi 1 berkas PDF mandiri">
+                1 Hal = 1 PDF
+              </button>
+              <button type="button" onclick="applyQuickSplitPreset('bundle')" class="px-2.5 py-2 btn-solid-light text-xs font-semibold rounded-xl text-center truncate" title="Pecah berkas sesuai paket dokumen konsumen">
+                Paket Berkas
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="bundlePanel" class="card-rest rounded-xl p-5 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-slate-50 text-[#0a2e5c] flex items-center justify-center border border-slate-200">
+              <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
+            </div>
+            <div>
+              <h3 class="font-bold text-sm text-slate-900">Pemisah Berkas PDF per Paket Konsumen (Document Splitter)</h3>
+              <p class="text-xs text-slate-500">Memecah satu berkas PDF gabungan menjadi berkas PDF terpisah per debitur atau konsumen dengan penamaan cerdas hasil OCR</p>
+            </div>
+          </div>
+          <label class="inline-flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition">
+            <input type="checkbox" id="bundleModeToggle" onchange="toggleBundleMode(this.checked)" class="w-4 h-4 text-[#0a2e5c] rounded border-slate-300 focus:ring-[#0a2e5c] cursor-pointer">
+            <span class="text-xs font-bold text-slate-800">Aktifkan Pisah PDF per Paket Dokumen</span>
+          </label>
+        </div>
+
+        <div id="bundleConfigBody" class="space-y-4 opacity-50 pointer-events-none transition-opacity">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Jumlah Lembar per Berkas</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="bundlePagesPerFile" min="1" max="1000" value="2" oninput="updateBundleCalculations()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+                <span class="text-xs text-slate-500 whitespace-nowrap">Lembar / Berkas</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Contoh: Isi 2 jika 1 berkas terdiri dari 2 halaman surat, atau isi 1 jika tiap lembar adalah berkas mandiri.</p>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Halaman Sumber Penamaan (OCR)</label>
+              <div class="flex items-center gap-2">
+                <input type="number" id="bundleNamingPageIndex" min="1" max="1000" value="1" oninput="updateBundleCalculations()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+                <span class="text-xs text-slate-500 whitespace-nowrap">Lembar ke-</span>
+              </div>
+              <p class="text-[11px] text-slate-400">Nomor urut lembar di mana nama konsumen atau nomor surat tercantum (umumnya lembar ke-1).</p>
+            </div>
+
+            <div class="space-y-1.5">
+              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Pilihan Format Nama Berkas PDF</label>
+              <select id="bundleNamingFormat" onchange="updateBundleCalculations()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
+                <option value="num_ocr" selected>Nomor Urut + Teks OCR (Contoh: 01_Budi_Santoso.pdf)</option>
+                <option value="ocr_only">Nama Teks OCR Saja (Contoh: Budi_Santoso.pdf)</option>
+                <option value="template">Ikuti Pola Format Nama di Bawah ({TEKS})</option>
+              </select>
+              <p class="text-[11px] text-slate-400">Jika teks tidak terdeteksi, nama file otomatis menggunakan nama cadangan.</p>
+            </div>
+          </div>
+
+          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div class="flex items-center gap-2">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span id="bundleSummaryBadge" class="font-bold text-slate-800">Menunggu dokumen PDF dimuat...</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="previewBundleList()" class="px-3.5 py-1.5 btn-solid-brand text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs" title="Lihat Simulasi Daftar Berkas">
+                <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
+                <span>Simulasikan Daftar Berkas</span>
+              </button>
+            </div>
+          </div>
+
+          <div id="bundlePreviewContainer" class="hidden overflow-x-auto max-h-56 custom-scrollbar border border-slate-200 rounded-xl bg-white">
+            <table class="w-full text-left text-xs text-slate-700">
+              <thead class="bg-slate-100 text-slate-800 font-bold sticky top-0 border-b border-slate-200">
+                <tr>
+                  <th class="p-2.5">No.</th>
+                  <th class="p-2.5">Rentang Halaman</th>
+                  <th class="p-2.5">Hal. Acuan OCR</th>
+                  <th class="p-2.5">Nama Berkas PDF Hasil Split</th>
+                  <th class="p-2.5">Subfolder Gambar</th>
+                </tr>
+              </thead>
+              <tbody id="bundlePreviewTbody" class="divide-y divide-slate-100 font-mono text-[11px]"></tbody>
+            </table>
+          </div>
+
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-800 leading-relaxed flex items-start gap-2">
+            <svg class="w-4 h-4 text-indigo-600 mt-0.5 shrink-0 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div>
+              <span class="font-bold">Format Hasil Unduhan:</span> Berkas PDF hasil pemisahan tersimpan langsung di dalam arsip ZIP. Jika mode gambar dipilih, berkas gambar resolusi tinggi juga tersimpan rapi di subfolder masing-masing sesuai nama dokumen.
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="zonePanel" class="card-rest rounded-xl p-5 space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2 border-b border-slate-200 pb-3">
           <div class="flex items-center gap-2">
             <svg class="w-4 h-4 text-[#0a2e5c] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <h3 class="font-bold text-sm text-slate-900">Seleksi Area Zone OCR (Penamaan Berkas Otomatis)</h3>
+            <h3 class="font-bold text-sm text-slate-900">Seleksi Area Penamaan Otomatis (Zone OCR)</h3>
           </div>
-          <span class="text-xs text-slate-500">Tarik kursor mouse (klik & geser) pada area nama atau nomor surat di gambar dokumen sebelah kiri untuk penamaan file otomatis</span>
+          <span class="text-xs text-slate-500">Tarik kursor (klik & geser) pada area teks di gambar dokumen sebelah kiri untuk ekstraksi penamaan berkas otomatis</span>
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
@@ -350,18 +529,27 @@
 
           <div class="lg:col-span-5 space-y-4">
             <div class="p-4 bg-slate-50 rounded-xl border border-slate-200 space-y-2.5">
-              <div class="flex items-center justify-between">
-                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Hasil Deteksi Teks Area Terpilih</label>
-                <button type="button" onclick="testZoneOCR()" class="px-3 py-1.5 btn-solid-brand text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs" title="Uji Bacaan Teks" aria-label="Uji Bacaan Teks">
-                  <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-                  <span>Uji Baca Area</span>
-                </button>
+              <div class="flex items-center justify-between flex-wrap gap-2">
+                <label class="text-xs font-bold text-slate-700 uppercase tracking-wider">Hasil Deteksi Teks OCR</label>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="testZoneOCR(false)" class="px-3 py-1.5 btn-solid-brand text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs" title="Uji Baca Area Terpilih" aria-label="Uji Baca Area Terpilih">
+                    <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+                    <span>Uji Baca Area</span>
+                  </button>
+                  <button type="button" onclick="testZoneOCR(true)" class="px-2.5 py-1.5 btn-solid-light text-xs font-semibold rounded-lg flex items-center gap-1.5" title="Baca Seluruh Gambar / Halaman" aria-label="Baca Seluruh Gambar / Halaman">
+                    <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                    <span>Baca Seluruh Gambar</span>
+                  </button>
+                </div>
               </div>
 
-              <div class="p-3 bg-white border border-slate-200 rounded-lg min-h-[50px] flex items-center">
-                <p id="zoneTestResult" class="text-xs font-mono text-slate-600 italic">
-                  Tarik kursor (klik & geser) pada area nama atau nomor surat di gambar dokumen sebelah kiri, lalu klik "Uji Baca Area".
+              <div class="p-3 bg-white border border-slate-200 rounded-lg min-h-[50px] flex items-center justify-between gap-2">
+                <p id="zoneTestResult" class="text-xs font-mono text-slate-600 italic break-words flex-1">
+                  Tarik kursor (klik & geser) pada area teks di gambar dokumen sebelah kiri, lalu klik "Uji Baca Area", atau klik "Baca Seluruh Gambar".
                 </p>
+                <button type="button" id="btnCopyOcrResult" onclick="copyOcrResult()" class="hidden px-2.5 py-1 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-medium rounded shrink-0 transition" title="Salin Teks" aria-label="Salin Teks">
+                  Salin Teks
+                </button>
               </div>
             </div>
 
@@ -374,137 +562,6 @@
             <div class="space-y-1.5">
               <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Nama Cadangan (Jika Teks Tidak Terbaca)</label>
               <input type="text" id="fallbackNameInput" value="Halaman_{NO}" oninput="updateAllPageFilenamePreviews()" placeholder="Halaman_{NO}" class="w-full bg-white border border-slate-300 rounded-lg px-3 py-2 text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="exportPanel" class="card-rest rounded-xl p-5 space-y-4">
-        <div class="flex items-center gap-2 border-b border-slate-200 pb-3">
-          <svg class="w-4 h-4 text-[#0a2e5c] fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"/></svg>
-          <h3 class="font-bold text-sm text-slate-900">Pengaturan Format & Kualitas Gambar</h3>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Format Gambar</label>
-            <div class="grid grid-cols-2 gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
-              <button type="button" id="btnFormatJpg" onclick="setFormat('jpg')" class="py-2 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-xs border border-slate-200">JPG</button>
-              <button type="button" id="btnFormatPng" onclick="setFormat('png')" class="py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900">PNG</button>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Resolusi Cetak (DPI)</label>
-            <select id="qualitySelect" onchange="updateQualitySetting()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
-              <option value="1">Standar 1x (72 DPI)</option>
-              <option value="2" selected>Sedang 2x (150 DPI)</option>
-              <option value="3">Tinggi 3x (300 DPI HD)</option>
-            </select>
-          </div>
-
-          <div id="bgColorContainer">
-            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Latar Belakang (JPG)</label>
-            <div class="flex items-center gap-2">
-              <input type="color" id="bgColorInput" value="#ffffff" onchange="updateBgColor()" class="w-9 h-9 p-0.5 rounded-lg border border-slate-300 bg-transparent cursor-pointer">
-              <span id="bgColorHex" class="text-xs font-mono text-slate-600">#FFFFFF</span>
-              <div class="flex items-center gap-1.5 ml-auto">
-                <button type="button" onclick="setPresetColor('#ffffff')" class="w-5 h-5 rounded-full bg-white border border-slate-300 shadow-xs" title="Putih"></button>
-                <button type="button" onclick="setPresetColor('#000000')" class="w-5 h-5 rounded-full bg-black border border-slate-700" title="Hitam"></button>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-1.5">Filter Halaman</label>
-            <div class="flex items-center gap-2">
-              <input type="text" id="pageRangeInput" placeholder="Contoh: 1, 3-5" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-medium text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
-              <button type="button" onclick="applyPageRangeFilter()" class="px-3 py-2 btn-solid-light text-xs font-semibold rounded-xl">Filter</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="bundlePanel" class="card-rest rounded-xl p-5 space-y-4">
-        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 pb-3">
-          <div class="flex items-center gap-2.5">
-            <div class="w-8 h-8 rounded-lg bg-slate-50 text-[#0a2e5c] flex items-center justify-center border border-slate-200">
-              <svg class="w-4 h-4 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/></svg>
-            </div>
-            <div>
-              <h3 class="font-bold text-sm text-slate-900">Mode Pisah PDF per Paket Dokumen (Split Berkas Konsumen)</h3>
-              <p class="text-xs text-slate-500">Memecah satu file PDF gabungan yang tebal menjadi file-file PDF terpisah (misalnya: tiap berkas terdiri dari 2 lembar surat untuk 1 orang konsumen)</p>
-            </div>
-          </div>
-          <label class="inline-flex items-center gap-2 cursor-pointer bg-slate-50 hover:bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 transition">
-            <input type="checkbox" id="bundleModeToggle" onchange="toggleBundleMode(this.checked)" class="w-4 h-4 text-[#0a2e5c] rounded border-slate-300 focus:ring-[#0a2e5c] cursor-pointer">
-            <span class="text-xs font-bold text-slate-800">Aktifkan Pisah PDF per Paket Dokumen</span>
-          </label>
-        </div>
-
-        <div id="bundleConfigBody" class="space-y-4 opacity-50 pointer-events-none transition-opacity">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Jumlah Lembar per Dokumen</label>
-              <div class="flex items-center gap-2">
-                <input type="number" id="bundlePagesPerFile" min="1" max="1000" value="5" oninput="updateBundleCalculations()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
-                <span class="text-xs text-slate-500 whitespace-nowrap">Lembar / Berkas</span>
-              </div>
-              <p class="text-[11px] text-slate-400">Contoh: Isi 2 jika 1 surat terdiri dari 2 lembar, atau isi 1 jika tiap lembar adalah dokumen tersendiri.</p>
-            </div>
-
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Lembar yang Memuat Nama / Nomor Surat</label>
-              <div class="flex items-center gap-2">
-                <input type="number" id="bundleNamingPageIndex" min="1" max="1000" value="1" oninput="updateBundleCalculations()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
-                <span class="text-xs text-slate-500 whitespace-nowrap">Lembar ke-</span>
-              </div>
-              <p class="text-[11px] text-slate-400">Nomor urut lembar di mana nama konsumen atau nomor surat tercantum (biasanya lembar ke-1).</p>
-            </div>
-
-            <div class="space-y-1.5">
-              <label class="block text-xs font-semibold text-slate-700 uppercase tracking-wider">Pilihan Format Nama File PDF</label>
-              <select id="bundleNamingFormat" onchange="updateBundleCalculations()" class="w-full bg-white border border-slate-300 rounded-xl px-3 py-2 text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-[#0a2e5c]">
-                <option value="num_ocr" selected>Nomor Urut + Teks OCR (Contoh: 01_Budi Santoso.pdf)</option>
-                <option value="ocr_only">Nama Teks OCR Saja (Contoh: Budi Santoso.pdf)</option>
-                <option value="template">Ikuti Pola Format Nama di Atas ({TEKS})</option>
-              </select>
-              <p class="text-[11px] text-slate-400">Jika teks tidak terdeteksi, nama file otomatis diganti nama cadangan (misal: Berkas_01.pdf).</p>
-            </div>
-          </div>
-
-          <div class="p-3.5 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div class="flex items-center gap-2">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
-              <span id="bundleSummaryBadge" class="font-bold text-slate-800">Menunggu dokumen PDF dimuat...</span>
-            </div>
-            <div class="flex items-center gap-2">
-              <button type="button" onclick="previewBundleList()" class="px-3.5 py-1.5 btn-solid-brand text-xs font-semibold rounded-lg flex items-center gap-1.5 shadow-xs" title="Lihat Simulasi Daftar Berkas">
-                <svg class="w-3.5 h-3.5 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></svg>
-                <span>Simulasikan Daftar Berkas</span>
-              </button>
-            </div>
-          </div>
-
-          <div id="bundlePreviewContainer" class="hidden overflow-x-auto max-h-56 custom-scrollbar border border-slate-200 rounded-xl bg-white">
-            <table class="w-full text-left text-xs text-slate-700">
-              <thead class="bg-slate-100 text-slate-800 font-bold sticky top-0 border-b border-slate-200">
-                <tr>
-                  <th class="p-2.5">No.</th>
-                  <th class="p-2.5">Rentang Halaman</th>
-                  <th class="p-2.5">Hal. Acuan OCR</th>
-                  <th class="p-2.5">Nama File PDF (Root Arsip ZIP)</th>
-                  <th class="p-2.5">Subfolder Gambar (.JPG)</th>
-                </tr>
-              </thead>
-              <tbody id="bundlePreviewTbody" class="divide-y divide-slate-100 font-mono text-[11px]"></tbody>
-            </table>
-          </div>
-
-          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-[11px] text-slate-800 leading-relaxed flex items-start gap-2">
-            <svg class="w-4 h-4 text-indigo-600 mt-0.5 shrink-0 fill-none stroke-current" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-            <div>
-              <span class="font-bold">Susunan File Hasil Download:</span> Seluruh file PDF hasil pemisahan tersimpan langsung di dalam file ZIP. Jika Anda juga mengunduh format gambar (JPG/PNG), file gambarnya tersimpan rapi di folder masing-masing sesuai nama dokumen.
             </div>
           </div>
         </div>
@@ -780,8 +837,9 @@
     let rawPdfBuffer = null;
     let pdfFileName = 'dokumen';
     let totalPages = 0;
-    let exportFormat = 'jpg';
+    let exportFormat = 'pdf';
     let exportScale = 2;
+    let pageRotation = 0;
     let bgColor = '#ffffff';
     let renderedPages = [];
     let selectedPages = new Set();
@@ -793,6 +851,10 @@
     let dragStart = { x: 0, y: 0 };
 
     let isBundleModeActive = false;
+    let isDocumentLoaded = false;
+    let latestOcrRawText = '';
+    let ocrWorkerInstance = null;
+    let isWorkerInitializing = false;
 
         function renderSmartBreadcrumbs(pageTitle, categoryName) {
       const container = document.getElementById('appBreadcrumbs');
@@ -893,10 +955,12 @@
         dropzone.classList.remove('dropzone-active');
         if (e.dataTransfer.files.length > 0) {
           const file = e.dataTransfer.files[0];
-          if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+          const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+          const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif)$/i.test(file.name);
+          if (isPdf || isImage) {
             handleFileSelect(file);
           } else {
-            showToast('Format berkas harus berupa dokumen PDF.');
+            showToast('Format berkas harus berupa dokumen PDF atau Gambar (PNG/JPG/WEBP/BMP).');
           }
         }
       });
@@ -930,7 +994,7 @@
       };
 
       const startDrag = (e) => {
-        if (!currentPdf) return;
+        if (!currentPdf && !isDocumentLoaded) return;
         isDraggingZone = true;
         const pos = getPos(e);
         dragStart = { x: pos.x, y: pos.y };
@@ -1014,17 +1078,69 @@
     async function handleFileSelect(file) {
       pdfFileName = file.name.replace(/\.[^/.]+$/, "");
       document.getElementById('fileNameDisplay').innerText = file.name;
-      document.getElementById('fileMetaDisplay').innerText = `${(file.size / 1024 / 1024).toFixed(2)} MB - Membaca data...`;
+
+      const isImage = file.type.startsWith('image/') || /\.(png|jpe?g|webp|bmp|gif)$/i.test(file.name);
 
       document.getElementById('uploadSection').classList.add('hidden');
       document.getElementById('workspaceSection').classList.remove('hidden');
       document.getElementById('workspaceSection').classList.add('flex');
+
+      if (isImage) {
+        document.getElementById('fileMetaDisplay').innerText = `${(file.size / 1024 / 1024).toFixed(2)} MB - Berkas Gambar (1 Gambar)`;
+        document.getElementById('totalPagesCount').innerText = '1';
+
+        const select = document.getElementById('samplePageSelect');
+        select.innerHTML = '<option value="1">Gambar Utama</option>';
+
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new Image();
+          img.onload = async () => {
+            currentPdf = null;
+            rawPdfBuffer = null;
+            isDocumentLoaded = true;
+            totalPages = 1;
+            samplePageNum = 1;
+
+            const canvas = document.getElementById('sampleCanvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+
+            resetZoneSelection();
+            selectedPages = new Set([1]);
+
+            renderedPages = [{
+              pageNum: 1,
+              dataUrl: ev.target.result,
+              width: img.width,
+              height: img.height,
+              extractedText: '',
+              finalFilename: getFormattedFilename(1, '')
+            }];
+
+            const grid = document.getElementById('pagesGrid');
+            grid.innerHTML = '';
+            renderPageCardUI(renderedPages[0]);
+            updateBundleCalculations();
+            updateSmartDownloadButtonUI();
+            showToast('Berkas gambar berhasil dimuat. Pilih area teks atau klik Baca Seluruh Gambar.');
+          };
+          img.src = ev.target.result;
+        };
+        reader.readAsDataURL(file);
+        return;
+      }
+
+      document.getElementById('fileMetaDisplay').innerText = `${(file.size / 1024 / 1024).toFixed(2)} MB - Membaca data...`;
 
       try {
         const arrayBuffer = await file.arrayBuffer();
         rawPdfBuffer = arrayBuffer.slice(0);
         const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
         currentPdf = await loadingTask.promise;
+        isDocumentLoaded = true;
         totalPages = currentPdf.numPages;
 
         document.getElementById('fileMetaDisplay').innerText = `${(file.size / 1024 / 1024).toFixed(2)} MB - ${totalPages} Halaman`;
@@ -1053,9 +1169,23 @@
     }
 
     async function renderSampleCanvas(pageNum) {
-      if (!currentPdf) return;
+      if (!currentPdf) {
+        if (renderedPages.length > 0 && renderedPages[0].dataUrl) {
+          const canvas = document.getElementById('sampleCanvas');
+          const ctx = canvas.getContext('2d');
+          const img = new Image();
+          img.onload = () => {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            ctx.drawImage(img, 0, 0);
+          };
+          img.src = renderedPages[0].dataUrl;
+        }
+        resetZoneSelection();
+        return;
+      }
       const page = await currentPdf.getPage(parseInt(pageNum));
-      const viewport = page.getViewport({ scale: 1.5 });
+      const viewport = page.getViewport({ scale: 1.5, rotation: (page.rotate + pageRotation) % 360 });
 
       const canvas = document.getElementById('sampleCanvas');
       const ctx = canvas.getContext('2d');
@@ -1073,164 +1203,393 @@
 
     function sanitizeFilename(text) {
       if (!text) return "";
-      return text
+      let cleaned = text
         .replace(/[\\/]/g, '-')
         .replace(/[?%*:|"<>]/g, '')
         .replace(/[\r\n\t]+/g, ' ')
         .replace(/\s+/g, ' ')
         .trim();
+
+      const caseSelect = document.getElementById('namingCaseSelect');
+      const caseVal = caseSelect ? caseSelect.value : 'uppercase';
+      if (caseVal === 'uppercase') {
+        cleaned = cleaned.toUpperCase();
+      } else if (caseVal === 'lowercase') {
+        cleaned = cleaned.toLowerCase();
+      } else if (caseVal === 'titlecase') {
+        cleaned = cleaned.replace(/\b\w+/g, w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase());
+      }
+
+      const sepSelect = document.getElementById('namingSepSelect');
+      const sepVal = sepSelect ? sepSelect.value : '_';
+      if (sepVal !== ' ') {
+        cleaned = cleaned.replace(/\s+/g, sepVal);
+      }
+      return cleaned;
     }
 
-    async function extractTextFromZone(pageNum, zone) {
-      if (!currentPdf || !zone || zone.w <= 0 || zone.h <= 0) return "";
+    function preprocessImageForOCR(sourceCanvas, cropRect) {
+      if (!sourceCanvas) return null;
+
+      let sx = 0;
+      let sy = 0;
+      let sw = sourceCanvas.width;
+      let sh = sourceCanvas.height;
+
+      if (cropRect && cropRect.w > 0 && cropRect.h > 0) {
+        sx = Math.max(0, Math.floor(cropRect.x * sourceCanvas.width));
+        sy = Math.max(0, Math.floor(cropRect.y * sourceCanvas.height));
+        sw = Math.min(sourceCanvas.width - sx, Math.ceil(cropRect.w * sourceCanvas.width));
+        sh = Math.min(sourceCanvas.height - sy, Math.ceil(cropRect.h * sourceCanvas.height));
+      }
+
+      if (sw <= 2 || sh <= 2) return null;
+
+      const scale = Math.max(1.5, Math.min(3.0, 1200 / Math.max(sw, sh)));
+      const padding = 20;
+
+      const targetW = Math.round(sw * scale) + padding * 2;
+      const targetH = Math.round(sh * scale) + padding * 2;
+
+      const procCanvas = document.createElement('canvas');
+      procCanvas.width = targetW;
+      procCanvas.height = targetH;
+      const ctx = procCanvas.getContext('2d');
+
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, targetW, targetH);
+
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(sourceCanvas, sx, sy, sw, sh, padding, padding, Math.round(sw * scale), Math.round(sh * scale));
 
       try {
-        const page = await currentPdf.getPage(pageNum);
-        const viewport = page.getViewport({ scale: 1.0 });
-        const textContent = await page.getTextContent();
+        const imgData = ctx.getImageData(0, 0, targetW, targetH);
+        const d = imgData.data;
 
-        let extractedWords = [];
+        let minL = 255;
+        let maxL = 0;
+        const lum = new Float32Array(targetW * targetH);
 
-        if (textContent.items && textContent.items.length > 0) {
-          const pageW = viewport.width;
-          const pageH = viewport.height;
+        for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+          const l = 0.299 * d[i] + 0.587 * d[i + 1] + 0.114 * d[i + 2];
+          lum[j] = l;
+          if (l < minL) minL = l;
+          if (l > maxL) maxL = l;
+        }
 
-          const zL = zone.x;
-          const zR = zone.x + zone.w;
-          const zT = zone.y;
-          const zB = zone.y + zone.h;
+        const range = Math.max(1, maxL - minL);
+        let sumLum = 0;
+        for (let j = 0; j < lum.length; j++) {
+          const stretched = ((lum[j] - minL) / range) * 255;
+          lum[j] = stretched;
+          sumLum += stretched;
+        }
 
-          let candidateItems = [];
+        const meanLum = sumLum / lum.length;
+        const threshold = Math.max(90, Math.min(185, meanLum * 0.92));
 
-          for (let item of textContent.items) {
-            if (!item.str || !item.str.trim()) continue;
+        for (let i = 0, j = 0; i < d.length; i += 4, j++) {
+          const val = lum[j] < threshold ? 0 : 255;
+          d[i] = val;
+          d[i + 1] = val;
+          d[i + 2] = val;
+        }
 
-            const tx = item.transform[4];
-            const ty = item.transform[5];
-            const [vx, vy] = viewport.convertToViewportPoint(tx, ty);
+        ctx.putImageData(imgData, 0, 0);
+      } catch (e) {}
 
-            const fontSize = Math.hypot(item.transform[2], item.transform[3]) || item.height || 11;
-            const itemL = vx / pageW;
-            const itemR = (vx + (item.width || 0) * viewport.scale) / pageW;
-            const itemT = (vy - fontSize * viewport.scale) / pageH;
-            const itemB = (vy + (fontSize * 0.25) * viewport.scale) / pageH;
-            const itemH = Math.max(0.001, itemB - itemT);
-            const itemCenterY = (itemT + itemB) / 2;
+      return procCanvas;
+    }
 
-            const overlapY = Math.max(0, Math.min(itemB, zB) - Math.max(itemT, zT));
-            const vOverlapRatio = overlapY / itemH;
+    async function getOcrWorker(statusCallback) {
+      if (ocrWorkerInstance) return ocrWorkerInstance;
+      if (isWorkerInitializing) {
+        while (isWorkerInitializing) {
+          await new Promise(r => setTimeout(r, 100));
+        }
+        if (ocrWorkerInstance) return ocrWorkerInstance;
+      }
 
-            const isInVerticalZone = (vOverlapRatio >= 0.35) || (itemCenterY >= zT - 0.008 && itemCenterY <= zB + 0.008);
-            if (!isInVerticalZone) continue;
+      isWorkerInitializing = true;
+      if (statusCallback) statusCallback("Menginisialisasi mesin pengenal teks OCR...", 5);
 
-            candidateItems.push({
-              item,
-              str: item.str,
-              itemL,
-              itemR,
-              itemT,
-              itemB,
-              itemH,
-              itemCenterY,
-              vx,
-              vy,
-              fontSize
-            });
+      if (typeof Tesseract === 'undefined') {
+        isWorkerInitializing = false;
+        throw new Error("Pustaka Tesseract OCR belum siap.");
+      }
+
+      const localConfig = {
+        workerPath: 'assets/js/tesseract/worker.min.js',
+        corePath: 'assets/js/tesseract/tesseract-core-simd-lstm.wasm.js',
+        langPath: 'assets/js/tesseract/tessdata',
+        logger: m => {
+          if (statusCallback && m && m.status) {
+            const pct = m.progress ? Math.round(m.progress * 100) : 0;
+            let label = m.status;
+            if (m.status === 'loading tesseract core') label = 'Memuat modul inti WebAssembly OCR...';
+            else if (m.status === 'initializing tesseract') label = 'Menginisialisasi kamus pengenal teks...';
+            else if (m.status === 'loading language traineddata') label = 'Memuat model bahasa Indonesia dan Inggris...';
+            else if (m.status === 'initializing api') label = 'Menyiapkan mesin pengenal teks...';
+            else if (m.status === 'recognizing text') label = `Membaca teks dari gambar: ${pct}%`;
+            statusCallback(label, pct);
           }
+        }
+      };
 
-          if (candidateItems.length > 0) {
-            candidateItems.sort((a, b) => {
-              if (Math.abs(a.itemCenterY - b.itemCenterY) > 0.008) {
-                return a.itemCenterY - b.itemCenterY;
+      try {
+        ocrWorkerInstance = await Tesseract.createWorker('ind+eng', 1, localConfig);
+        isWorkerInitializing = false;
+        return ocrWorkerInstance;
+      } catch (localErr) {
+        if (statusCallback) statusCallback("Mengalihkan ke Web Worker CDN...", 15);
+        try {
+          const cdnConfig = {
+            workerPath: 'https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/worker.min.js',
+            corePath: 'https://cdn.jsdelivr.net/npm/tesseract.js-core@5/tesseract-core-simd-lstm.wasm.js',
+            langPath: 'https://tessdata.projectnaptha.com/4.0.0',
+            logger: localConfig.logger
+          };
+          ocrWorkerInstance = await Tesseract.createWorker('ind+eng', 1, cdnConfig);
+          isWorkerInitializing = false;
+          return ocrWorkerInstance;
+        } catch (cdnErr) {
+          isWorkerInitializing = false;
+          throw new Error("Gagal menginisialisasi OCR: " + (cdnErr.message || localErr.message));
+        }
+      }
+    }
+
+    async function runOCR(targetCanvas, statusCallback) {
+      if (!targetCanvas) return "";
+      const worker = await getOcrWorker(statusCallback);
+      if (statusCallback) statusCallback("Memproses teks dari citra dokumen...", 85);
+      const { data } = await worker.recognize(targetCanvas);
+      if (data && data.text) {
+        return data.text.trim();
+      }
+      return "";
+    }
+
+    async function extractTextFromZone(pageNum, zone, options) {
+      const isFullPage = options && options.fullPage;
+      if (!isFullPage && (!zone || zone.w <= 0 || zone.h <= 0)) return "";
+
+      try {
+        if (currentPdf) {
+          const page = await currentPdf.getPage(pageNum);
+          const viewport = page.getViewport({ scale: 1.0 });
+          const textContent = await page.getTextContent();
+
+          let extractedWords = [];
+
+          if (textContent.items && textContent.items.length > 0) {
+            const pageW = viewport.width;
+            const pageH = viewport.height;
+
+            if (isFullPage) {
+              for (let item of textContent.items) {
+                if (item.str && item.str.trim()) {
+                  extractedWords.push(item.str.trim());
+                }
               }
-              return a.itemL - b.itemL;
-            });
+            } else {
+              const zL = zone.x;
+              const zR = zone.x + zone.w;
+              const zT = zone.y;
+              const zB = zone.y + zone.h;
 
-            for (let cand of candidateItems) {
-              const itemW = Math.max(0.0001, cand.itemR - cand.itemL);
-              const rawStr = cand.str;
+              let candidateItems = [];
 
-              const overlapX = Math.max(0, Math.min(cand.itemR, zR) - Math.max(cand.itemL, zL));
-              const hOverlapRatio = overlapX / itemW;
+              for (let item of textContent.items) {
+                if (!item.str || !item.str.trim()) continue;
 
-              if (cand.itemL >= zL - 0.01 && cand.itemR <= zR + 0.01) {
-                extractedWords.push(rawStr.trim());
-              } else if (hOverlapRatio >= 0.5 && itemW <= zone.w * 1.3) {
-                extractedWords.push(rawStr.trim());
-              } else {
-                const tokens = rawStr.split(/(\s+)/);
-                let charOffset = 0;
-                for (let tok of tokens) {
-                  if (tok.trim().length > 0) {
-                    const tokL = cand.itemL + (charOffset / rawStr.length) * itemW;
-                    const tokR = cand.itemL + ((charOffset + tok.length) / rawStr.length) * itemW;
-                    const tokCenterX = (tokL + tokR) / 2;
+                const tx = item.transform[4];
+                const ty = item.transform[5];
+                const [vx, vy] = viewport.convertToViewportPoint(tx, ty);
 
-                    if (tokCenterX >= zL - 0.01 && tokCenterX <= zR + 0.01) {
-                      extractedWords.push(tok.trim());
+                const fontSize = Math.hypot(item.transform[2], item.transform[3]) || item.height || 11;
+                const itemL = vx / pageW;
+                const itemR = (vx + (item.width || 0) * viewport.scale) / pageW;
+                const itemT = (vy - fontSize * viewport.scale) / pageH;
+                const itemB = (vy + (fontSize * 0.25) * viewport.scale) / pageH;
+                const itemH = Math.max(0.001, itemB - itemT);
+                const itemCenterY = (itemT + itemB) / 2;
+
+                const overlapY = Math.max(0, Math.min(itemB, zB) - Math.max(itemT, zT));
+                const vOverlapRatio = overlapY / itemH;
+
+                const isInVerticalZone = (vOverlapRatio >= 0.35) || (itemCenterY >= zT - 0.008 && itemCenterY <= zB + 0.008);
+                if (!isInVerticalZone) continue;
+
+                candidateItems.push({
+                  item,
+                  str: item.str,
+                  itemL,
+                  itemR,
+                  itemT,
+                  itemB,
+                  itemH,
+                  itemCenterY,
+                  vx,
+                  vy,
+                  fontSize
+                });
+              }
+
+              if (candidateItems.length > 0) {
+                candidateItems.sort((a, b) => {
+                  if (Math.abs(a.itemCenterY - b.itemCenterY) > 0.008) {
+                    return a.itemCenterY - b.itemCenterY;
+                  }
+                  return a.itemL - b.itemL;
+                });
+
+                for (let cand of candidateItems) {
+                  const itemW = Math.max(0.0001, cand.itemR - cand.itemL);
+                  const rawStr = cand.str;
+
+                  const overlapX = Math.max(0, Math.min(cand.itemR, zR) - Math.max(cand.itemL, zL));
+                  const hOverlapRatio = overlapX / itemW;
+
+                  if (cand.itemL >= zL - 0.01 && cand.itemR <= zR + 0.01) {
+                    extractedWords.push(rawStr.trim());
+                  } else if (hOverlapRatio >= 0.5 && itemW <= zone.w * 1.3) {
+                    extractedWords.push(rawStr.trim());
+                  } else {
+                    const tokens = rawStr.split(/(\s+)/);
+                    let charOffset = 0;
+                    for (let tok of tokens) {
+                      if (tok.trim().length > 0) {
+                        const tokL = cand.itemL + (charOffset / rawStr.length) * itemW;
+                        const tokR = cand.itemL + ((charOffset + tok.length) / rawStr.length) * itemW;
+                        const tokCenterX = (tokL + tokR) / 2;
+
+                        if (tokCenterX >= zL - 0.01 && tokCenterX <= zR + 0.01) {
+                          extractedWords.push(tok.trim());
+                        }
+                      }
+                      charOffset += tok.length;
                     }
                   }
-                  charOffset += tok.length;
                 }
               }
             }
-          }
 
-          if (extractedWords.length > 0) {
-            return sanitizeFilename(extractedWords.join(" "));
-          }
-        }
-
-        const canvas = document.getElementById('sampleCanvas');
-        if (canvas && window.Tesseract) {
-          const cropX = Math.floor(zone.x * canvas.width);
-          const cropY = Math.floor(zone.y * canvas.height);
-          const cropW = Math.floor(zone.w * canvas.width);
-          const cropH = Math.floor(zone.h * canvas.height);
-
-          if (cropW > 5 && cropH > 5) {
-            const cropCanvas = document.createElement('canvas');
-            cropCanvas.width = cropW;
-            cropCanvas.height = cropH;
-            const cCtx = cropCanvas.getContext('2d');
-            cCtx.drawImage(canvas, cropX, cropY, cropW, cropH, 0, 0, cropW, cropH);
-
-            const result = await Tesseract.recognize(cropCanvas, 'ind+eng', {
-              workerPath: 'assets/js/tesseract/worker.min.js',
-              corePath: 'assets/js/tesseract/tesseract-core-simd-lstm.wasm.js',
-              langPath: 'assets/js/tesseract/tessdata'
-            });
-            if (result && result.data && result.data.text) {
-              return sanitizeFilename(result.data.text);
+            if (extractedWords.length > 0) {
+              const fullText = extractedWords.join(" ");
+              latestOcrRawText = fullText;
+              return sanitizeFilename(fullText);
             }
           }
         }
-      } catch (err) {}
+
+        let sourceCanvas = null;
+        if (!currentPdf) {
+          sourceCanvas = document.getElementById('sampleCanvas');
+        } else if (pageNum === samplePageNum) {
+          sourceCanvas = document.getElementById('sampleCanvas');
+        } else {
+          const page = await currentPdf.getPage(pageNum);
+          const vPort = page.getViewport({ scale: 2.0 });
+          const offCanvas = document.createElement('canvas');
+          offCanvas.width = vPort.width;
+          offCanvas.height = vPort.height;
+          const offCtx = offCanvas.getContext('2d');
+          await page.render({ canvasContext: offCtx, viewport: vPort }).promise;
+          sourceCanvas = offCanvas;
+        }
+
+        if (sourceCanvas) {
+          const cropTarget = isFullPage ? null : zone;
+          const preprocessed = preprocessImageForOCR(sourceCanvas, cropTarget);
+          if (preprocessed) {
+            const rawOcr = await runOCR(preprocessed, options && options.statusCallback);
+            if (rawOcr) {
+              latestOcrRawText = rawOcr;
+              return sanitizeFilename(rawOcr);
+            }
+          }
+        }
+      } catch (err) {
+        if (options && options.statusCallback) {
+          options.statusCallback(`Peringatan: ${err.message || "Gagal memproses OCR."}`);
+        }
+      }
 
       return "";
     }
 
-    async function testZoneOCR() {
-      if (!selectedZone) {
-        showToast("Pilih area pada gambar sampel terlebih dahulu.");
+    async function testZoneOCR(forceFullPage) {
+      if (!isDocumentLoaded) {
+        showToast("Unggah berkas dokumen atau gambar terlebih dahulu.");
+        return;
+      }
+
+      if (!forceFullPage && !selectedZone) {
+        showToast("Pilih area pada gambar sampel terlebih dahulu, atau klik 'Baca Seluruh Gambar'.");
         return;
       }
 
       const resultEl = document.getElementById('zoneTestResult');
-      resultEl.innerText = "Membaca teks dari area terpilih...";
+      const copyBtn = document.getElementById('btnCopyOcrResult');
+      copyBtn.classList.add('hidden');
 
-      const extracted = await extractTextFromZone(samplePageNum, selectedZone);
+      const statusCallback = (msg) => {
+        resultEl.innerText = msg;
+      };
+
+      statusCallback(forceFullPage ? "Membaca seluruh teks pada gambar dokumen..." : "Membaca teks dari area terpilih...");
+
+      const extracted = await extractTextFromZone(samplePageNum, selectedZone, {
+        fullPage: forceFullPage,
+        statusCallback
+      });
 
       if (extracted) {
-        resultEl.innerText = `"${extracted}"`;
+        resultEl.innerText = `"${latestOcrRawText || extracted}"`;
+        copyBtn.classList.remove('hidden');
         showToast(`Teks terdeteksi: "${extracted}"`);
       } else {
         resultEl.innerText = "[Teks tidak ditemukan pada area ini]";
-        showToast("Tidak ada teks yang dapat dikenali di area ini.");
+        showToast("Tidak ada teks yang dapat dikenali.");
       }
 
       await updateAllPageFilenamePreviews();
       updateBundleCalculations();
+    }
+
+    function copyOcrResult() {
+      const text = latestOcrRawText || document.getElementById('zoneTestResult').innerText;
+      if (!text || text.startsWith('[Teks') || text.startsWith('Tarik kursor')) {
+        showToast('Tidak ada teks untuk disalin.');
+        return;
+      }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(() => {
+          showToast('Teks berhasil disalin ke papan klip!');
+        }).catch(() => {
+          fallbackCopyText(text);
+        });
+      } else {
+        fallbackCopyText(text);
+      }
+    }
+
+    function fallbackCopyText(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.select();
+      try {
+        document.execCommand('copy');
+        showToast('Teks berhasil disalin ke papan klip!');
+      } catch (e) {
+        showToast('Gagal menyalin teks secara otomatis.');
+      }
+      document.body.removeChild(ta);
     }
 
     function getFormattedFilename(pageNum, extractedText) {
@@ -1287,7 +1646,7 @@
         progressBar.style.width = `${percent}%`;
 
         const page = await currentPdf.getPage(pageNum);
-        const viewport = page.getViewport({ scale: exportScale });
+        const viewport = page.getViewport({ scale: exportScale, rotation: (page.rotate + pageRotation) % 360 });
 
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -1375,32 +1734,103 @@
 
     function setFormat(format) {
       exportFormat = format;
+      const btnPdf = document.getElementById('btnFormatPdf');
       const btnJpg = document.getElementById('btnFormatJpg');
       const btnPng = document.getElementById('btnFormatPng');
       const bgColorContainer = document.getElementById('bgColorContainer');
 
-      if (format === 'jpg') {
-        btnJpg.className = "py-2 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-xs border border-slate-200";
-        btnPng.className = "py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900";
-        bgColorContainer.classList.remove('opacity-40', 'pointer-events-none');
-      } else {
-        btnPng.className = "py-2 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-xs border border-slate-200";
-        btnJpg.className = "py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900";
-        bgColorContainer.classList.add('opacity-40', 'pointer-events-none');
+      const activeClass = "py-2 text-xs font-semibold rounded-lg bg-white text-slate-900 shadow-xs border border-slate-200";
+      const inactiveClass = "py-2 text-xs font-semibold rounded-lg text-slate-600 hover:text-slate-900";
+
+      if (btnPdf) btnPdf.className = format === 'pdf' ? activeClass : inactiveClass;
+      if (btnJpg) btnJpg.className = format === 'jpg' ? activeClass : inactiveClass;
+      if (btnPng) btnPng.className = format === 'png' ? activeClass : inactiveClass;
+
+      if (bgColorContainer) {
+        if (format === 'jpg') {
+          bgColorContainer.classList.remove('hidden');
+          bgColorContainer.classList.remove('opacity-40', 'pointer-events-none');
+        } else {
+          bgColorContainer.classList.add('hidden');
+          bgColorContainer.classList.add('opacity-40', 'pointer-events-none');
+        }
       }
 
-      if (currentPdf) renderPdfPages();
+      updateSmartDownloadButtonUI();
+      updateAllPageFilenamePreviews();
+
+      if (currentPdf) {
+        renderPdfPages();
+      } else if (isDocumentLoaded && renderedPages.length > 0) {
+        updateSingleImageRender();
+      }
+    }
+
+    function updatePageRotation(angle) {
+      pageRotation = parseInt(angle) || 0;
+      if (currentPdf) {
+        renderPdfPages();
+        renderSampleCanvas(samplePageNum);
+      }
+    }
+
+    function applyQuickSplitPreset(mode) {
+      const toggle = document.getElementById('bundleModeToggle');
+      const pagesPerFile = document.getElementById('bundlePagesPerFile');
+      if (mode === 'single') {
+        if (toggle) toggle.checked = false;
+        toggleBundleMode(false);
+        setFormat('pdf');
+        showToast("Mode aktif: 1 Halaman = 1 Berkas PDF mandiri");
+      } else if (mode === 'bundle') {
+        if (toggle) toggle.checked = true;
+        toggleBundleMode(true);
+        if (pagesPerFile && (!pagesPerFile.value || parseInt(pagesPerFile.value) < 1)) {
+          pagesPerFile.value = 2;
+        }
+        updateBundleCalculations();
+        setFormat('pdf');
+        showToast("Mode aktif: Pemisahan Paket Berkas PDF");
+      }
     }
 
     function updateQualitySetting() {
       exportScale = parseFloat(document.getElementById('qualitySelect').value);
-      if (currentPdf) renderPdfPages();
+      if (currentPdf) {
+        renderPdfPages();
+      } else if (isDocumentLoaded && renderedPages.length > 0) {
+        updateSingleImageRender();
+      }
     }
 
     function updateBgColor() {
       bgColor = document.getElementById('bgColorInput').value;
       document.getElementById('bgColorHex').innerText = bgColor.toUpperCase();
-      if (currentPdf && exportFormat === 'jpg') renderPdfPages();
+      if (currentPdf && exportFormat === 'jpg') {
+        renderPdfPages();
+      } else if (isDocumentLoaded && exportFormat === 'jpg' && renderedPages.length > 0) {
+        updateSingleImageRender();
+      }
+    }
+
+    function updateSingleImageRender() {
+      const canvas = document.getElementById('sampleCanvas');
+      if (!canvas || renderedPages.length === 0) return;
+      const mimeType = exportFormat === 'jpg' ? 'image/jpeg' : 'image/png';
+      const outCanvas = document.createElement('canvas');
+      outCanvas.width = canvas.width;
+      outCanvas.height = canvas.height;
+      const oCtx = outCanvas.getContext('2d');
+      if (exportFormat === 'jpg') {
+        oCtx.fillStyle = bgColor;
+        oCtx.fillRect(0, 0, outCanvas.width, outCanvas.height);
+      }
+      oCtx.drawImage(canvas, 0, 0);
+      renderedPages[0].dataUrl = outCanvas.toDataURL(mimeType, 0.92);
+      renderedPages[0].finalFilename = getFormattedFilename(1, renderedPages[0].extractedText);
+      const grid = document.getElementById('pagesGrid');
+      grid.innerHTML = '';
+      renderPageCardUI(renderedPages[0]);
     }
 
     function setPresetColor(hex) {
@@ -1578,10 +2008,12 @@
         downloadText.innerText = "Pilih Halaman Terlebih Dahulu";
       } else if (count === 1) {
         downloadBtn.disabled = false;
-        downloadText.innerText = `Unduh 1 Gambar (.${exportFormat.toUpperCase()})`;
+        const typeLabel = exportFormat === 'pdf' ? 'Berkas PDF' : `Gambar (.${exportFormat.toUpperCase()})`;
+        downloadText.innerText = `Unduh 1 ${typeLabel}`;
       } else {
         downloadBtn.disabled = false;
-        downloadText.innerText = `Unduh ${count} Halaman Terpilih (.ZIP)`;
+        const typeLabel = exportFormat === 'pdf' ? 'Berkas PDF' : 'Halaman Terpilih';
+        downloadText.innerText = `Unduh ${count} ${typeLabel} (.ZIP)`;
       }
     }
 
@@ -1624,9 +2056,28 @@
       showToast(`Filter rentang diterapkan: ${selectedPages.size} halaman terpilih.`);
     }
 
-    function downloadSinglePage(pageNum) {
+    async function downloadSinglePage(pageNum) {
       const pageData = renderedPages.find(p => p.pageNum === pageNum);
       if (!pageData) return;
+
+      if (exportFormat === 'pdf' && rawPdfBuffer && window.PDFLib) {
+        try {
+          const srcPdf = await PDFLib.PDFDocument.load(rawPdfBuffer);
+          const singlePdf = await PDFLib.PDFDocument.create();
+          const copied = await singlePdf.copyPages(srcPdf, [pageNum - 1]);
+          if (pageRotation !== 0) {
+            const currentAngle = copied[0].getRotation().angle;
+            copied[0].setRotation(PDFLib.degrees((currentAngle + pageRotation) % 360));
+          }
+          singlePdf.addPage(copied[0]);
+          const pdfBytes = await singlePdf.save();
+          const blob = new Blob([pdfBytes], { type: 'application/pdf' });
+          const filename = `${pageData.finalFilename}.pdf`;
+          saveAs(blob, filename);
+          showToast(`Berhasil mengunduh berkas PDF: ${filename}`);
+          return;
+        } catch (e) {}
+      }
 
       const filename = `${pageData.finalFilename}.${exportFormat}`;
       saveAs(pageData.dataUrl, filename);
@@ -1644,7 +2095,7 @@
       const selectedList = Array.from(selectedPages).sort((a, b) => a - b);
 
       if (selectedList.length === 1) {
-        downloadSinglePage(selectedList[0]);
+        await downloadSinglePage(selectedList[0]);
         return;
       }
 
@@ -1652,10 +2103,15 @@
       const downloadText = document.getElementById('smartDownloadText');
 
       downloadBtn.disabled = true;
-      downloadText.innerText = "Mengompres Berkas ZIP...";
+      downloadText.innerText = exportFormat === 'pdf' ? "Memisahkan Berkas PDF..." : "Mengompres Berkas ZIP...";
 
       const zip = new JSZip();
-      const folder = zip.folder("Hasil_Konversi");
+      const folder = zip.folder("Hasil_Pemisahan");
+
+      let srcPdfDoc = null;
+      if (exportFormat === 'pdf' && rawPdfBuffer && window.PDFLib) {
+        srcPdfDoc = await PDFLib.PDFDocument.load(rawPdfBuffer);
+      }
 
       for (let pageNum of selectedList) {
         const pageData = renderedPages.find(p => p.pageNum === pageNum);
@@ -1665,15 +2121,28 @@
             pageData.finalFilename = getFormattedFilename(pageNum, pageData.extractedText);
           }
 
-          const base64Data = pageData.dataUrl.split(',')[1];
-          const filename = `${pageData.finalFilename}.${exportFormat}`;
-          folder.file(filename, base64Data, { base64: true });
+          if (exportFormat === 'pdf' && srcPdfDoc && window.PDFLib) {
+            const singlePdf = await PDFLib.PDFDocument.create();
+            const copied = await singlePdf.copyPages(srcPdfDoc, [pageNum - 1]);
+            if (pageRotation !== 0) {
+              const currentAngle = copied[0].getRotation().angle;
+              copied[0].setRotation(PDFLib.degrees((currentAngle + pageRotation) % 360));
+            }
+            singlePdf.addPage(copied[0]);
+            const pdfBytes = await singlePdf.save();
+            folder.file(`${pageData.finalFilename}.pdf`, pdfBytes);
+          } else {
+            const base64Data = pageData.dataUrl.split(',')[1];
+            const filename = `${pageData.finalFilename}.${exportFormat}`;
+            folder.file(filename, base64Data, { base64: true });
+          }
         }
       }
 
       try {
         const content = await zip.generateAsync({ type: "blob" });
-        saveAs(content, `${pdfFileName}_Gambar_OCR.zip`);
+        const zipName = exportFormat === 'pdf' ? `${pdfFileName}_Split_PDF.zip` : `${pdfFileName}_Gambar_OCR.zip`;
+        saveAs(content, zipName);
         showToast(`Arsip ZIP berisi ${selectedList.length} berkas berhasil diunduh.`);
       } catch (err) {
         showToast("Terjadi kendala saat menyusun berkas ZIP.");
@@ -1750,7 +2219,13 @@
             pageIndices.push(p - 1);
           }
           const copiedPages = await bundlePdfDoc.copyPages(srcPdfDoc, pageIndices);
-          copiedPages.forEach(p => bundlePdfDoc.addPage(p));
+          copiedPages.forEach(p => {
+            if (pageRotation !== 0) {
+              const currentAngle = p.getRotation().angle;
+              p.setRotation(PDFLib.degrees((currentAngle + pageRotation) % 360));
+            }
+            bundlePdfDoc.addPage(p);
+          });
           const pdfBytes = await bundlePdfDoc.save();
 
           zip.file(`${finalBundleName}.pdf`, pdfBytes);
@@ -1793,7 +2268,7 @@
     async function renderSinglePageDataUrl(pageNum) {
       if (!currentPdf) return "";
       const page = await currentPdf.getPage(pageNum);
-      const viewport = page.getViewport({ scale: exportScale });
+      const viewport = page.getViewport({ scale: exportScale, rotation: (page.rotate + pageRotation) % 360 });
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       canvas.width = viewport.width;
@@ -1832,6 +2307,8 @@
     function resetToUploadScreen() {
       currentPdf = null;
       rawPdfBuffer = null;
+      isDocumentLoaded = false;
+      latestOcrRawText = '';
       renderedPages = [];
       selectedPages.clear();
       selectedZone = null;
@@ -1840,6 +2317,10 @@
       document.getElementById('bundleModeToggle').checked = false;
       document.getElementById('bundleConfigBody').classList.add('opacity-50', 'pointer-events-none');
       document.getElementById('bundlePreviewContainer').classList.add('hidden');
+      const copyBtn = document.getElementById('btnCopyOcrResult');
+      if (copyBtn) copyBtn.classList.add('hidden');
+      const zoneTest = document.getElementById('zoneTestResult');
+      if (zoneTest) zoneTest.innerText = 'Tarik kursor (klik & geser) pada area teks di gambar dokumen sebelah kiri, lalu klik "Uji Baca Area", atau klik "Baca Seluruh Gambar".';
       document.getElementById('uploadSection').classList.remove('hidden');
       document.getElementById('workspaceSection').classList.add('hidden');
       document.getElementById('workspaceSection').classList.remove('flex');

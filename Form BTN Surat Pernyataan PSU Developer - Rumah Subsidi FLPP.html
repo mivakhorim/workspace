@@ -188,7 +188,7 @@
       height: 297mm;
       min-height: 297mm;
       max-height: 297mm;
-      padding: 35mm 25mm 30mm 25mm;
+      padding: 35mm 25mm 25mm 25mm;
       margin: 0 auto 30px auto;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       border: 1px solid #d1d5db;
@@ -204,8 +204,8 @@
 
     .sheet-content {
       width: 100%;
-      height: 232mm;
-      max-height: 232mm;
+      height: 237mm;
+      max-height: 237mm;
       box-sizing: border-box;
       overflow: hidden;
       display: flex;
@@ -299,7 +299,7 @@
         height: 297mm !important;
         min-height: 297mm !important;
         max-height: 297mm !important;
-        padding: 35mm 25mm 30mm 25mm !important;
+        padding: 35mm 25mm 25mm 25mm !important;
         margin: 0 !important;
         box-shadow: none !important;
         border: none !important;
@@ -320,8 +320,8 @@
 
       .sheet-content {
         width: 100% !important;
-        height: 232mm !important;
-        max-height: 232mm !important;
+        height: 237mm !important;
+        max-height: 237mm !important;
         box-sizing: border-box !important;
         overflow: hidden !important;
         display: flex !important;
@@ -2460,7 +2460,7 @@
                 <div style="margin-top: 2px;">Yang membuat pernyataan,</div>
                 <div style="font-weight: bold; margin-top: 2px;">${escapeHtml(ptNama)}</div>
                 
-                <div style="height: 30mm; min-height: 30mm; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center;">
+                <div style="height: 25mm; min-height: 25mm; display: flex; align-items: center; justify-content: flex-start; padding-left: 15px; text-align: left;">
                   <span style="font-style: italic; font-size: 9.5pt; color: #1f2937;">Materai RP. 10.000,-</span>
                 </div>
 
@@ -3035,6 +3035,7 @@
     function xmlEscape(str) {
       if (!str) return '';
       return String(str)
+        .replace(/&nbsp;/g, ' ')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
@@ -3060,7 +3061,7 @@
     function downloadFile(u8arr, fileName) {
       let blob = null;
       try {
-        blob = new Blob([u8arr], { type: 'application/octet-stream' });
+        blob = new (window.Blob || Blob)([u8arr], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
         if (window.navigator && window.navigator.msSaveBlob) {
           window.navigator.msSaveBlob(blob, fileName);
           return;
@@ -3080,6 +3081,7 @@
           a.style.display = 'none';
           a.href = objectUrl;
           a.download = fileName;
+          a.setAttribute('download', fileName);
           document.body.appendChild(a);
           a.click();
           document.body.removeChild(a);
@@ -3097,11 +3099,12 @@
           binary += String.fromCharCode(u8arr[i]);
         }
         const base64 = btoa(binary);
-        const dataUri = 'data:application/octet-stream;base64,' + base64;
+        const dataUri = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + base64;
         const a = document.createElement('a');
         a.style.display = 'none';
         a.href = dataUri;
         a.download = fileName;
+        a.setAttribute('download', fileName);
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -3316,7 +3319,7 @@
               '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="20"/></w:pPr><w:r><w:t>' + xmlEscape(p.tempatTanggal || appData.tempatTanggal) + '</w:t></w:r></w:p>' +
               '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="20"/></w:pPr><w:r><w:t>Yang membuat pernyataan,</w:t></w:r></w:p>' +
               '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="0"/></w:pPr><w:r><w:rPr><w:b/></w:rPr><w:t>' + xmlEscape(appData.perusahaan) + '</w:t></w:r></w:p>' +
-              '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="850" w:after="850"/></w:pPr><w:r><w:rPr><w:i/><w:sz w:val="20"/><w:color w:val="1F2937"/></w:rPr><w:t>Materai RP. 10.000,-</w:t></w:r></w:p>' +
+              '<w:p><w:pPr><w:jc w:val="left"/><w:ind w:left="240"/><w:spacing w:before="850" w:after="850"/></w:pPr><w:r><w:rPr><w:i/><w:sz w:val="20"/><w:color w:val="1F2937"/></w:rPr><w:t>Materai RP. 10.000,-</w:t></w:r></w:p>' +
               '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="20"/></w:pPr>' +
               '<w:r><w:rPr><w:b/><w:sz w:val="24"/></w:rPr><w:t>( </w:t></w:r>' +
               '<w:r><w:rPr><w:b/><w:u w:val="single"/><w:sz w:val="24"/></w:rPr><w:t>' + xmlEscape(appData.nama) + '</w:t></w:r>' +
@@ -3384,7 +3387,7 @@
 
         docXml += '<w:sectPr>' +
           '<w:pgSz w:w="11906" w:h="16838" w:orient="portrait"/>' +
-          '<w:pgMar w:top="1985" w:right="1417" w:bottom="1701" w:left="1417" w:header="720" w:footer="720" w:gutter="0"/>' +
+          '<w:pgMar w:top="1985" w:right="1417" w:bottom="1417" w:left="1417" w:header="720" w:footer="720" w:gutter="0"/>' +
           '<w:cols w:space="720"/>' +
           '</w:sectPr>';
 

@@ -1107,6 +1107,7 @@
     window.openImportModal = function() { openModal('modalImport'); };
     window.exportToExcel = exportXLSX;
     window.exportAllToDocx = exportDebiturDOCX;
+    window.exportToDocx = exportDebiturDOCX;
   
     async function resetAllDebiturData() {
       const ok = await showCustomConfirm('Kosongkan seluruh data debitur dari formulir dan database lokal?', 'Konfirmasi Reset', 'Ya, Kosongkan', 'Batal', true);
@@ -1812,7 +1813,7 @@
             <div style="margin-top: 24px; display: flex; justify-content: flex-end;">
               <div style="width: 250px; text-align: center; font-size: 12pt;">
                 <div style="font-style: italic;">${d.tanggalSurat || '............., tgl....bulan...tahun.....'}</div>
-                <div style="height: 30mm; min-height: 30mm; display: flex; flex-direction: column; align-items: center; justify-content: center; font-style: italic; font-size: 8.5pt; color: #555;">Materai RP. 10.000,-</div>
+                <div style="height: 25mm; min-height: 25mm; display: flex; align-items: center; justify-content: flex-start; padding-left: 10px; font-style: italic; font-size: 8.5pt; color: #555; text-align: left;">Materai RP. 10.000,-</div>
                 <div style="font-weight: bold;">( <span style="text-decoration: underline;">${escapeHtml(d.nama || 'Nama Calon Debitur')}</span> )</div>
               </div>
             </div>
@@ -1850,6 +1851,7 @@
     function xmlEscape(str) {
       if (!str) return '';
       return String(str)
+        .replace(/&nbsp;/g, ' ')
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
@@ -2111,7 +2113,7 @@
           '<w:tc><w:tcPr><w:tcW w:w="4500" w:type="dxa"/></w:tcPr><w:p><w:pPr><w:spacing w:after="0"/></w:pPr></w:p></w:tc>' +
           '<w:tc><w:tcPr><w:tcW w:w="4572" w:type="dxa"/></w:tcPr>' +
           '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="60" w:after="20"/></w:pPr><w:r><w:rPr><w:i/><w:sz w:val="23"/><w:szCs w:val="23"/></w:rPr><w:t>' + xmlEscape(d.tanggalSurat || '............., tgl....bulan...tahun.....') + '</w:t></w:r></w:p>' +
-          '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:before="240" w:after="240"/></w:pPr><w:r><w:rPr><w:i/><w:sz w:val="18"/><w:szCs w:val="18"/><w:color w:val="555555"/></w:rPr><w:t>Materai Rp 10.000,-</w:t></w:r></w:p>' +
+          '<w:p><w:pPr><w:jc w:val="left"/><w:ind w:left="240"/><w:spacing w:before="240" w:after="240"/></w:pPr><w:r><w:rPr><w:i/><w:sz w:val="18"/><w:szCs w:val="18"/><w:color w:val="555555"/></w:rPr><w:t>Materai Rp 10.000,-</w:t></w:r></w:p>' +
           '<w:p><w:pPr><w:jc w:val="center"/><w:spacing w:after="0"/></w:pPr>' +
           '<w:r><w:rPr><w:b/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t>( </w:t></w:r>' +
           '<w:r><w:rPr><w:b/><w:u w:val="single"/><w:sz w:val="24"/><w:szCs w:val="24"/></w:rPr><w:t>' + xmlEscape(d.nama || 'Nama Calon Debitur') + '</w:t></w:r>' +
@@ -2150,45 +2152,55 @@
     function downloadFile(u8arr, fileName) {
       let blob = null;
       try {
-        blob = new Blob([u8arr], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        blob = new (window.Blob || Blob)([u8arr], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
         if (window.navigator && window.navigator.msSaveBlob) {
           window.navigator.msSaveBlob(blob, fileName);
           return;
         }
       } catch (e) {}
+
       let objectUrl = null;
       if (blob) {
         try {
           objectUrl = (window.URL || window.webkitURL).createObjectURL(blob);
         } catch (e) {}
       }
+
       if (objectUrl) {
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = objectUrl;
-        a.download = fileName;
-        document.body.appendChild(a);
-        a.click();
-        setTimeout(function() {
+        try {
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = objectUrl;
+          a.download = fileName;
+          a.setAttribute('download', fileName);
+          document.body.appendChild(a);
+          a.click();
           document.body.removeChild(a);
-          (window.URL || window.webkitURL).revokeObjectURL(objectUrl);
-        }, 1000);
-      } else {
+          setTimeout(function() {
+            try { (window.URL || window.webkitURL).revokeObjectURL(objectUrl); } catch (e) {}
+          }, 60000);
+          return;
+        } catch (e) {}
+      }
+
+      try {
         let binary = '';
         const len = u8arr.byteLength;
         for (let i = 0; i < len; i++) {
           binary += String.fromCharCode(u8arr[i]);
         }
-        const b64 = window.btoa(binary);
+        const base64 = btoa(binary);
+        const dataUri = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + base64;
         const a = document.createElement('a');
         a.style.display = 'none';
-        a.href = 'data:application/octet-stream;base64,' + b64;
+        a.href = dataUri;
         a.download = fileName;
+        a.setAttribute('download', fileName);
         document.body.appendChild(a);
         a.click();
-        setTimeout(function() {
-          document.body.removeChild(a);
-        }, 1000);
+        document.body.removeChild(a);
+      } catch (e) {
+        alert('Browser memblokir unduhan otomatis. Silakan izinkan unduhan di pengaturan browser.');
       }
     }
     function exportDebiturDOCX() {

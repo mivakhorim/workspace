@@ -1140,7 +1140,7 @@
         sheet.style.paddingTop = marginTop + 'mm';
         sheet.style.paddingLeft = '25mm';
         sheet.style.paddingRight = '25mm';
-        sheet.style.paddingBottom = '20mm';
+        sheet.style.paddingBottom = '25mm';
 
         let certLabel = 'NIB Sertifikat';
         let certVal = escapeHtml(c.nibSertifikat || '-');
@@ -1470,16 +1470,96 @@
       const fileName = `Data_SPR_${(appData.perumahan || 'Perumahan').replace(/[^a-zA-Z0-9_-]/g, '_')}.xlsx`;
       XLSX.writeFile(wb, fileName);
     }
+    function showToast(message) {
+      let toast = document.getElementById('sprToastNotification');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'sprToastNotification';
+        toast.className = 'fixed bottom-5 right-5 z-50 bg-[#0a2e5c] text-white text-xs px-4 py-2.5 rounded-lg shadow-lg transition-all duration-300 transform translate-y-10 opacity-0 pointer-events-none flex items-center gap-2 border border-blue-400/30';
+        document.body.appendChild(toast);
+      }
+      toast.innerText = message;
+      toast.classList.remove('translate-y-10', 'opacity-0', 'pointer-events-none');
+      toast.classList.add('translate-y-0', 'opacity-100');
+      setTimeout(() => {
+        toast.classList.remove('translate-y-0', 'opacity-100');
+        toast.classList.add('translate-y-10', 'opacity-0', 'pointer-events-none');
+      }, 3000);
+    }
+
+    function downloadFile(u8arr, fileName) {
+      let blob = null;
+      try {
+        blob = new (window.Blob || Blob)([u8arr], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
+        if (window.navigator && window.navigator.msSaveBlob) {
+          window.navigator.msSaveBlob(blob, fileName);
+          return;
+        }
+      } catch (e) {}
+
+      let objectUrl = null;
+      if (blob) {
+        try {
+          objectUrl = (window.URL || window.webkitURL).createObjectURL(blob);
+        } catch (e) {}
+      }
+
+      if (objectUrl) {
+        try {
+          const a = document.createElement('a');
+          a.style.display = 'none';
+          a.href = objectUrl;
+          a.download = fileName;
+          a.setAttribute('download', fileName);
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+          setTimeout(function() {
+            try { (window.URL || window.webkitURL).revokeObjectURL(objectUrl); } catch (e) {}
+          }, 60000);
+          return;
+        } catch (e) {}
+      }
+
+      try {
+        let binary = '';
+        const len = u8arr.byteLength;
+        for (let i = 0; i < len; i++) {
+          binary += String.fromCharCode(u8arr[i]);
+        }
+        const base64 = btoa(binary);
+        const dataUri = 'data:application/vnd.openxmlformats-officedocument.wordprocessingml.document;base64,' + base64;
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = dataUri;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+      } catch (e) {
+        alert('Browser memblokir unduhan otomatis. Silakan izinkan unduhan di pengaturan browser.');
+      }
+    }
+
     function exportToDocx() {
       if (typeof JSZip === 'undefined') {
         alert('Library JSZip belum siap. Silakan muat ulang halaman.');
         return;
       }
-      const consumers = (appData.consumers || []).filter(c => c.selected);
+      let consumers = (appData.consumers || []).filter(c => c.selected);
       if (consumers.length === 0) {
-        alert('Pilih minimal satu konsumen untuk diekspor ke Word (.docx)!');
-        return;
+        if (!appData.consumers || appData.consumers.length === 0) {
+          alert('Belum ada data konsumen. Silakan tambah konsumen terlebih dahulu.');
+          return;
+        }
+        consumers = appData.consumers;
       }
+
+      const btn = document.getElementById('btnHeaderExportDocx');
+      const btnText = document.getElementById('btnHeaderExportDocxText');
+      const originalText = btnText ? btnText.innerText : 'Ekspor Word';
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.innerText = 'Mengekspor...';
 
       showToast('Menyiapkan berkas Word (.docx)...');
 
@@ -1767,7 +1847,7 @@
 
         docXml += '<w:sectPr>' +
           '<w:pgSz w:w="11906" w:h="16838" w:orient="portrait"/>' +
-          '<w:pgMar w:top="1984" w:right="1417" w:bottom="1134" w:left="1417" w:header="720" w:footer="720" w:gutter="0"/>' +
+          '<w:pgMar w:top="1984" w:right="1417" w:bottom="1417" w:left="1417" w:header="720" w:footer="720" w:gutter="0"/>' +
           '<w:cols w:space="720"/>' +
           '</w:sectPr>';
         docXml += '</w:body></w:document>';
@@ -1778,43 +1858,32 @@
           type: 'uint8array',
           compression: 'DEFLATE',
           compressionOptions: { level: 6 }
-        }).then(function(content) {
-          const blob = new Blob([content], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement('a');
-          link.href = url;
-          link.download = fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
-          setTimeout(() => URL.revokeObjectURL(url), 2000);
+        }).then(function(u8arr) {
+          downloadFile(u8arr, fileName);
+          if (btn) btn.disabled = false;
+          if (btnText) {
+            btnText.innerText = 'Tersimpan!';
+            setTimeout(function() {
+              btnText.innerText = originalText;
+            }, 2000);
+          }
           showToast('Dokumen Word (.docx) berhasil diunduh!');
         }).catch(function(err) {
+          if (btn) btn.disabled = false;
+          if (btnText) btnText.innerText = originalText;
           console.error(err);
           alert('Gagal menghasilkan file Word: ' + err.message);
         });
 
       } catch (err) {
+        if (btn) btn.disabled = false;
+        if (btnText) btnText.innerText = originalText;
         console.error(err);
         alert('Terjadi kesalahan saat membuat dokumen: ' + err.message);
       }
     }
-    function downloadBlob(u8arr, fileName) {
-      const blob = new Blob([u8arr], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      setTimeout(() => {
-        document.body.removeChild(a);
-        URL.revokeObjectURL(url);
-      }, 500);
-    }
-    function downloadFile(u8arr, fileName) {
-      downloadBlob(u8arr, fileName);
-    }
+    window.exportToDocx = exportToDocx;
+
     function loadSampleData() {
       appData = {
         perusahaan: 'PT Bangun Prima Sejahtera',
